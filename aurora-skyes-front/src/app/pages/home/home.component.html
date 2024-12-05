@@ -1,1 +1,71 @@
-<p>home works!</p>
+<div class="container">
+  <div class="flight-search-form">
+    <form class="search-section">
+      <div class="form-group">
+        <label for="trip-type">Type de trajet</label>
+        <select id="trip-type">
+          <option value="aller-retour">Aller-retour</option>
+          <option value="aller-simple">Aller-simple</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="class">Départ de</label>
+        <select id="departure">
+          <option value="">Selectionnez un aéroport</option>
+          @for (item of mockAirportList; track item) {
+            <option value="">{{ item.ville }}({{ item.nom }})</option>
+          }
+        </select>
+        <span class="error-message">Veuillez saisir une ville de départ</span>
+      </div>
+
+      <div class="form-group">
+        <label for="arrival">Arrivée à</label>
+        <select id="arrival">
+          <option value="">Selectionnez un aéroport</option>
+          @for (item of mockAirportList; track item) {
+            <option value="">{{ item.ville }}({{ item.nom }})</option>
+          }
+        </select></div>
+
+      <div class="form-group">
+        <label>Dates de voyage</label>
+        <div class="date-range">
+          <input placeholder="Départ" type="date"/>
+          <input placeholder="Retour" type="date"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="passengers">Passagers</label>
+        <input id="passengers" min="1" type="number" value="1"/>
+      </div>
+
+      <div class="form-group">
+        <label for="class">Classe</label>
+        <select id="class">
+          <option value="economy">Economy</option>
+          <option value="business">Business</option>
+          <option value="first">First</option>
+        </select>
+      </div>
+
+      <button class="search-button" type="submit">Rechercher les vols</button>
+    </form>
+  </div>
+
+  <div class="destination-list">
+
+    @for (item of flightList; track item) {
+      <div class="destination-item">
+        <div class="destination-info">
+          <h4>{{ item.to }} ➡️ {{ item.from }}</h4>
+          <p>{{ item.departure | date:'short' }} 🕰️ {{ item.arrival | date:'short' }}</p>
+          <p class="price">100€</p>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
