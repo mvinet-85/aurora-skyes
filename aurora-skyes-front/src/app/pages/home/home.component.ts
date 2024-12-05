@@ -4,12 +4,14 @@ import {airport} from '../../core/models/airport';
 import {DatePipe} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {SearchFormModel} from '../../core/models/form';
+import {HeaderComponent} from '../../shared/header/header.component';
 
 @Component({
   selector: 'app-home',
   imports: [
     DatePipe,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HeaderComponent
   ],
   templateUrl: './home.component.html',
   standalone: true,

@@ -1,3 +1,5 @@
+<app-header/>
+
 <div class="container">
   <div class="flight-search-form">
     <form [formGroup]="flightSearchForm" class="search-section">
@@ -17,7 +19,6 @@
             <option [value]="item.nom">{{ item.ville }}({{ item.nom }})</option>
           }
         </select>
-        <span class="error-message">Veuillez saisir une ville de départ</span>
       </div>
 
       <div class="form-group">
