@@ -1,0 +1,60 @@
+<div class="login-container">
+  <h2>Connexion</h2>
+  <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+    <!-- Nom -->
+    <div class="form-group">
+      <label for="nom">Nom</label>
+      <input
+        #nomInput="ngModel"
+        [(ngModel)]="utilisateur.nom"
+        class="form-control"
+        id="nom"
+        name="nom"
+        required
+        type="text"
+      />
+      <div [@if]="nomInput.invalid && nomInput.touched" class="error">
+        Le nom est requis.
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input
+        #emailInput="ngModel"
+        [(ngModel)]="utilisateur.email"
+        class="form-control"
+        id="email"
+        name="email"
+        required
+        type="email"
+      />
+      <div [@if]="emailInput.invalid && emailInput.touched" class="error">
+        Une adresse email valide est requise.
+      </div>
+    </div>
+
+    <!-- Mot de passe -->
+    <div class="form-group">
+      <label for="motDePasse">Mot de passe</label>
+      <input
+        #passwordInput="ngModel"
+        [(ngModel)]="utilisateur.motDePasse"
+        class="form-control"
+        id="motDePasse"
+        name="motDePasse"
+        required
+        type="password"
+      />
+      <div [@if]="passwordInput.invalid && passwordInput.touched" class="error">
+        Le mot de passe est requis.
+      </div>
+    </div>
+
+    <!-- Bouton -->
+    <button [disabled]="loginForm.invalid" class="btn btn-primary" type="submit">
+      Se connecter
+    </button>
+  </form>
+</div>
