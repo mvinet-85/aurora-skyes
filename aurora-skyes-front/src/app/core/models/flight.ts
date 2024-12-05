@@ -1,7 +1,9 @@
+import {airport} from './airport';
+
 export interface flight {
-  flightNumber: string;
-  departure: Date;
-  arrival: Date;
-  from: string;
-  to: string;
+  // flightNumber: string;
+  dateDepart: Date;
+  dateArrive: Date;
+  aeroportDepart: airport;
+  aeroportArrivee: airport;
 }
