@@ -86,17 +86,12 @@ export class HomeComponent implements OnInit {
   }
 
   public onSearch(): void {
-    console.log('flightSearchForm', this.flightSearchForm.value);
-    console.log('flightList', this.flightList);
-
     this.error = '';
 
     if (this.flightSearchForm.valid) {
       const searchCriteria = this.flightSearchForm.value;
       const departureDate = searchCriteria.departureDate ? new Date(searchCriteria.departureDate) : null;
       const returnDate = searchCriteria.returnDate ? new Date(searchCriteria.returnDate) : null;
-
-      console.log(searchCriteria);
 
       if (departureDate && returnDate && departureDate > returnDate) {
         this.error = 'La date de retour doit être postérieure à la date de départ';
@@ -110,11 +105,15 @@ export class HomeComponent implements OnInit {
 
       if (searchCriteria && searchCriteria.departure && searchCriteria.arrival && searchCriteria.departureDate && searchCriteria.returnDate) {
 
+        const departureDate = new Date(searchCriteria.departureDate);
+        const returnDate = new Date(searchCriteria.returnDate);
+
         this.outboundFlights = this.flightList.filter(flight => {
           if (flight.aeroportDepart && flight.aeroportArrivee) {
             return (
               flight.aeroportArrivee.nom === searchCriteria.arrival &&
-              flight.aeroportDepart.nom === searchCriteria.departure
+              flight.aeroportDepart.nom === searchCriteria.departure &&
+              flight.dateDepart <= departureDate
             );
           }
           return false;
@@ -124,7 +123,8 @@ export class HomeComponent implements OnInit {
           if (flight.aeroportDepart && flight.aeroportArrivee) {
             return (
               flight.aeroportArrivee.nom === searchCriteria.departure &&
-              flight.aeroportDepart.nom === searchCriteria.arrival
+              flight.aeroportDepart.nom === searchCriteria.arrival &&
+              flight.dateArrive <= returnDate
             );
           }
           return false;
@@ -133,29 +133,6 @@ export class HomeComponent implements OnInit {
 
       this.search = true;
     }
-  }
-
-  private filterFlights(
-    flights: flight[],
-    departurePoint: airport,
-    arrivalPoint: airport,
-    date?: Date
-  ): flight[] {
-    return flights.filter(flight => {
-      const matchesDeparture = !departurePoint || flight.aeroportDepart.nom === departurePoint.nom;
-      const matchesArrival = !arrivalPoint || flight.aeroportArrivee.nom === arrivalPoint.nom;
-      // const matchesDate = !date || new Date(flight.dateDepart) >= new Date(date);
-
-      console.log('flights', flights);
-      console.log('departurePoint', departurePoint);
-      console.log('arrivalPoint', arrivalPoint);
-
-      console.log(matchesDeparture);
-      console.log(matchesArrival);
-      // console.log(matchesDate);
-
-      return matchesDeparture && matchesArrival;
-    });
   }
 
   private getAllVols(): void {
