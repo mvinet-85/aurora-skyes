@@ -1,0 +1,45 @@
+<div class="container-fluid">
+  <div class="row mt-5">
+    <div class="col"></div>
+    <div class="col-4">
+      <div class="card shadow">
+        <div class="card-body">
+          <!-- Section existante -->
+          <form>
+            <div class="mb-3">
+              <h4 class="text-danger text-muted">Welcome</h4>
+            </div>
+            <div class="mb-3">
+              <p class="text-muted">
+                Link was sent to your registered email. Please verify it.
+              </p>
+            </div>
+            <button
+              (click)="goBack()"
+              class="btn btn-outline-danger"
+              type="button"
+            >
+              Back to login page
+            </button>
+          </form>
+
+          <!-- Nouvelle section -->
+          <div class="verify-email-container mt-4">
+            <h2>Vérifiez votre adresse email</h2>
+            <p>
+              Nous vous avons envoyé un email contenant un lien de vérification.
+              Cliquez sur ce lien pour confirmer votre adresse.
+            </p>
+            <button
+              (click)="resendEmail()"
+              class="btn btn-primary mt-3">
+              Renvoyer l'email
+            </button>
+            <a class="assistance-link d-block mt-2" href="/help">Besoin d'aide ?</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>
