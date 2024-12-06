@@ -1,7 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {Component, inject} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {utilisateur} from '../../../core/models/user';
+import {utilisateur} from '../../../core/models/utilisateur';
 import {AuthService} from '../../../core/services/authentification/auth.service';
 import {utilisateurLogin} from '../../../core/models/userSignIn';
 

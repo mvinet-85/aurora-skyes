@@ -8,7 +8,7 @@ import {HeaderComponent} from '../../shared/header/header.component';
 import {FlightService} from '../../core/services/flight/flight.service';
 import {ConfirmModalComponent} from '../../shared/confirm-modal/confirm-modal.component';
 import {reservation} from '../../core/models/reservation';
-import {utilisateur} from '../../core/models/user';
+import {utilisateur} from '../../core/models/utilisateur';
 import {ReservationService} from '../../core/services/reservation/reservation.service';
 import {AirportService} from "../../core/services/airport/airport.service";
 import {AuthService} from "../../core/services/authentification/auth.service";
