@@ -70,7 +70,8 @@
         @for (flight of outboundFlights; track outboundFlights) {
           <div class="destination-item">
             <div class="destination-info">
-              <h4>{{ flight.aeroportDepart }} ➡️ {{ flight.aeroportArrivee }}</h4>
+              <p>{{ flight.aeroportDepart.ville }}({{ flight.aeroportDepart.nom }})
+                ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
               <p>{{ flight.dateDepart | date:'short' }} 🕰️ {{ flight.dateArrive | date:'short' }}</p>
               <p class="price">100€</p>
               <button type="button">Réserver</button>
@@ -78,6 +79,7 @@
           </div>
         }
       </div>
+      <hr>
       <div class="flight-section">
         <h3>Vol retour</h3>
         @if (returnFlights.length == 0) {
@@ -86,7 +88,8 @@
         @for (flight of returnFlights; track returnFlights) {
           <div class="destination-item">
             <div class="destination-info">
-              <h4>{{ flight.aeroportDepart }} ➡️ {{ flight.aeroportArrivee }}</h4>
+              <p>{{ flight.aeroportDepart.ville }}({{ flight.aeroportDepart.nom }})
+                ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
               <p>{{ flight.dateDepart | date:'short' }} 🕰️ {{ flight.dateArrive | date:'short' }}</p>
               <p class="price">100€</p>
               <button type="button">Réserver</button>
@@ -96,11 +99,12 @@
       </div>
     } @else {
       <div class="flight-section">
+        <h3>Liste de tous les vols</h3>
         @for (flight of flightList; track flightList) {
           <div class="destination-item">
             <div class="destination-info">
-              <h4>{{ flight.aeroportDepart.ville }}({{ flight.aeroportDepart.nom }})
-                ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</h4>
+              <p>{{ flight.aeroportDepart.ville }}({{ flight.aeroportDepart.nom }})
+                ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
               <p>{{ flight.dateDepart | date:'short' }} 🕰️ {{ flight.dateArrive | date:'short' }}</p>
               <p class="price">100€</p>
               <button type="button">Réserver</button>

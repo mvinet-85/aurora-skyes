@@ -96,27 +96,66 @@ export class HomeComponent implements OnInit {
       const departureDate = searchCriteria.departureDate ? new Date(searchCriteria.departureDate) : null;
       const returnDate = searchCriteria.returnDate ? new Date(searchCriteria.returnDate) : null;
 
+      console.log(searchCriteria);
+
       if (departureDate && returnDate && departureDate > returnDate) {
         this.error = 'La date de retour doit être postérieure à la date de départ';
         return;
       }
 
-      this.outboundFlights = this.flightList.filter(flight => {
-        return (
-          (!searchCriteria.departure || flight.aeroportDepart.nom === searchCriteria.departure.nom) &&
-          (!searchCriteria.arrival || flight.aeroportArrivee.nom === searchCriteria.arrival.nom)
-        );
-      });
+      if (searchCriteria.arrival == searchCriteria.departure) {
+        this.error = 'L\'aéroport de départ et d\'arrivée doivent être differents';
+        return;
+      }
 
-      this.returnFlights = this.flightList.filter(flight => {
-        return (
-          (!searchCriteria.arrival || flight.aeroportDepart.nom === searchCriteria.arrival.nom) &&
-          (!searchCriteria.departure || flight.aeroportArrivee.nom === searchCriteria.departure.nom)
-        );
-      });
+      if (searchCriteria && searchCriteria.departure && searchCriteria.arrival && searchCriteria.departureDate && searchCriteria.returnDate) {
+
+        this.outboundFlights = this.flightList.filter(flight => {
+          if (flight.aeroportDepart && flight.aeroportArrivee) {
+            return (
+              flight.aeroportArrivee.nom === searchCriteria.arrival &&
+              flight.aeroportDepart.nom === searchCriteria.departure
+            );
+          }
+          return false;
+        });
+
+        this.returnFlights = this.flightList.filter(flight => {
+          if (flight.aeroportDepart && flight.aeroportArrivee) {
+            return (
+              flight.aeroportArrivee.nom === searchCriteria.departure &&
+              flight.aeroportDepart.nom === searchCriteria.arrival
+            );
+          }
+          return false;
+        });
+      }
 
       this.search = true;
     }
+  }
+
+  private filterFlights(
+    flights: flight[],
+    departurePoint: airport,
+    arrivalPoint: airport,
+    date?: Date
+  ): flight[] {
+    return flights.filter(flight => {
+      const matchesDeparture = !departurePoint || flight.aeroportDepart.nom === departurePoint.nom;
+      const matchesArrival = !arrivalPoint || flight.aeroportArrivee.nom === arrivalPoint.nom;
+      // const matchesDate = !date || new Date(flight.dateDepart) >= new Date(date);
+
+      console.log('flights', flights);
+      console.log('departurePoint', departurePoint);
+      console.log('arrivalPoint', arrivalPoint);
+
+      console.log(matchesDeparture);
+      console.log(matchesArrival);
+      // console.log(matchesDate);
+
+      return matchesDeparture && matchesArrival;
+    });
   }
 
   private getAllVols(): void {
