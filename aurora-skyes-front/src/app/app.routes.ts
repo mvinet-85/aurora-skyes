@@ -4,6 +4,7 @@ import {RegisterComponent} from './pages/authentification/register/register.comp
 import {VerifyEmailComponent} from './pages/authentification/verify-email/verify-email.component';
 import {ForgotPasswordComponent} from './pages/authentification/forgot-password/forgot-password.component';
 import {HomeComponent} from './pages/home/home.component';
+import {AuthGuard} from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -11,6 +12,8 @@ export const routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'verify-email', component: VerifyEmailComponent},
   {path: 'forgot-password', component: ForgotPasswordComponent},
-  {path: 'home', component: HomeComponent},
+  {
+    path: 'home', component: HomeComponent, canActivate: [AuthGuard],
+  },
   {path: '**', redirectTo: 'login'}
 ];
