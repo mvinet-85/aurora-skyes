@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {flight} from '../../core/models/flight';
 import {airport} from '../../core/models/airport';
 import {DatePipe} from '@angular/common';
@@ -6,13 +6,16 @@ import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {SearchFormModel} from '../../core/models/form';
 import {HeaderComponent} from '../../shared/header/header.component';
 import {FlightService} from '../../core/services/flight/flight.service';
+import {ConfirmModalComponent} from '../../shared/confirm-modal/confirm-modal.component';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-home',
   imports: [
     DatePipe,
     ReactiveFormsModule,
-    HeaderComponent
+    HeaderComponent,
+    ConfirmModalComponent
   ],
   templateUrl: './home.component.html',
   standalone: true,
@@ -78,7 +81,10 @@ export class HomeComponent implements OnInit {
   public airportList: airport[] = [];
   public search: boolean = false;
   public error: string = '';
+
+  @ViewChild(ConfirmModalComponent) confirmModal!: ConfirmModalComponent;
   private readonly flightService: FlightService = inject(FlightService);
+  private readonly router: Router = inject(Router);
 
   ngOnInit(): void {
     this.airportList = this.mockAirportList;
@@ -132,6 +138,17 @@ export class HomeComponent implements OnInit {
       }
 
       this.search = true;
+    }
+  }
+
+  openConfirmDialog(): void {
+    this.confirmModal.show();
+  }
+
+  handleConfirmation(isConfirmed: boolean): void {
+    if (isConfirmed) {
+      console.log('Vol réservé');
+      //TODO appel au back
     }
   }
 

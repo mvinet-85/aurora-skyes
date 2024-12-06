@@ -72,7 +72,7 @@
                 ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
               <p>{{ flight.dateDepart | date:'short' }} 🕰️ {{ flight.dateArrive | date:'short' }}</p>
               <p class="price">100€</p>
-              <button type="button">Réserver</button>
+              <button type="button" (click)="openConfirmDialog()">Réserver</button>
             </div>
           </div>
         }
@@ -90,7 +90,7 @@
                 ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
               <p>{{ flight.dateDepart | date:'short' }} 🕰️ {{ flight.dateArrive | date:'short' }}</p>
               <p class="price">100€</p>
-              <button type="button">Réserver</button>
+              <button type="button" (click)="openConfirmDialog()">Réserver</button>
             </div>
           </div>
         }
@@ -105,11 +105,14 @@
                 ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
               <p>{{ flight.dateDepart | date:'short' }} 🕰️ {{ flight.dateArrive | date:'short' }}</p>
               <p class="price">100€</p>
-              <button type="button">Réserver</button>
+              <button type="button" (click)="openConfirmDialog()">Réserver</button>
             </div>
           </div>
         }
       </div>
     }
   </div>
+
+  <app-confirm-modal (confirm)="handleConfirmation($event)"></app-confirm-modal>
+
 </div>

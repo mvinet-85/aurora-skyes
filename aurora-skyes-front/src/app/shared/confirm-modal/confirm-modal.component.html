@@ -1,0 +1,12 @@
+@if (isVisible) {
+  <div class="modal-overlay">
+    <div class="modal">
+      <h2>Confirmer la réservation</h2>
+      <p>Êtes-vous sûr de vouloir réserver ce vol ?</p>
+      <div class="modal-actions">
+        <button (click)="onConfirm()">Confirmer</button>
+        <button (click)="onCancel()">Annuler</button>
+      </div>
+    </div>
+  </div>
+}
