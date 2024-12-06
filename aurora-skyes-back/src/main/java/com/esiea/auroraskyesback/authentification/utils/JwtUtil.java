@@ -21,28 +21,4 @@ public class JwtUtil {
                 .compact();
     }
 
-    public String extractEmail(String token) {
-        return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
-    }
-
-    private boolean isTokenExpired(String token) {
-        return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getExpiration()
-                .before(new Date());
-    }
-
-    public boolean validateToken(String token, String email) {
-        final String extractedEmail = extractEmail(token);
-        return (extractedEmail.equals(email) && !isTokenExpired(token));
-    }
-
 }

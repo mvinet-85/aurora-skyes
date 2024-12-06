@@ -6,6 +6,9 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -20,28 +23,35 @@ import java.util.ArrayList;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    // La même clé secrète que dans JwtUtil
+    /** Logger */
+    private static final Logger LOGGER = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+
+    /** Clé JWT */
     private static final Key SECRET_KEY = Keys.hmacShaKeyFor("aled_aled_aled_aled_aled_aled_aled_aled_aled_aled".getBytes());
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
+        LOGGER.info("Lancement du JWT filter pour la requête : {}", request.getRequestURI());
+
         final String authHeader = request.getHeader("Authorization");
-        final String token;
-        final String email;
+        LOGGER.debug("Authorization Header: {}", authHeader);
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            LOGGER.warn("Aucun token Bearer trouvé dans l'en-tête Authorization.");
             filterChain.doFilter(request, response);
             return;
         }
 
-        token = authHeader.substring(7);
+        final String token = authHeader.substring(7);
         try {
-            email = Jwts.parser()
+            String email = Jwts.parser()
                     .setSigningKey(SECRET_KEY)
                     .build()
                     .parseClaimsJws(token)
                     .getBody()
-                    .getSubject(); // Récupérez le sujet (email)
+                    .getSubject();
+
+            LOGGER.info("JWT valide pour l'utilisateur : {}", email);
 
             if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 User user = new User(email, "", new ArrayList<>());
@@ -49,11 +59,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+
+                LOGGER.info("Authentification ajoutée au contexte de sécurité pour : {}", email);
             }
+        } catch (io.jsonwebtoken.security.SecurityException e) {
+            LOGGER.error("Signature JWT invalide : {}", e.getMessage());
+        } catch (io.jsonwebtoken.ExpiredJwtException e) {
+            LOGGER.error("JWT expiré : {}", e.getMessage());
+        } catch (io.jsonwebtoken.MalformedJwtException e) {
+            LOGGER.error("JWT malformé : {}", e.getMessage());
         } catch (Exception e) {
-            System.out.println("Invalid JWT Token: " + e.getMessage());
+            LOGGER.error("Erreur inconnue lors du traitement du JWT : {}", e.getMessage());
         }
 
+        LOGGER.info("Poursuite de la chaîne de filtres pour la requête : {}", request.getRequestURI());
         filterChain.doFilter(request, response);
     }
 }
