@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Entity
 @Data
+@Table(name = "aeroport")
 public class AeroportEntity {
 
     @Id
