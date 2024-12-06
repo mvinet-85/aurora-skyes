@@ -18,8 +18,4 @@ public class AuthentificationServiceImpl implements AuthentificationService {
         return passwordEncoder.encode(motDePasse);
     }
 
-    /** {@inheritDoc} */
-    public boolean verifierMotDePasse(String motDePasse, String motDePasseHash) {
-        return passwordEncoder.matches(motDePasse, motDePasseHash);
-    }
 }

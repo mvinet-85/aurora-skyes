@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Entity
 @Data
+@Table(name = "utilisateur")
 public class UtilisateurEntity {
 
     @Id
