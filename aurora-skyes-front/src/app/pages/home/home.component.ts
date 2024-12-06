@@ -62,12 +62,6 @@ export class HomeComponent implements OnInit {
     },
   ];
 
-  // TODO list à implementer avec les données du back
-  public flightList: flight[] = [];
-  public outboundFlights: flight[] = [];
-  public returnFlights: flight[] = [];
-  public airportList: airport[] = [];
-  public search: boolean = false;
   public flightSearchForm: FormGroup<SearchFormModel> = new FormGroup<SearchFormModel>({
     tripType: new FormControl('aller-retour', [Validators.required]),
     departure: new FormControl(null, [Validators.required]),
@@ -77,7 +71,14 @@ export class HomeComponent implements OnInit {
     passengers: new FormControl(1, [Validators.required]),
     class: new FormControl('economy', [Validators.required])
   });
-  private flightService: FlightService = inject(FlightService);
+
+  public flightList: flight[] = [];
+  public outboundFlights: flight[] = [];
+  public returnFlights: flight[] = [];
+  public airportList: airport[] = [];
+  public search: boolean = false;
+  public error: string = '';
+  private readonly flightService: FlightService = inject(FlightService);
 
   ngOnInit(): void {
     this.airportList = this.mockAirportList;
@@ -85,15 +86,35 @@ export class HomeComponent implements OnInit {
   }
 
   public onSearch(): void {
+    console.log('flightSearchForm', this.flightSearchForm.value);
+    console.log('flightList', this.flightList);
+
+    this.error = '';
+
     if (this.flightSearchForm.valid) {
       const searchCriteria = this.flightSearchForm.value;
+      const departureDate = searchCriteria.departureDate ? new Date(searchCriteria.departureDate) : null;
+      const returnDate = searchCriteria.returnDate ? new Date(searchCriteria.returnDate) : null;
+
+      if (departureDate && returnDate && departureDate > returnDate) {
+        this.error = 'La date de retour doit être postérieure à la date de départ';
+        return;
+      }
 
       this.outboundFlights = this.flightList.filter(flight => {
-        return (searchCriteria.departure === null || flight.aeroportDepart === searchCriteria.departure) && (searchCriteria.arrival === null || flight.aeroportArrivee === searchCriteria.arrival) && (!searchCriteria.departureDate || flight.dateDepart >= searchCriteria.departureDate);
+        return (
+          (!searchCriteria.departure || flight.aeroportDepart.nom === searchCriteria.departure.nom) &&
+          (!searchCriteria.arrival || flight.aeroportArrivee.nom === searchCriteria.arrival.nom)
+        );
       });
+
       this.returnFlights = this.flightList.filter(flight => {
-        return (searchCriteria.arrival === null || flight.aeroportDepart === searchCriteria.arrival) && (searchCriteria.departure === null || flight.aeroportArrivee === searchCriteria.departure) && (!searchCriteria.returnDate || flight.dateArrive >= searchCriteria.returnDate);
+        return (
+          (!searchCriteria.arrival || flight.aeroportDepart.nom === searchCriteria.arrival.nom) &&
+          (!searchCriteria.departure || flight.aeroportArrivee.nom === searchCriteria.departure.nom)
+        );
       });
+
       this.search = true;
     }
   }

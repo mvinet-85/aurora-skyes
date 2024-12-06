@@ -53,6 +53,10 @@
       </div>
 
       <button (click)="onSearch()" class="search-button" type="button">Rechercher les vols</button>
+
+      @if (error != '') {
+        <p class="error">{{ error }}</p>
+      }
     </form>
   </div>
 

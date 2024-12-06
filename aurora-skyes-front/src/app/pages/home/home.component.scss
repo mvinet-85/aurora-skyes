@@ -46,11 +46,18 @@
 
       .search-button {
         grid-column: span 3;
-        padding: 10px 20px;
         border: none;
         border-radius: 4px;
         cursor: pointer;
         font-size: 16px;
+      }
+
+      .error {
+        grid-column: span 3;
+        font-size: 16px;
+        color: red;
+        text-align: center;
+        margin: 0;
       }
     }
   }
