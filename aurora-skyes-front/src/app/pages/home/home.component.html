@@ -1,0 +1,118 @@
+<app-header/>
+
+<div class="container">
+  <div class="flight-search-form">
+    <form [formGroup]="flightSearchForm" class="search-section">
+      <div class="form-group">
+        <label for="trip-type">Type de trajet</label>
+        <select formControlName="tripType" id="trip-type">
+          <option value="aller-retour">Aller-retour</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="class">Départ de</label>
+        <select formControlName="departure" id="departure">
+          <option disabled selected value="">Veuillez sélectionner un aéroport</option>
+          @for (item of mockAirportList; track item) {
+            <option [value]="item.nom">{{ item.ville }}({{ item.nom }})</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="arrival">Arrivée à</label>
+        <select formControlName="arrival" id="arrival">
+          <option disabled selected value="">Veuillez sélectionner un aéroport</option>
+          @for (item of mockAirportList; track item) {
+            <option [value]="item.nom">{{ item.ville }}({{ item.nom }})</option>
+          }
+        </select></div>
+
+      <div class="form-group">
+        <label>Dates de voyage</label>
+        <div class="date-range">
+          <input formControlName="departureDate" placeholder="Départ" type="date"/>
+          <input formControlName="returnDate" placeholder="Retour" type="date"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="passengers">Passagers</label>
+        <input formControlName="passengers" id="passengers" min="1" type="number" value="1"/>
+      </div>
+
+      <div class="form-group">
+        <label for="class">Classe</label>
+        <select formControlName="class" id="class">
+          <option value="economy">Economie</option>
+          <option value="first">Première</option>
+        </select>
+      </div>
+
+      <button (click)="onSearch()" class="search-button" type="button">Rechercher les vols</button>
+
+      @if (error != '') {
+        <p class="error">{{ error }}</p>
+      }
+    </form>
+  </div>
+
+  <div class="destination-list">
+    @if (search) {
+      <div class="flight-section">
+        <h3>Vol aller</h3>
+        @if (outboundFlights.length == 0) {
+          <p>Pas de vol allé trouvé pour votre recherche</p>
+        }
+        @for (flight of outboundFlights; track outboundFlights) {
+          <div class="destination-item">
+            <div class="destination-info">
+              <p>{{ flight.aeroportDepart.ville }}({{ flight.aeroportDepart.nom }})
+                ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
+              <p>{{ flight.dateDepart | date:'short' }} 🕰️ {{ flight.dateArrive | date:'short' }}</p>
+              <p class="price">100€</p>
+              <button type="button" (click)="selectFlight(flight)">Réserver</button>
+            </div>
+          </div>
+        }
+      </div>
+      <hr>
+      <div class="flight-section">
+        <h3>Vol retour</h3>
+        @if (returnFlights.length == 0) {
+          <p>Pas de vol retour trouvé pour votre recherche</p>
+        }
+        @for (flight of returnFlights; track returnFlights) {
+          <div class="destination-item">
+            <div class="destination-info">
+              <p>{{ flight.aeroportDepart.ville }}({{ flight.aeroportDepart.nom }})
+                ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
+              <p>{{ flight.dateDepart | date:'short' }} 🕰️ {{ flight.dateArrive | date:'short' }}</p>
+              <p class="price">100€</p>
+              <button type="button" (click)="selectFlight(flight)">Réserver</button>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="flight-section">
+        <h3>Liste de tous les vols</h3>
+        @for (flight of flightList; track flightList) {
+          <div class="destination-item">
+            <div class="destination-info">
+              <p>{{ flight.aeroportDepart.ville }}({{ flight.aeroportDepart.nom }})
+                ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
+              <p>{{ flight.dateDepart | date:'short' }} 🕰️ {{ flight.dateArrive | date:'short' }}</p>
+              <p class="price">100€</p>
+              <button type="button" (click)="selectFlight(flight)">Réserver</button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <app-confirm-modal (confirm)="handleConfirmation($event)"></app-confirm-modal>
+
+</div>

@@ -1,0 +1,122 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+
+  .flight-search-form {
+    width: 60%;
+    height: max-content;
+    margin: 40px auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+
+    .search-section {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-group label {
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .form-group input,
+      .form-group select {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      .date-range {
+        display: flex;
+        gap: 10px;
+      }
+
+      .date-range input {
+        flex: 1;
+      }
+
+      .search-button {
+        grid-column: span 3;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      .error {
+        grid-column: span 3;
+        font-size: 16px;
+        color: red;
+        text-align: center;
+        margin: 0;
+      }
+    }
+  }
+
+  .destination-list {
+
+    width: 60%;
+    height: max-content;
+    margin: 40px auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+  }
+
+  .destination-item {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    margin: 10px 0;
+  }
+
+  .destination-item:last-child {
+    border-bottom: none;
+  }
+
+  .destination-info {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+  }
+
+  .destination-info h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+  }
+
+  .destination-info .price {
+    margin: 5px 0 0;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  button {
+    border-radius: 20px;
+    border: none;
+    padding: 10px 20px;
+    background: #007bff;
+    color: white;
+  }
+
+  .flight-section {
+    margin: 20px 0;
+
+    h3, p {
+      margin: 10px 20px;
+    }
+  }
+}
