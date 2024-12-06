@@ -1,6 +1,6 @@
 import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {flight} from '../../core/models/flight';
-import {airport} from '../../core/models/airport';
+import {aeroport} from '../../core/models/aeroport';
 import {DatePipe} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {SearchFormModel} from '../../core/models/form';

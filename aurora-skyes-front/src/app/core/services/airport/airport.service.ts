@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {airport} from '../../models/airport';
+import {aeroport} from '../../models/aeroport';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class AirportService {
   constructor(private readonly http: HttpClient) {
   }
 
-  getAllAirports(): Observable<airport[]> {
-    return this.http.get<airport[]>(this.apiUrl);
+  getAllAirports(): Observable<aeroport[]> {
+    return this.http.get<aeroport[]>(this.apiUrl);
   }
 }
