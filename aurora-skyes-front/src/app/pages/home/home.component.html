@@ -14,7 +14,7 @@
         <label for="class">Départ de</label>
         <select formControlName="departure" id="departure">
           <option disabled selected value="">Veuillez sélectionner un aéroport</option>
-          @for (item of mockAirportList; track item) {
+          @for (item of airportList; track item) {
             <option [value]="item.nom">{{ item.ville }}({{ item.nom }})</option>
           }
         </select>
@@ -24,7 +24,7 @@
         <label for="arrival">Arrivée à</label>
         <select formControlName="arrival" id="arrival">
           <option disabled selected value="">Veuillez sélectionner un aéroport</option>
-          @for (item of mockAirportList; track item) {
+          @for (item of airportList; track item) {
             <option [value]="item.nom">{{ item.ville }}({{ item.nom }})</option>
           }
         </select></div>
@@ -49,8 +49,10 @@
           <option value="first">Première</option>
         </select>
       </div>
-
-      <button (click)="onSearch()" class="search-button" type="button">Rechercher les vols</button>
+      
+      <button (click)="onSearch()" [disabled]="flightSearchForm.invalid" class="search-button" type="button">Rechercher
+        les vols
+      </button>
 
       @if (error != '') {
         <p class="error">{{ error }}</p>

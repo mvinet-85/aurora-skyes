@@ -52,6 +52,11 @@
         font-size: 16px;
       }
 
+      .search-button:disabled {
+        background-color: #ccc;
+        cursor: auto;
+      }
+
       .error {
         grid-column: span 3;
         font-size: 16px;
