@@ -49,7 +49,7 @@
           <option value="first">Première</option>
         </select>
       </div>
-      
+
       <button (click)="onSearch()" [disabled]="flightSearchForm.invalid" class="search-button" type="button">Rechercher
         les vols
       </button>
@@ -72,8 +72,8 @@
             <div class="destination-info">
               <p>{{ flight.aeroportDepart.ville }}({{ flight.aeroportDepart.nom }})
                 ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
-              <p>{{ flight.dateDepart | date:'short' }} 🕰️ {{ flight.dateArrive | date:'short' }}</p>
-              <p class="price">100€</p>
+              <p>{{ flight.dateDepart | date:'HH:mm' }} 🕰️ {{ flight.dateArrive | date:'HH:mm' }}</p>
+              <p class="price">{{ flight.prix }}€</p>
               <button type="button" (click)="selectFlight(flight)">Réserver</button>
             </div>
           </div>
@@ -90,8 +90,8 @@
             <div class="destination-info">
               <p>{{ flight.aeroportDepart.ville }}({{ flight.aeroportDepart.nom }})
                 ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
-              <p>{{ flight.dateDepart | date:'short' }} 🕰️ {{ flight.dateArrive | date:'short' }}</p>
-              <p class="price">100€</p>
+              <p>{{ flight.dateDepart | date:'HH:mm' }} 🕰️ {{ flight.dateArrive | date:'HH:mm' }}</p>
+              <p class="price">{{ flight.prix }}€</p>
               <button type="button" (click)="selectFlight(flight)">Réserver</button>
             </div>
           </div>
@@ -105,8 +105,8 @@
             <div class="destination-info">
               <p>{{ flight.aeroportDepart.ville }}({{ flight.aeroportDepart.nom }})
                 ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
-              <p>{{ flight.dateDepart | date:'short' }} 🕰️ {{ flight.dateArrive | date:'short' }}</p>
-              <p class="price">100€</p>
+              <p>{{ flight.dateDepart | date:'HH:mm' }} 🕰️ {{ flight.dateArrive | date:'HH:mm' }}</p>
+              <p class="price">{{ flight.prix }}€</p>
               <button type="button" (click)="selectFlight(flight)">Réserver</button>
             </div>
           </div>
