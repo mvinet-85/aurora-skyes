@@ -7,9 +7,9 @@ import {SearchFormModel} from '../../core/models/form';
 import {HeaderComponent} from '../../shared/header/header.component';
 import {FlightService} from '../../core/services/flight/flight.service';
 import {ConfirmModalComponent} from '../../shared/confirm-modal/confirm-modal.component';
-import {Router} from '@angular/router';
 import {reservation} from '../../core/models/reservation';
 import {utilisateur} from '../../core/models/user';
+import {ReservationService} from '../../core/services/reservation/reservation.service';
 
 @Component({
   selector: 'app-home',
@@ -93,11 +93,13 @@ export class HomeComponent implements OnInit {
 
   @ViewChild(ConfirmModalComponent) confirmModal!: ConfirmModalComponent;
   private readonly flightService: FlightService = inject(FlightService);
-  private readonly router: Router = inject(Router);
+  private readonly reservationService: ReservationService = inject(ReservationService);
 
   ngOnInit(): void {
     this.airportList = this.mockAirportList;
     this.flightList = this.mockFlightList;
+    // TODO à mettre une fois branché au back
+    // this.getAllVols();
   }
 
   public onSearch(): void {
@@ -164,8 +166,20 @@ export class HomeComponent implements OnInit {
         siege: 'siege',
       }
       console.log('Vol réservé', reservation);
-      //TODO appel au back
+      // TODO à mettre une fois branché au back
+      // this.saveReservation(reservation);
     }
+  }
+
+  saveReservation(reservation: reservation): void {
+    this.reservationService.save(reservation).subscribe(
+      response => {
+        console.log('Réservation sauvegardée avec succès', response);
+      },
+      error => {
+        console.error('Erreur lors de la sauvegarde de la réservation', error);
+      }
+    );
   }
 
   selectFlight(flight: flight): void {
