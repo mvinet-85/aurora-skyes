@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="login-container">
+    <h2>Connexion</h2>
+    <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          class="form-control"
+          formControlName="email"
+          id="email"
+          name="email"
+          required
+          type="email"
+        />
+        <!--      <div *ngIf="emailInput.invalid && emailInput.touched" class="error">-->
+        <!--        Une adresse email valide est requise-->
+        <!--      </div>-->
+      </div>
+
+      <div class="form-group">
+        <label for="motDePasse">Mot de passe</label>
+        <input
+          class="form-control"
+          formControlName="mdp"
+          id="motDePasse"
+          name="motDePasse"
+          required
+          type="password"
+        />
+        <!--      <div *ngIf="passwordInput.invalid && passwordInput.touched" class="error">-->
+        <!--        Le mot de passe est requis.-->
+        <!--      </div>-->
+      </div>
+
+      <button [disabled]="loginForm.invalid" class="btn btn-primary" type="submit">
+        Se connecter
+      </button>
+    </form>
+
+    <div class="row mt-3">
+      <!--    <div class="col-md-6">-->
+      <!--      <a class="text-dark" href="/forgot-password" style="text-decoration: none">-->
+      <!--        Forgot Password ?-->
+      <!--      </a>-->
+      <!--    </div>-->
+      <div class="col-md-12 text-end link">
+        <a class="text-dark" href="/register" style="text-decoration: none">
+          S'inscrire
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

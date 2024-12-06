@@ -1,5 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
+import {AuthService} from '../../../core/services/auth.service';
+import {utilisateur} from '../../../core/models/user';
 
 
 @Component({
@@ -14,10 +16,10 @@ export class RegisterComponent implements OnInit {
   password: string = '';
   confirmPassword: string = '';
   username: string = '';
-  private auth: any;
+
+  private readonly auth: AuthService = inject(AuthService);
 
   ngOnInit(): void {
-    // throw new Error('Method not implemented.');
   }
 
   register() {
@@ -43,11 +45,17 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    this.auth.register(
-      this.username,
-      this.email,
-      this.password,
-    );
+    const utilisateur: utilisateur = {
+      nom: this.username,
+      email: this.email,
+      motDePasse: this.password,
+    }
+
+    this.auth.signUp(utilisateur).subscribe(response => {
+      console.log('Réponse du serveur:', response);
+    }, error => {
+      console.error('Erreur:', error);
+    });
 
     this.email = '';
     this.password = '';
