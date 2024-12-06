@@ -92,7 +92,7 @@
       </div>
     } @else {
       <div class="flight-section">
-        @for (flight of mockFlightList; track mockFlightList) {
+        @for (flight of flightList; track flightList) {
           <div class="destination-item">
             <div class="destination-info">
               <h4>{{ flight.aeroportDepart.ville }}({{ flight.aeroportDepart.nom }})

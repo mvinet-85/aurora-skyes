@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {flight} from '../../core/models/flight';
 import {airport} from '../../core/models/airport';
 import {DatePipe} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {SearchFormModel} from '../../core/models/form';
 import {HeaderComponent} from '../../shared/header/header.component';
+import {FlightService} from '../../core/services/flight/flight.service';
 
 @Component({
   selector: 'app-home',
@@ -67,7 +68,6 @@ export class HomeComponent implements OnInit {
   public returnFlights: flight[] = [];
   public airportList: airport[] = [];
   public search: boolean = false;
-
   public flightSearchForm: FormGroup<SearchFormModel> = new FormGroup<SearchFormModel>({
     tripType: new FormControl('aller-retour', [Validators.required]),
     departure: new FormControl(null, [Validators.required]),
@@ -77,22 +77,35 @@ export class HomeComponent implements OnInit {
     passengers: new FormControl(1, [Validators.required]),
     class: new FormControl('economy', [Validators.required])
   });
+  private flightService: FlightService = inject(FlightService);
 
   ngOnInit(): void {
     this.airportList = this.mockAirportList;
+    this.flightList = this.mockFlightList;
   }
 
   public onSearch(): void {
     if (this.flightSearchForm.valid) {
       const searchCriteria = this.flightSearchForm.value;
 
-      this.outboundFlights = this.mockFlightList.filter(flight => {
+      this.outboundFlights = this.flightList.filter(flight => {
         return (searchCriteria.departure === null || flight.aeroportDepart === searchCriteria.departure) && (searchCriteria.arrival === null || flight.aeroportArrivee === searchCriteria.arrival) && (!searchCriteria.departureDate || flight.dateDepart >= searchCriteria.departureDate);
       });
-      this.returnFlights = this.mockFlightList.filter(flight => {
+      this.returnFlights = this.flightList.filter(flight => {
         return (searchCriteria.arrival === null || flight.aeroportDepart === searchCriteria.arrival) && (searchCriteria.departure === null || flight.aeroportArrivee === searchCriteria.departure) && (!searchCriteria.returnDate || flight.dateArrive >= searchCriteria.returnDate);
       });
       this.search = true;
     }
+  }
+
+  private getAllVols(): void {
+    this.flightService.getAllVols().subscribe(
+      (data) => {
+        this.flightList = data;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des vols', error);
+      }
+    );
   }
 }
