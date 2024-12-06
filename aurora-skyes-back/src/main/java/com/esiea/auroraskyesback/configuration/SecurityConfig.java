@@ -26,70 +26,72 @@ import java.util.ArrayList;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfig.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfig.class);
 
-    @Bean
-    public UserDetailsService userDetailsService(UtilisateurDAO utilisateurDAO) {
-        return email -> {
-            LOGGER.info("Tentative de chargement de l'utilisateur avec l'email : {}", email);
-            return utilisateurDAO.findByEmail(email)
-                    .map(user -> {
-                        LOGGER.info("Utilisateur trouvé : {}", user.getEmail());
-                        return new org.springframework.security.core.userdetails.User(
-                                user.getEmail(),
-                                user.getMotDePasse(),
-                                new ArrayList<>()
-                        );
-                    })
-                    .orElseThrow(() -> {
-                        LOGGER.error("Aucun utilisateur trouvé avec l'email : {}", email);
-                        return new UsernameNotFoundException("Utilisateur non trouvé : " + email);
-                    });
-        };
-    }
+	@Bean
+	public UserDetailsService userDetailsService(UtilisateurDAO utilisateurDAO) {
+		return email -> {
+			LOGGER.info("Tentative de chargement de l'utilisateur avec l'email : {}", email);
+			return utilisateurDAO.findByEmail(email)
+					.map(user -> {
+						LOGGER.info("Utilisateur trouvé : {}", user.getEmail());
+						return new org.springframework.security.core.userdetails.User(
+								user.getEmail(),
+								user.getMotDePasse(),
+								new ArrayList<>());
+					})
+					.orElseThrow(() -> {
+						LOGGER.error("Aucun utilisateur trouvé avec l'email : {}", email);
+						return new UsernameNotFoundException("Utilisateur non trouvé : " + email);
+					});
+		};
+	}
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
-        LOGGER.info("Configuration de la chaîne de filtres de sécurité...");
-        http.csrf(AbstractHttpConfigurer::disable)
-                .cors(Customizer.withDefaults())
-                .authorizeHttpRequests(auth -> {
-                    LOGGER.info("Définition des règles d'autorisation...");
-                    auth.requestMatchers("/authentification/**").permitAll();
-                    auth.requestMatchers("/utilisateurs/**").permitAll();
-                    auth.anyRequest().authenticated();
-                })
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter)
+			throws Exception {
+		LOGGER.info("Configuration de la chaîne de filtres de sécurité...");
+		http.csrf(AbstractHttpConfigurer::disable)
+				.cors(Customizer.withDefaults())
+				.authorizeHttpRequests(auth -> {
+					LOGGER.info("Définition des règles d'autorisation...");
+					auth.requestMatchers("/authentification/**").permitAll();
+					auth.requestMatchers("/utilisateurs/**").permitAll();
+					auth.anyRequest().authenticated();
+				})
+				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-        LOGGER.info("Chaîne de filtres de sécurité configurée avec succès.");
-        return http.build();
-    }
+		LOGGER.info("Chaîne de filtres de sécurité configurée avec succès.");
+		return http.build();
+	}
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        LOGGER.info("Création du bean BCryptPasswordEncoder...");
-        return new BCryptPasswordEncoder();
-    }
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		LOGGER.info("Création du bean BCryptPasswordEncoder...");
+		return new BCryptPasswordEncoder();
+	}
 
-    @Bean
-    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
-        LOGGER.info("Configuration du fournisseur d'authentification...");
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(passwordEncoder);
-        LOGGER.info("Fournisseur d'authentification configuré.");
-        return provider;
-    }
+	@Bean
+	public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService,
+			PasswordEncoder passwordEncoder) {
+		LOGGER.info("Configuration du fournisseur d'authentification...");
+		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+		provider.setUserDetailsService(userDetailsService);
+		provider.setPasswordEncoder(passwordEncoder);
+		LOGGER.info("Fournisseur d'authentification configuré.");
+		return provider;
+	}
 
-    @Bean
-    public AuthenticationConfiguration authenticationConfiguration() {
-        LOGGER.info("Création du bean AuthenticationConfiguration...");
-        return new AuthenticationConfiguration();
-    }
+	@Bean
+	public AuthenticationConfiguration authenticationConfiguration() {
+		LOGGER.info("Création du bean AuthenticationConfiguration...");
+		return new AuthenticationConfiguration();
+	}
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        LOGGER.info("Création du bean AuthenticationManager...");
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+			throws Exception {
+		LOGGER.info("Création du bean AuthenticationManager...");
+		return authenticationConfiguration.getAuthenticationManager();
+	}
 }
