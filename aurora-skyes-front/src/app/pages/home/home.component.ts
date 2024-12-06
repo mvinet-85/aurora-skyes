@@ -11,7 +11,7 @@ import {reservation} from '../../core/models/reservation';
 import {utilisateur} from '../../core/models/user';
 import {ReservationService} from '../../core/services/reservation/reservation.service';
 import {AirportService} from "../../core/services/airport/airport.service";
-import {AuthService} from "../../core/services/auth.service";
+import {AuthService} from "../../core/services/authentification/auth.service";
 
 @Component({
     selector: 'app-home',

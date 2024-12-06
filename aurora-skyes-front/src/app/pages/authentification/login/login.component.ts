@@ -1,9 +1,8 @@
 import {HttpClient} from '@angular/common/http';
 import {Component, inject} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {NgIf} from '@angular/common';
 import {utilisateur} from '../../../core/models/user';
-import {AuthService} from '../../../core/services/auth.service';
+import {AuthService} from '../../../core/services/authentification/auth.service';
 import {utilisateurLogin} from '../../../core/models/login';
 
 @Component({
@@ -12,7 +11,6 @@ import {utilisateurLogin} from '../../../core/models/login';
   styleUrls: ['./login.component.scss'],
   imports: [
     FormsModule,
-    NgIf,
     ReactiveFormsModule,
   ],
   standalone: true
