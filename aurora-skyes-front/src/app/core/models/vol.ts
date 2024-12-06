@@ -1,6 +1,6 @@
 import {aeroport} from './aeroport';
 
-export interface flight {
+export interface vol {
   id: number;
   dateDepart: Date;
   dateArrive: Date;

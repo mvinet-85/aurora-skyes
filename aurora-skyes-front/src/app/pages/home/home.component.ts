@@ -1,5 +1,5 @@
 import {Component, inject, OnInit, ViewChild} from '@angular/core';
-import {flight} from '../../core/models/flight';
+import {vol} from '../../core/models/vol';
 import {aeroport} from '../../core/models/aeroport';
 import {DatePipe} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
@@ -43,13 +43,13 @@ export class HomeComponent implements OnInit {
         class: new FormControl('economy', [Validators.required])
     });
 
-    public flightList: flight[] = [];
-    public outboundFlights: flight[] = [];
-    public returnFlights: flight[] = [];
-    public airportList: airport[] = [];
-    public search: boolean = false;
-    public error: string = '';
-    public selectedFlight: flight | undefined;
+  public flightList: vol[] = [];
+  public outboundFlights: vol[] = [];
+  public returnFlights: vol[] = [];
+  public airportList: aeroport[] = [];
+  public search: boolean = false;
+  public error: string = '';
+  public selectedFlight: vol | undefined;
 
     @ViewChild(ConfirmModalComponent) confirmModal!: ConfirmModalComponent;
     private readonly flightService: FlightService = inject(FlightService);
@@ -144,10 +144,10 @@ export class HomeComponent implements OnInit {
         );
     }
 
-    selectFlight(flight: flight): void {
-        this.selectedFlight = flight;
-        this.openConfirmDialog();
-    }
+  selectFlight(flight: vol): void {
+    this.selectedFlight = flight;
+    this.openConfirmDialog();
+  }
 
     private getAllVols(): void {
         this.flightService.getAllVols().subscribe(

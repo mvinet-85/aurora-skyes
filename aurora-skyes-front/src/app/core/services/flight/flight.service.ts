@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {flight} from '../../models/flight';
+import {vol} from '../../models/vol';
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +13,7 @@ export class FlightService {
     constructor(private readonly http: HttpClient) {
     }
 
-    getAllVols(): Observable<flight[]> {
-        return this.http.get<flight[]>(this.apiUrl);
+    getAllVols(): Observable<vol[]> {
+        return this.http.get<vol[]>(this.apiUrl);
     }
 }
