@@ -7,5 +7,4 @@ export interface reservation {
   prix: number;
   classe: string;
   siege: string;
-  reservationDate: Date;
 }

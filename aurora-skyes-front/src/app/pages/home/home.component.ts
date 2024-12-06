@@ -8,6 +8,8 @@ import {HeaderComponent} from '../../shared/header/header.component';
 import {FlightService} from '../../core/services/flight/flight.service';
 import {ConfirmModalComponent} from '../../shared/confirm-modal/confirm-modal.component';
 import {Router} from '@angular/router';
+import {reservation} from '../../core/models/reservation';
+import {utilisateur} from '../../core/models/user';
 
 @Component({
   selector: 'app-home',
@@ -65,6 +67,12 @@ export class HomeComponent implements OnInit {
     },
   ];
 
+  public currentUser: utilisateur = {
+    nom: 'nom',
+    email: 'mail@mail.fr',
+    motDePasse: 'mdp'
+  };
+
   public flightSearchForm: FormGroup<SearchFormModel> = new FormGroup<SearchFormModel>({
     tripType: new FormControl('aller-retour', [Validators.required]),
     departure: new FormControl(null, [Validators.required]),
@@ -81,6 +89,7 @@ export class HomeComponent implements OnInit {
   public airportList: airport[] = [];
   public search: boolean = false;
   public error: string = '';
+  public selectedFlight: flight | undefined;
 
   @ViewChild(ConfirmModalComponent) confirmModal!: ConfirmModalComponent;
   private readonly flightService: FlightService = inject(FlightService);
@@ -146,10 +155,22 @@ export class HomeComponent implements OnInit {
   }
 
   handleConfirmation(isConfirmed: boolean): void {
-    if (isConfirmed) {
-      console.log('Vol réservé');
+    if (isConfirmed && this.flightSearchForm && this.flightSearchForm.controls.class.value && this.selectedFlight) {
+      const reservation: reservation = {
+        vol: this.selectedFlight,
+        utilisateur: this.currentUser,
+        prix: 100,
+        classe: this.flightSearchForm.controls.class.value,
+        siege: 'siege',
+      }
+      console.log('Vol réservé', reservation);
       //TODO appel au back
     }
+  }
+
+  selectFlight(flight: flight): void {
+    this.selectedFlight = flight;
+    this.openConfirmDialog();
   }
 
   private getAllVols(): void {
