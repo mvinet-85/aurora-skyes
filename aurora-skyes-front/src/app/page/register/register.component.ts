@@ -13,7 +13,6 @@ export class RegisterComponent implements OnInit {
   email: string = '';
   password: string = '';
   confirmPassword: string = '';
-  phoneNumber: string = '';
   username: string = '';
   private auth: any;
 
@@ -28,10 +27,6 @@ export class RegisterComponent implements OnInit {
     }
     if (this.email === '') {
       alert('Please enter an email');
-      return;
-    }
-    if (this.phoneNumber === '') {
-      alert('Please enter a phone number');
       return;
     }
     if (this.password === '') {
@@ -52,13 +47,11 @@ export class RegisterComponent implements OnInit {
       this.username,
       this.email,
       this.password,
-      this.phoneNumber
     );
 
     this.email = '';
     this.password = '';
     this.confirmPassword = '';
-    this.phoneNumber = '';
     this.username = '';
   }
 }
