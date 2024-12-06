@@ -1,7 +1,7 @@
 import {airport} from './airport';
 
 export interface flight {
-  flightNumber: number;
+  id: number;
   dateDepart: Date;
   dateArrive: Date;
   aeroportDepart: airport;

@@ -11,6 +11,7 @@ import {Router} from '@angular/router';
 export class AuthService {
     private isAuthenticated = false;
     private userRole: string | null = null;
+    private currentUser: utilisateur | null = null;
 
     private readonly registerUrl = 'http://localhost:8080/utilisateurs';
     private readonly loginUrl = 'http://localhost:8080/authentification';
@@ -26,8 +27,9 @@ export class AuthService {
 
     signIn(utilisateur: utilisateurLogin): Observable<utilisateur> {
         return this.http.post<utilisateur>(this.loginUrl, utilisateur).pipe(
-            tap(() => {
+            tap((respons: utilisateur) => {
                 this.isAuthenticated = true;
+                this.currentUser = respons;
                 console.log('Utilisateur authentifié');
                 this.router.navigateByUrl('/home');
             })
@@ -50,5 +52,9 @@ export class AuthService {
 
     getUserRole(): string | null {
         return this.userRole;
+    }
+
+    getUser(): utilisateur | null {
+        return this.currentUser;
     }
 }

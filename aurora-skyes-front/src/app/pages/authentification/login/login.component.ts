@@ -19,13 +19,13 @@ import {utilisateurLogin} from '../../../core/models/login';
 })
 export class LoginComponent {
 
-  utilisateur: utilisateur = {
+  public utilisateur: utilisateur = {
     nom: '',
     email: '',
     motDePasse: '',
   };
 
-  utilisateurLoged: utilisateurLogin = {
+  public utilisateurLoged: utilisateurLogin = {
     email: '',
     motDePasse: '',
   };

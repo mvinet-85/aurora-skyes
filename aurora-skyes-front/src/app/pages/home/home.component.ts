@@ -11,6 +11,7 @@ import {reservation} from '../../core/models/reservation';
 import {utilisateur} from '../../core/models/user';
 import {ReservationService} from '../../core/services/reservation/reservation.service';
 import {AirportService} from "../../core/services/airport/airport.service";
+import {AuthService} from "../../core/services/auth.service";
 
 @Component({
     selector: 'app-home',
@@ -26,10 +27,10 @@ import {AirportService} from "../../core/services/airport/airport.service";
 })
 export class HomeComponent implements OnInit {
 
-    public currentUser: utilisateur = {
-        nom: 'nom',
-        email: 'mail@mail.fr',
-        motDePasse: 'mdp'
+    public currentUser: utilisateur | null = {
+        nom: '',
+        motDePasse: '',
+        email: '',
     };
 
     public flightSearchForm: FormGroup<SearchFormModel> = new FormGroup<SearchFormModel>({
@@ -54,10 +55,12 @@ export class HomeComponent implements OnInit {
     private readonly flightService: FlightService = inject(FlightService);
     private readonly airportService: AirportService = inject(AirportService);
     private readonly reservationService: ReservationService = inject(ReservationService);
+    private readonly authService: AuthService = inject(AuthService);
 
     ngOnInit(): void {
         this.getAllVols();
         this.getAllAirports();
+        this.currentUser = this.authService.getUser();
     }
 
     public onSearch(): void {
@@ -113,17 +116,20 @@ export class HomeComponent implements OnInit {
     }
 
     handleConfirmation(isConfirmed: boolean): void {
-        if (isConfirmed && this.flightSearchForm && this.flightSearchForm.controls.class.value && this.selectedFlight) {
+        if (
+            isConfirmed &&
+            this.flightSearchForm &&
+            this.flightSearchForm.controls.class &&
+            this.selectedFlight
+        ) {
+
             const reservation: reservation = {
-                vol: this.selectedFlight,
-                utilisateur: this.currentUser,
-                prix: 100,
-                classe: this.flightSearchForm.controls.class.value,
+                volId: this.selectedFlight.id,
+                userId: 1,
+                classe: this.flightSearchForm.controls.class.value || '',
                 siege: 'siege',
             }
-            console.log('Vol réservé', reservation);
-            // TODO à mettre une fois branché au back
-            // this.saveReservation(reservation);
+            this.saveReservation(reservation);
         }
     }
 

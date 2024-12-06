@@ -1,5 +1,6 @@
 export interface utilisateur {
-  nom: string;
-  email: string;
-  motDePasse: string;
+    id?: number;
+    nom: string;
+    email: string;
+    motDePasse: string;
 }
