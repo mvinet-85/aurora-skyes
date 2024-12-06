@@ -1,0 +1,7 @@
+@for (toast of toasts; track toasts) {
+  <div class="toast-container">
+    <div (click)="removeToast(toast)" [ngClass]="toast.type" class="toast">
+      {{ toast.message }}
+    </div>
+  </div>
+}
