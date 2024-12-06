@@ -85,12 +85,7 @@ export class HomeComponent implements OnInit {
   public onSearch(): void {
     if (this.flightSearchForm.valid) {
       const searchCriteria = this.flightSearchForm.value;
-      if (searchCriteria.departureDate) {
-        searchCriteria.departureDate = new Date(searchCriteria.departureDate + 'T00:00:00Z');
-      }
-      if (searchCriteria.returnDate) {
-        searchCriteria.returnDate = new Date(searchCriteria.returnDate + 'T00:00:00Z');
-      }
+
       this.outboundFlights = this.mockFlightList.filter(flight => {
         return (searchCriteria.departure === null || flight.aeroportDepart === searchCriteria.departure) && (searchCriteria.arrival === null || flight.aeroportArrivee === searchCriteria.arrival) && (!searchCriteria.departureDate || flight.dateDepart >= searchCriteria.departureDate);
       });
