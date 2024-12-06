@@ -13,7 +13,7 @@
         required
         type="text"
       />
-      <div [@if]="nomInput.invalid && nomInput.touched" class="error">
+      <div *ngIf="nomInput.invalid && nomInput.touched" class="error">
         Le nom est requis.
       </div>
     </div>
@@ -30,7 +30,7 @@
         required
         type="email"
       />
-      <div [@if]="emailInput.invalid && emailInput.touched" class="error">
+      <div *ngIf="emailInput.invalid && emailInput.touched" class="error">
         Une adresse email valide est requise.
       </div>
     </div>
@@ -47,7 +47,7 @@
         required
         type="password"
       />
-      <div [@if]="passwordInput.invalid && passwordInput.touched" class="error">
+      <div *ngIf="passwordInput.invalid && passwordInput.touched" class="error">
         Le mot de passe est requis.
       </div>
     </div>
@@ -57,4 +57,11 @@
       Se connecter
     </button>
   </form>
+
+  <!-- Lien "Forgot Password ?" -->
+  <div class="col-md-6">
+    <a class="text-dark" href="/forgot-password" style="text-decoration: none">
+      Forgot Password ?
+    </a>
+  </div>
 </div>

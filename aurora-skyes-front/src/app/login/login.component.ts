@@ -1,6 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -8,6 +9,7 @@ import {FormsModule} from '@angular/forms';
   styleUrls: ['./login.component.scss'],
   imports: [
     FormsModule,
+    NgIf,
   ],
   standalone: true
 })
