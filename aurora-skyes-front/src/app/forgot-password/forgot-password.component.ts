@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
+import {NgIf} from '@angular/common';
 
 class AuthService {
 }
@@ -7,7 +8,7 @@ class AuthService {
 @Component({
   selector: 'app-forgot-password',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, NgIf],
   templateUrl: './forgot-password.component.html',
   styleUrl: './forgot-password.component.scss',
 })
