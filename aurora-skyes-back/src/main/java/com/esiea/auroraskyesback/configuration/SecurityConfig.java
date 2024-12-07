@@ -55,6 +55,7 @@ public class SecurityConfig {
 				.cors(Customizer.withDefaults())
 				.authorizeHttpRequests(auth -> {
 					LOGGER.info("Définition des règles d'autorisation...");
+					auth.requestMatchers("/actuator/prometheus").permitAll();
 					auth.requestMatchers("/authentification/**").permitAll();
 					auth.requestMatchers("/utilisateurs/**").permitAll();
 					auth.anyRequest().authenticated();

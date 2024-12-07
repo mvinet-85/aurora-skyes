@@ -1,0 +1,179 @@
+{
+	"annotations": {
+	  "list": [
+		{
+		  "builtIn": 1,
+		  "datasource": {
+			"type": "grafana",
+			"uid": "-- Grafana --"
+		  },
+		  "enable": true,
+		  "hide": true,
+		  "iconColor": "rgba(0, 211, 255, 1)",
+		  "name": "Annotations & Alerts",
+		  "type": "dashboard"
+		}
+	  ]
+	},
+	"editable": true,
+	"fiscalYearStartMonth": 0,
+	"graphTooltip": 0,
+	"id": 3,
+	"links": [],
+	"panels": [
+	  {
+		"datasource": {
+		  "type": "prometheus",
+		  "uid": "ee674p72cr0n4b"
+		},
+		"description": "Évolution des Places Disponibles par Vol\n",
+		"fieldConfig": {
+		  "defaults": {
+			"color": {
+			  "mode": "palette-classic"
+			},
+			"custom": {
+			  "axisBorderShow": false,
+			  "axisCenteredZero": false,
+			  "axisColorMode": "text",
+			  "axisLabel": "Places Disponibles",
+			  "axisPlacement": "auto",
+			  "barAlignment": 0,
+			  "barWidthFactor": 0.6,
+			  "drawStyle": "line",
+			  "fillOpacity": 0,
+			  "gradientMode": "none",
+			  "hideFrom": {
+				"legend": false,
+				"tooltip": false,
+				"viz": false
+			  },
+			  "insertNulls": false,
+			  "lineInterpolation": "linear",
+			  "lineStyle": {
+				"fill": "solid"
+			  },
+			  "lineWidth": 2,
+			  "pointSize": 5,
+			  "scaleDistribution": {
+				"type": "linear"
+			  },
+			  "showPoints": "auto",
+			  "spanNulls": false,
+			  "stacking": {
+				"group": "A",
+				"mode": "none"
+			  },
+			  "thresholdsStyle": {
+				"mode": "dashed"
+			  }
+			},
+			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "dark-red",
+				  "value": 0
+				},
+				{
+				  "color": "dark-orange",
+				  "value": 5
+				}
+			  ]
+			},
+			"unit": "none"
+		  },
+		  "overrides": [
+			{
+			  "matcher": {
+				"id": "byName",
+				"options": "vol_places_disponibles"
+			  },
+			  "properties": []
+			}
+		  ]
+		},
+		"gridPos": {
+		  "h": 20,
+		  "w": 24,
+		  "x": 0,
+		  "y": 0
+		},
+		"id": 1,
+		"options": {
+		  "legend": {
+			"calcs": [],
+			"displayMode": "list",
+			"placement": "bottom",
+			"showLegend": true
+		  },
+		  "tooltip": {
+			"mode": "single",
+			"sort": "none"
+		  }
+		},
+		"pluginVersion": "11.4.0",
+		"targets": [
+		  {
+			"datasource": {
+			  "type": "prometheus",
+			  "uid": "ee674p72cr0n4b"
+			},
+			"disableTextWrap": false,
+			"editorMode": "builder",
+			"expr": "vol_places_disponibles{volId=~\"$volId\"}",
+			"format": "time_series",
+			"fullMetaSearch": false,
+			"includeNullMetadata": true,
+			"legendFormat": "Vol {{volId}} - Places disponibles",
+			"range": true,
+			"refId": "A",
+			"useBackend": false
+		  }
+		],
+		"title": "Places Disponibles",
+		"transparent": true,
+		"type": "timeseries"
+	  }
+	],
+	"preload": false,
+	"schemaVersion": 40,
+	"tags": [],
+	"templating": {
+	  "list": [
+		{
+		  "current": {
+			"text": "1",
+			"value": "1"
+		  },
+		  "definition": "label_values(volId )",
+		  "label": "volId",
+		  "name": "volId",
+		  "options": [],
+		  "query": {
+			"qryType": 1,
+			"query": "label_values(volId )",
+			"refId": "PrometheusVariableQueryEditor-VariableQuery"
+		  },
+		  "refresh": 1,
+		  "regex": "",
+		  "type": "query"
+		}
+	  ]
+	},
+	"time": {
+	  "from": "now-1h",
+	  "to": "now"
+	},
+	"timepicker": {},
+	"timezone": "browser",
+	"title": "Places disponibles",
+	"uid": "fe67lb9ag7y0wc",
+	"version": 10,
+	"weekStart": ""
+  }
