@@ -45,9 +45,16 @@ services:
     container_name: grafana_container
     ports:
       - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
     networks:
       - aurora-skyes
+    environment:
+      - GF_SECURITY_ADMIN_USER=aled
+      - GF_SECURITY_ADMIN_PASSWORD=aled
 
 volumes:
   postgres_data:
+    driver: local
+  grafana_data:
     driver: local

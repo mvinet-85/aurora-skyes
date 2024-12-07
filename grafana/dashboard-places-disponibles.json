@@ -24,7 +24,7 @@
 	  {
 		"datasource": {
 		  "type": "prometheus",
-		  "uid": "ee674p72cr0n4b"
+		  "uid": "de68ho915bpq8b"
 		},
 		"description": "Évolution des Places Disponibles par Vol\n",
 		"fieldConfig": {
@@ -122,7 +122,7 @@
 		  {
 			"datasource": {
 			  "type": "prometheus",
-			  "uid": "ee674p72cr0n4b"
+			  "uid": "de68ho915bpq8b"
 			},
 			"disableTextWrap": false,
 			"editorMode": "builder",
