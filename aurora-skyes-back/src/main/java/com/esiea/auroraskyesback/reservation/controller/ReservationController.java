@@ -3,7 +3,6 @@ package com.esiea.auroraskyesback.reservation.controller;
 import com.esiea.auroraskyesback.reservation.dto.ReservationDTO;
 import com.esiea.auroraskyesback.reservation.mapper.ReservationMapper;
 import com.esiea.auroraskyesback.reservation.service.ReservationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,7 +15,6 @@ public class ReservationController {
     /** {@link ReservationMapper} */
     private final ReservationMapper reservationMapper;
 
-    @Autowired
     public ReservationController(ReservationService reservationService,
                                  ReservationMapper reservationMapper) {
         this.reservationService = reservationService;
