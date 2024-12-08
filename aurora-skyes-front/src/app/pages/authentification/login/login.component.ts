@@ -28,8 +28,8 @@ export class LoginComponent {
   };
 
   public loginForm: FormGroup = new FormGroup({
-    email: new FormControl('', [Validators.required]),
-    mdp: new FormControl('', [Validators.required])
+    email: new FormControl('', [Validators.required, Validators.email]),
+    mdp: new FormControl('', [Validators.required, Validators.minLength(6)]),
   });
 
   private authService: AuthService = inject(AuthService);

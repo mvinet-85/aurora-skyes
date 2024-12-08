@@ -15,10 +15,10 @@ import {ToastService} from '../../../core/services/toast/toast.service';
 export class RegisterComponent implements OnInit {
 
   public registerForm: FormGroup = new FormGroup({
-    email: new FormControl('', [Validators.required]),
-    mdp: new FormControl('', [Validators.required]),
-    mdpConfirmation: new FormControl('', [Validators.required]),
-    nom: new FormControl('', [Validators.required])
+    email: new FormControl('', [Validators.required, Validators.email]),
+    mdp: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    mdpConfirmation: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    nom: new FormControl('', [Validators.required, Validators.minLength(2)])
   });
 
   private readonly auth: AuthService = inject(AuthService);
