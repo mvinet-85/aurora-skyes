@@ -1,8 +1,11 @@
 <div class="background">
   <div class="container">
     <div class="login-container">
+
       <h2>Inscription</h2>
+
       <form [formGroup]="registerForm">
+
         <div class="form-group">
           <label for="username">Nom</label>
           <input
@@ -12,7 +15,13 @@
             name="username"
             type="text"
           />
+          <div class="error">
+            @if (registerForm.get('nom')?.invalid && registerForm.get('nom')?.touched) {
+              Un nom valide est requise
+            }
+          </div>
         </div>
+
         <div class="form-group">
           <label for="email">Email</label>
           <input
@@ -22,7 +31,13 @@
             name="email"
             type="email"
           />
+          <div class="error">
+            @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+              Une email valide est requise
+            }
+          </div>
         </div>
+
         <div class="form-group">
           <label for="password">Mot de passe</label>
           <input
@@ -32,7 +47,13 @@
             name="password"
             type="password"
           />
+          <div class="error">
+            @if (registerForm.get('mdp')?.invalid && registerForm.get('mdp')?.touched) {
+              Un mot de passe valide est requise
+            }
+          </div>
         </div>
+
         <div class="form-group">
           <label for="confirmPassword"
           >Confirmation du mot de passe</label
@@ -44,8 +65,17 @@
             name="confirmPassword"
             type="password"
           />
+          <div class="error">
+            @if (registerForm.get('mdpConfirmation')?.invalid && registerForm.get('mdpConfirmation')?.touched) {
+              Un mot de passe valide est requise
+            }
+            @if (registerForm.get('mdpConfirmation')?.touched && registerForm.get('mdp')?.value != registerForm.get('mdpConfirmation')?.value) {
+              Les deux mots de passe sont différents
+            }
+          </div>
         </div>
-        <button (click)="register()" class="btn btn-primary" type="button">
+
+        <button (click)="register()" [disabled]="registerForm.invalid" class="btn btn-primary" type="button">
           S'inscrire
         </button>
 
@@ -56,6 +86,7 @@
             </a>
           </div>
         </div>
+
       </form>
     </div>
   </div>

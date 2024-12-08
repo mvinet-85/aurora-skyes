@@ -13,9 +13,11 @@
             required
             type="email"
           />
-          <!--      <div *ngIf="emailInput.invalid && emailInput.touched" class="error">-->
-          <!--        Une adresse email valide est requise-->
-          <!--      </div>-->
+          <div class="error">
+            @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+              Une adresse email valide est requise
+            }
+          </div>
         </div>
 
         <div class="form-group">
@@ -28,9 +30,11 @@
             required
             type="password"
           />
-          <!--      <div *ngIf="passwordInput.invalid && passwordInput.touched" class="error">-->
-          <!--        Le mot de passe est requis.-->
-          <!--      </div>-->
+          <div class="error">
+            @if (loginForm.get('mdp')?.invalid && loginForm.get('mdp')?.touched) {
+              Un mot de passe valide est requise
+            }
+          </div>
         </div>
 
         <button [disabled]="loginForm.invalid" class="btn btn-primary" type="submit">

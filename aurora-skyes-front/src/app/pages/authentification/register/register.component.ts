@@ -28,28 +28,6 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    if (this.registerForm.controls['nom'].value === '') {
-      alert('Le nom est obligatoire');
-      return;
-    }
-    if (this.registerForm.controls['email'].value === '') {
-      alert('L\'email est obligatoire');
-      return;
-    }
-    if (this.registerForm.controls['mdp'].value === '') {
-      alert('Le mot de passe est obligatoire');
-      return;
-    }
-    if (this.registerForm.controls['mdpConfirmation'].value === '') {
-      alert('La confirmation de mot de passe est obligatoire');
-      return;
-    }
-
-    if (this.registerForm.controls['mdp'].value !== this.registerForm.controls['mdpConfirmation'].value) {
-      alert('Les deux mots de passe sont différents');
-      return;
-    }
-
     const utilisateur: utilisateur = {
       nom: this.registerForm.controls['nom'].value,
       email: this.registerForm.controls['email'].value,
