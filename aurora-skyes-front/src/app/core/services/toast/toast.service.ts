@@ -18,13 +18,13 @@ export class ToastService {
     return this.toastsSubject.asObservable();
   }
 
-  showToast(message: string, type: 'success' | 'error' | 'info' | 'warning') {
+  showToast(message: string, type: 'success' | 'error' | 'info') {
     const id = new Date().getTime();
     const toast: Toast = {id, message, type};
     this.toasts.push(toast);
     this.toastsSubject.next(this.toasts);
 
-    setTimeout(() => this.removeToast(toast), 5000);
+    setTimeout(() => this.removeToast(toast), 2000);
   }
 
   removeToast(toast: Toast) {
