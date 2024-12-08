@@ -17,7 +17,5 @@ export class VerifyEmailComponent {
   }
 
   resendEmail() {
-    console.log('Email de vérification renvoyé');
-    
   }
 }

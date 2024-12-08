@@ -29,7 +29,6 @@ export class AuthService {
     return this.http.post<utilisateur>(this.registerUrl, utilisateur).pipe(
       tap((user: utilisateur) => {
         this.currentUser = user;
-        console.log('currentUser ', this.currentUser);
         localStorage.setItem('currentUser', JSON.stringify(user));
         this.router.navigateByUrl('/home');
       })
@@ -40,7 +39,6 @@ export class AuthService {
     return this.http.post<utilisateur>(this.loginUrl, utilisateur).pipe(
       tap((user: utilisateur) => {
         this.currentUser = user;
-        console.log('currentUser ', this.currentUser);
         localStorage.setItem('currentUser', JSON.stringify(user));
         this.router.navigateByUrl('/home');
       })
