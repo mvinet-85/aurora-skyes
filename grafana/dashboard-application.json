@@ -1,0 +1,165 @@
+{
+	"annotations": {
+	  "list": [
+		{
+		  "builtIn": 1,
+		  "datasource": {
+			"type": "grafana",
+			"uid": "-- Grafana --"
+		  },
+		  "enable": true,
+		  "hide": true,
+		  "iconColor": "rgba(0, 211, 255, 1)",
+		  "name": "Annotations & Alerts",
+		  "type": "dashboard"
+		}
+	  ]
+	},
+	"editable": true,
+	"fiscalYearStartMonth": 0,
+	"graphTooltip": 0,
+	"id": 2,
+	"links": [],
+	"panels": [
+	  {
+		"datasource": {
+		  "type": "prometheus",
+		  "uid": "de68ho915bpq8b"
+		},
+		"fieldConfig": {
+		  "defaults": {
+			"color": {
+			  "mode": "palette-classic"
+			},
+			"custom": {
+			  "axisBorderShow": false,
+			  "axisCenteredZero": false,
+			  "axisColorMode": "text",
+			  "axisLabel": "",
+			  "axisPlacement": "auto",
+			  "barAlignment": 0,
+			  "barWidthFactor": 0.6,
+			  "drawStyle": "line",
+			  "fillOpacity": 50,
+			  "gradientMode": "opacity",
+			  "hideFrom": {
+				"legend": false,
+				"tooltip": false,
+				"viz": false
+			  },
+			  "insertNulls": false,
+			  "lineInterpolation": "stepAfter",
+			  "lineStyle": {
+				"fill": "solid"
+			  },
+			  "lineWidth": 2,
+			  "pointSize": 5,
+			  "scaleDistribution": {
+				"type": "linear"
+			  },
+			  "showPoints": "auto",
+			  "spanNulls": false,
+			  "stacking": {
+				"group": "A",
+				"mode": "none"
+			  },
+			  "thresholdsStyle": {
+				"mode": "dashed"
+			  }
+			},
+			"mappings": [
+			  {
+				"options": {
+				  "0": {
+					"color": "dark-red",
+					"index": 0,
+					"text": "OFF"
+				  },
+				  "1": {
+					"color": "dark-green",
+					"index": 1,
+					"text": "ON"
+				  }
+				},
+				"type": "value"
+			  }
+			],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "dark-red",
+				  "value": 0
+				},
+				{
+				  "color": "dark-green",
+				  "value": 1
+				}
+			  ]
+			},
+			"unit": "bool"
+		  },
+		  "overrides": []
+		},
+		"gridPos": {
+		  "h": 17,
+		  "w": 22,
+		  "x": 0,
+		  "y": 0
+		},
+		"id": 1,
+		"options": {
+		  "legend": {
+			"calcs": [],
+			"displayMode": "list",
+			"placement": "bottom",
+			"showLegend": false
+		  },
+		  "tooltip": {
+			"mode": "single",
+			"sort": "none"
+		  }
+		},
+		"pluginVersion": "11.4.0",
+		"targets": [
+		  {
+			"datasource": {
+			  "type": "prometheus",
+			  "uid": "de68ho915bpq8b"
+			},
+			"disableTextWrap": false,
+			"editorMode": "builder",
+			"expr": "up{job=\"spring-boot-app\"}",
+			"fullMetaSearch": false,
+			"includeNullMetadata": true,
+			"legendFormat": "__auto",
+			"range": true,
+			"refId": "A",
+			"useBackend": false
+		  }
+		],
+		"title": "Etat de l'application",
+		"type": "timeseries"
+	  }
+	],
+	"preload": false,
+	"schemaVersion": 40,
+	"tags": [],
+	"templating": {
+	  "list": []
+	},
+	"time": {
+	  "from": "now-1h",
+	  "to": "now"
+	},
+	"timepicker": {},
+	"timezone": "browser",
+	"title": "Etat de l'application",
+	"uid": "ce67amk69vlkwc",
+	"version": 7,
+	"weekStart": ""
+}

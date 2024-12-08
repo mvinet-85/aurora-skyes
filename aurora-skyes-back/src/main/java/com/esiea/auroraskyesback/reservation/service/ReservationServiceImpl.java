@@ -8,6 +8,10 @@ import com.esiea.auroraskyesback.utilisateur.entity.UtilisateurEntity;
 import com.esiea.auroraskyesback.utilisateur.service.UtilisateurService;
 import com.esiea.auroraskyesback.vol.entity.VolEntity;
 import com.esiea.auroraskyesback.vol.service.VolService;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,21 +30,25 @@ public class ReservationServiceImpl implements ReservationService {
     /** {@link ReservationMapper} */
     private final ReservationMapper reservationMapper;
 
+    /** {@link MeterRegistry} */
+    private final MeterRegistry meterRegistry;
+
     public ReservationServiceImpl(ReservationDAO reservationDAO,
                                   VolService volService,
                                   UtilisateurService utilisateurService,
-                                  ReservationMapper reservationMapper) {
+                                  ReservationMapper reservationMapper,
+                                  MeterRegistry meterRegistry) {
         this.reservationDAO = reservationDAO;
         this.volService = volService;
         this.utilisateurService = utilisateurService;
         this.reservationMapper = reservationMapper;
+        this.meterRegistry = meterRegistry;
     }
 
     /** {@inheritDoc} */
     @Transactional
     public ReservationEntity createReservation(ReservationDTO reservationDTO) {
         UtilisateurEntity user = utilisateurService.findUtilisateurById(reservationDTO.getUserId());
-
         VolEntity vol = volService.findVolById(reservationDTO.getVolId());
 
         if (vol.getPlaceDisponible() <= 0) {
@@ -49,6 +57,13 @@ public class ReservationServiceImpl implements ReservationService {
 
         vol.setPlaceDisponible(vol.getPlaceDisponible() - 1);
         volService.modifierVol(vol);
+
+        // Ajouter un compteur pour le vol
+        Counter.builder("reservations.total")
+                .description("Total des réservations par vol")
+                .tags("volId", String.valueOf(vol.getId()))
+                .register(meterRegistry)
+                .increment();
 
         ReservationEntity reservation = reservationMapper.toEntity(reservationDTO);
         reservation.setUser(user);

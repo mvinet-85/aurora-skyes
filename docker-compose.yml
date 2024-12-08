@@ -30,6 +30,31 @@ services:
     depends_on:
       - postgres
 
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus_container
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - aurora-skyes
+
+  grafana:
+    image: grafana/grafana:11.4.0
+    container_name: grafana_container
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - aurora-skyes
+    environment:
+      - GF_SECURITY_ADMIN_USER=aled
+      - GF_SECURITY_ADMIN_PASSWORD=aled
+
 volumes:
   postgres_data:
+    driver: local
+  grafana_data:
     driver: local
