@@ -1,61 +1,63 @@
-<div class="container">
-  <div class="login-container">
-    <h2>Inscription</h2>
+<div class="background">
+  <div class="container">
+    <div class="login-container">
+      <h2>Inscription</h2>
 
-    <form>
-      <div class="form-group">
-        <label for="username">Username </label>
-        <input
-          [(ngModel)]="username"
-          class="form-control"
-          id="username"
-          name="username"
-          type="text"
-        />
-      </div>
-      <div class="form-group">
-        <label for="email">Email </label>
-        <input
-          [(ngModel)]="email"
-          class="form-control"
-          id="email"
-          name="email"
-          type="email"
-        />
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input
-          [(ngModel)]="password"
-          class="form-control"
-          id="password"
-          name="password"
-          type="password"
-        />
-      </div>
-      <div class="form-group">
-        <label for="confirmPassword"
-        >Confirm Password</label
-        >
-        <input
-          [(ngModel)]="confirmPassword"
-          class="form-control"
-          id="confirmPassword"
-          name="confirmPassword"
-          type="password"
-        />
-      </div>
-      <button (click)="register()" class="btn btn-primary" type="button">
-        S'inscrire
-      </button>
-
-      <div class="row mt-3">
-        <div class="col-md-12 text-end link">
-          <a class="text-dark" href="/login">
-            Déjà un compte ? Connectez-vous
-          </a>
+      <form>
+        <div class="form-group">
+          <label for="username">Nom</label>
+          <input
+            [(ngModel)]="username"
+            class="form-control"
+            id="username"
+            name="username"
+            type="text"
+          />
         </div>
-      </div>
-    </form>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            [(ngModel)]="email"
+            class="form-control"
+            id="email"
+            name="email"
+            type="email"
+          />
+        </div>
+        <div class="form-group">
+          <label for="password">Mot de passe</label>
+          <input
+            [(ngModel)]="password"
+            class="form-control"
+            id="password"
+            name="password"
+            type="password"
+          />
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword"
+          >Confirmation du mot de passe</label
+          >
+          <input
+            [(ngModel)]="confirmPassword"
+            class="form-control"
+            id="confirmPassword"
+            name="confirmPassword"
+            type="password"
+          />
+        </div>
+        <button (click)="register()" class="btn btn-primary" type="button">
+          S'inscrire
+        </button>
+
+        <div class="row mt-3">
+          <div class="col-md-12 text-end link">
+            <a class="text-dark" href="/login">
+              Déjà un compte ? Connectez-vous
+            </a>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
