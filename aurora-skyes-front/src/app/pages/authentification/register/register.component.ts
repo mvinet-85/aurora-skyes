@@ -1,58 +1,59 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {AuthService} from '../../../core/services/authentification/auth.service';
 import {utilisateur} from '../../../core/models/utilisateur';
 import {ToastService} from '../../../core/services/toast/toast.service';
-import {Router} from '@angular/router';
 
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule,],
+  imports: [FormsModule, ReactiveFormsModule,],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
 export class RegisterComponent implements OnInit {
-  email: string = '';
-  password: string = '';
-  confirmPassword: string = '';
-  username: string = '';
+
+  public registerForm: FormGroup = new FormGroup({
+    email: new FormControl('', [Validators.required]),
+    mdp: new FormControl('', [Validators.required]),
+    mdpConfirmation: new FormControl('', [Validators.required]),
+    nom: new FormControl('', [Validators.required])
+  });
 
   private readonly auth: AuthService = inject(AuthService);
   private readonly toastService: ToastService = inject(ToastService);
-  private readonly router: Router = inject(Router);
 
   ngOnInit(): void {
   }
 
   register() {
-    if (this.username === '') {
-      alert('Please enter a username');
+    if (this.registerForm.controls['nom'].value === '') {
+      alert('Le nom est obligatoire');
       return;
     }
-    if (this.email === '') {
-      alert('Please enter an email');
+    if (this.registerForm.controls['email'].value === '') {
+      alert('L\'email est obligatoire');
       return;
     }
-    if (this.password === '') {
-      alert('Please enter a password');
+    if (this.registerForm.controls['mdp'].value === '') {
+      alert('Le mot de passe est obligatoire');
       return;
     }
-    if (this.confirmPassword === '') {
-      alert('Please confirm your password');
+    if (this.registerForm.controls['mdpConfirmation'].value === '') {
+      alert('La confirmation de mot de passe est obligatoire');
       return;
     }
 
-    if (this.password !== this.confirmPassword) {
-      alert('Passwords do not match');
+    if (this.registerForm.controls['mdp'].value !== this.registerForm.controls['mdpConfirmation'].value) {
+      alert('Les deux mots de passe sont différents');
       return;
     }
 
     const utilisateur: utilisateur = {
-      nom: this.username,
-      email: this.email,
-      motDePasse: this.password,
+      nom: this.registerForm.controls['nom'].value,
+      email: this.registerForm.controls['email'].value,
+      motDePasse: this.registerForm.controls['mdpConfirmation'].value
     }
 
     this.auth.signUp(utilisateur).subscribe(response => {
@@ -62,9 +63,6 @@ export class RegisterComponent implements OnInit {
       this.toastService.showToast('Erreur lors de l\'inscription', 'error')
     });
 
-    this.email = '';
-    this.password = '';
-    this.confirmPassword = '';
-    this.username = '';
+    this.registerForm.reset();
   }
 }

@@ -2,13 +2,12 @@
   <div class="container">
     <div class="login-container">
       <h2>Inscription</h2>
-
-      <form>
+      <form [formGroup]="registerForm">
         <div class="form-group">
           <label for="username">Nom</label>
           <input
-            [(ngModel)]="username"
             class="form-control"
+            formControlName="nom"
             id="username"
             name="username"
             type="text"
@@ -17,8 +16,8 @@
         <div class="form-group">
           <label for="email">Email</label>
           <input
-            [(ngModel)]="email"
             class="form-control"
+            formControlName="email"
             id="email"
             name="email"
             type="email"
@@ -27,8 +26,8 @@
         <div class="form-group">
           <label for="password">Mot de passe</label>
           <input
-            [(ngModel)]="password"
             class="form-control"
+            formControlName="mdp"
             id="password"
             name="password"
             type="password"
@@ -39,8 +38,8 @@
           >Confirmation du mot de passe</label
           >
           <input
-            [(ngModel)]="confirmPassword"
             class="form-control"
+            formControlName="mdpConfirmation"
             id="confirmPassword"
             name="confirmPassword"
             type="password"
