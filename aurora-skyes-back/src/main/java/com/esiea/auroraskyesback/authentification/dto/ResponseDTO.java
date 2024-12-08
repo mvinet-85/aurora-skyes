@@ -8,4 +8,6 @@ public class ResponseDTO {
     /** Token */
     private String token;
 
+    /** Id de l'utilisateur */
+    private Long id;
 }

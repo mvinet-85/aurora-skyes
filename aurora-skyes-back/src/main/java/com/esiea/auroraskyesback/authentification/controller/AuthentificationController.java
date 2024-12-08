@@ -3,6 +3,7 @@ package com.esiea.auroraskyesback.authentification.controller;
 import com.esiea.auroraskyesback.authentification.dto.AuthentificationDTO;
 import com.esiea.auroraskyesback.authentification.dto.ResponseDTO;
 import com.esiea.auroraskyesback.authentification.utils.JwtUtil;
+import com.esiea.auroraskyesback.utilisateur.service.UtilisateurService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -22,13 +23,17 @@ public class AuthentificationController {
     /** {@link AuthenticationManager} */
     private final AuthenticationManager authenticationManager;
 
+    /** {@link UtilisateurService} */
+    private final UtilisateurService utilisateurService;
+
     /** {@link JwtUtil} */
     private final JwtUtil jwtUtil;
 
     public AuthentificationController(AuthenticationManager authenticationManager,
-                                      JwtUtil jwtUtil) {
+                                      JwtUtil jwtUtil, UtilisateurService utilisateurService) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
+        this.utilisateurService = utilisateurService;
     }
 
     /**
@@ -55,6 +60,8 @@ public class AuthentificationController {
             String token = jwtUtil.generateToken(authentication.getName());
             responseDTO.setToken(token);
             LOGGER.info("Token JWT généré avec succès pour l'utilisateur : {}", authentificationDTO.getEmail());
+            Long userId = this.utilisateurService.findUtilisateurByEmail(authentificationDTO.getEmail()).getId();
+            responseDTO.setId(userId);
 
             return ResponseEntity.ok(responseDTO);
 
