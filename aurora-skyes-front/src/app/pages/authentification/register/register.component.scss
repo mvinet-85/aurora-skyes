@@ -1,45 +1,33 @@
-/* Style de la page d'inscription */
-.register-container {
-  max-width: 450px;
-  margin: 60px auto;
-  padding: 30px;
-  background-color: #fff;
-  border: 1px solid #e0e0e0;
+.login-container {
+  width: 30%;
+  margin: 50px auto;
+  padding: 50px;
+  border: 1px solid #ccc;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
 }
 
 h2 {
   text-align: center;
-  margin-bottom: 30px;
-  color: #333;
+  margin-bottom: 20px;
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 label {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
-  font-size: 14px;
-  color: #555;
 }
 
 input {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 16px;
-  box-sizing: border-box;
-}
-
-input:focus {
-  border-color: #007bff;
-  outline: none;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .error {
@@ -48,39 +36,45 @@ input:focus {
   margin-top: 5px;
 }
 
-button {
+.btn {
   display: block;
   width: 100%;
-  padding: 12px;
+  padding: 10px;
   background-color: #007bff;
   color: white;
-  font-size: 16px;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
-button:hover {
-  background-color: #0056b3;
-}
-
-button:disabled {
+.btn:disabled {
   background-color: #ccc;
-  cursor: not-allowed;
 }
 
 .register-link {
   text-align: center;
+  margin-top: 15px;
+}
+
+.link {
+  text-align: center;
   margin-top: 20px;
-  font-size: 14px;
+
+  a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
 }
 
-.register-link a {
-  color: #007bff;
-  text-decoration: none;
-}
-
-.register-link a:hover {
-  text-decoration: underline;
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }

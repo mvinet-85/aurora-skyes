@@ -106,7 +106,7 @@
               <p>{{ flight.aeroportDepart.ville }}({{ flight.aeroportDepart.nom }})
                 ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
               <p>{{ flight.dateDepart | date:'HH:mm' }} 🕰️ {{ flight.dateArrive | date:'HH:mm' }}</p>
-              <p class="price">{{ flight.prix }}€</p>
+              <p>{{ flight.prix }}€/personne</p>
               <button type="button" (click)="selectFlight(flight)">Réserver</button>
             </div>
           </div>

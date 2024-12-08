@@ -1,7 +1,7 @@
 .login-container {
   width: 30%;
   margin: 50px auto;
-  padding: 20px 50px;
+  padding: 50px;
   border: 1px solid #ccc;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -59,6 +59,16 @@ input {
 .link {
   text-align: center;
   margin-top: 20px;
+
+  a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
 }
 
 .container {
