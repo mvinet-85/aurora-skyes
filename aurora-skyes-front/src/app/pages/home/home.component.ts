@@ -12,6 +12,7 @@ import {utilisateur} from '../../core/models/utilisateur';
 import {ReservationService} from '../../core/services/reservation/reservation.service';
 import {AirportService} from "../../core/services/airport/airport.service";
 import {AuthService} from "../../core/services/authentification/auth.service";
+import {ToastService} from '../../core/services/toast/toast.service';
 
 @Component({
   selector: 'app-home',
@@ -56,6 +57,7 @@ export class HomeComponent implements OnInit {
   private readonly airportService: AirportService = inject(AirportService);
   private readonly reservationService: ReservationService = inject(ReservationService);
   private readonly authService: AuthService = inject(AuthService);
+  private readonly toastService: ToastService = inject(ToastService);
 
   ngOnInit(): void {
     this.getAllVols();
@@ -136,10 +138,11 @@ export class HomeComponent implements OnInit {
   saveReservation(reservation: reservation): void {
     this.reservationService.save(reservation).subscribe(
       response => {
-        console.log('Réservation sauvegardée avec succès', response);
+        this.toastService.showToast('Résevration enregistrée', 'success')
       },
       error => {
         console.error('Erreur lors de la sauvegarde de la réservation', error);
+        this.toastService.showToast('Erreur lors de la sauvegarde de la réservation', 'error')
       }
     );
   }
@@ -156,6 +159,7 @@ export class HomeComponent implements OnInit {
       },
       (error) => {
         console.error('Erreur lors de la récupération des vols', error);
+        this.toastService.showToast('Erreur lors de la récupération des vols', 'error')
       }
     );
   }
@@ -166,7 +170,8 @@ export class HomeComponent implements OnInit {
         this.airportList = data;
       },
       (error) => {
-        console.error('Erreur lors de la récupération des vols', error);
+        console.error('Erreur lors de la récupération des aéroports', error);
+        this.toastService.showToast('Erreur lors de la récupération des aéroports', 'error')
       }
     );
   }

@@ -2,6 +2,8 @@ import {Component, inject, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {AuthService} from '../../../core/services/authentification/auth.service';
 import {utilisateur} from '../../../core/models/utilisateur';
+import {ToastService} from '../../../core/services/toast/toast.service';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -18,6 +20,8 @@ export class RegisterComponent implements OnInit {
   username: string = '';
 
   private readonly auth: AuthService = inject(AuthService);
+  private readonly toastService: ToastService = inject(ToastService);
+  private readonly router: Router = inject(Router);
 
   ngOnInit(): void {
   }
@@ -52,9 +56,10 @@ export class RegisterComponent implements OnInit {
     }
 
     this.auth.signUp(utilisateur).subscribe(response => {
-      console.log('Réponse du serveur:', response);
+      this.toastService.showToast('Vous êtes inscrit et connecté', 'success')
     }, error => {
-      console.error('Erreur:', error);
+      console.error('Erreur lors de l\'inscription de l\'utilisateur', error);
+      this.toastService.showToast('Erreur lors de l\'inscription', 'error')
     });
 
     this.email = '';

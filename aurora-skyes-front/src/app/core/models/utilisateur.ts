@@ -1,6 +1,6 @@
 export interface utilisateur {
   id?: number;
-  nom: string;
+  nom?: string;
   email: string;
   motDePasse: string;
   token?: string;

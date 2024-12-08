@@ -1,9 +1,8 @@
-import {HttpClient} from '@angular/common/http';
 import {Component, inject} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {utilisateur} from '../../../core/models/utilisateur';
 import {AuthService} from '../../../core/services/authentification/auth.service';
-import {utilisateurLogin} from '../../../core/models/authentification';
+import {ToastService} from '../../../core/services/toast/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +22,7 @@ export class LoginComponent {
     motDePasse: '',
   };
 
-  public utilisateurLoged: utilisateurLogin = {
+  public utilisateurLoged: utilisateur = {
     email: '',
     motDePasse: '',
   };
@@ -34,8 +33,9 @@ export class LoginComponent {
   });
 
   private authService: AuthService = inject(AuthService);
+  private readonly toastService: ToastService = inject(ToastService);
 
-  constructor(private http: HttpClient) {
+  constructor() {
   }
 
   onSubmit() {
@@ -44,10 +44,11 @@ export class LoginComponent {
     this.authService.signIn(this.utilisateurLoged).subscribe(
       (data) => {
         this.utilisateur = data;
-        console.log(this.utilisateur);
+        this.toastService.showToast('Vous êtes connecté', 'info')
       },
       (error) => {
-        console.error('Erreur lors de la récupération de l\'utilisateur', error);
+        console.error('Erreur lors de la connexion de l\'utilisateur', error);
+        this.toastService.showToast('Erreur lors de la connexion de l\'utilisateur', 'error')
       }
     );
   }

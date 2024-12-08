@@ -4,6 +4,7 @@ import {Observable, tap} from 'rxjs';
 import {utilisateur} from '../../models/utilisateur';
 import {utilisateurLogin} from '../../models/authentification';
 import {Router} from '@angular/router';
+import {ToastService} from '../toast/toast.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class AuthService {
   private readonly loginUrl = 'http://localhost:8080/authentification';
   private readonly http: HttpClient = inject(HttpClient);
   private readonly router: Router = inject(Router);
+  private readonly toastService: ToastService = inject(ToastService);
 
   private currentUser: utilisateur | null = null;
 
@@ -24,7 +26,14 @@ export class AuthService {
   }
 
   signUp(utilisateur: utilisateur): Observable<utilisateur> {
-    return this.http.post<utilisateur>(this.registerUrl, utilisateur);
+    return this.http.post<utilisateur>(this.registerUrl, utilisateur).pipe(
+      tap((user: utilisateur) => {
+        this.currentUser = user;
+        console.log('currentUser ', this.currentUser);
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        this.router.navigateByUrl('/home');
+      })
+    );
   }
 
   signIn(utilisateur: utilisateurLogin): Observable<utilisateur> {
@@ -50,5 +59,6 @@ export class AuthService {
     this.currentUser = null;
     localStorage.removeItem('currentUser');
     this.router.navigate(['/login']);
+    this.toastService.showToast('Vous êtes déconnecté', 'info')
   }
 }
