@@ -1,6 +1,7 @@
 package com.esiea.auroraskyesback.authentification.controller;
 
 import com.esiea.auroraskyesback.authentification.dto.AuthentificationDTO;
+import com.esiea.auroraskyesback.authentification.dto.ResponseDTO;
 import com.esiea.auroraskyesback.authentification.utils.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,7 @@ public class AuthentificationController {
      * @return boolean qui indique l'authentification
      */
     @PostMapping()
-    public ResponseEntity<?> login(@RequestBody AuthentificationDTO authentificationDTO) {
+    public ResponseEntity<ResponseDTO> login(@RequestBody AuthentificationDTO authentificationDTO) {
         LOGGER.info("Tentative d'authentification pour l'email : {}", authentificationDTO.getEmail());
 
         try {
@@ -50,17 +51,19 @@ public class AuthentificationController {
 
             LOGGER.info("Authentification réussie pour l'email : {}", authentificationDTO.getEmail());
 
+            ResponseDTO responseDTO = new ResponseDTO();
             String token = jwtUtil.generateToken(authentication.getName());
+            responseDTO.setToken(token);
             LOGGER.info("Token JWT généré avec succès pour l'utilisateur : {}", authentificationDTO.getEmail());
 
-            return ResponseEntity.ok(token);
+            return ResponseEntity.ok(responseDTO);
 
         } catch (BadCredentialsException e) {
             LOGGER.error("Échec de l'authentification pour l'email : {}. Raison : Identifiants invalides", authentificationDTO.getEmail());
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Identifiants invalides");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         } catch (Exception e) {
             LOGGER.error("Erreur inattendue lors de l'authentification pour l'email : {}. Détails : {}", authentificationDTO.getEmail(), e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur serveur");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
     
