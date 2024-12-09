@@ -1,10 +1,11 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideHttpClient, HttpClient } from '@angular/common/http';
+import { provideHttpClient, HttpClient, withInterceptors } from '@angular/common/http';
 import { importProvidersFrom } from '@angular/core';
 import { TranslateLoader, TranslateModule, TranslateService, TranslateStore } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppComponent } from './app/app.component';
 import { appRoutingProviders } from './app/app.routes';
+import { tokenInterceptor } from './app/interceptors/token.interceptor';
 
 // Fonction pour configurer le chargeur de traductions
 export function HttpLoaderFactory(httpClient: HttpClient): TranslateHttpLoader {
@@ -13,7 +14,9 @@ export function HttpLoaderFactory(httpClient: HttpClient): TranslateHttpLoader {
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideHttpClient(),
+    provideHttpClient(
+      withInterceptors([tokenInterceptor])
+    ),
     TranslateStore,
     appRoutingProviders,
     importProvidersFrom(
