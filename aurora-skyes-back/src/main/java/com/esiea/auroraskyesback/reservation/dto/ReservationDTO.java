@@ -1,5 +1,6 @@
 package com.esiea.auroraskyesback.reservation.dto;
 
+import com.esiea.auroraskyesback.reservation.model.Classe;
 import lombok.Data;
 
 @Data
@@ -15,9 +16,12 @@ public class ReservationDTO {
     private Long volId;
 
     /** CLasse */
-    private String classe;
+    private Classe classe;
 
     /** Siege */
     private String siege;
+
+    /** Prix */
+    private double prix;
 
 }

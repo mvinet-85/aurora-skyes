@@ -4,6 +4,7 @@ import com.esiea.auroraskyesback.reservation.dao.ReservationDAO;
 import com.esiea.auroraskyesback.reservation.dto.ReservationDTO;
 import com.esiea.auroraskyesback.reservation.entity.ReservationEntity;
 import com.esiea.auroraskyesback.reservation.mapper.ReservationMapper;
+import com.esiea.auroraskyesback.reservation.model.Classe;
 import com.esiea.auroraskyesback.utilisateur.entity.UtilisateurEntity;
 import com.esiea.auroraskyesback.utilisateur.service.UtilisateurService;
 import com.esiea.auroraskyesback.vol.entity.VolEntity;
@@ -68,6 +69,13 @@ public class ReservationServiceImpl implements ReservationService {
         ReservationEntity reservation = reservationMapper.toEntity(reservationDTO);
         reservation.setUser(user);
         reservation.setVol(vol);
+
+        if (Classe.FIRST.equals(reservationDTO.getClasse())) {
+            reservation.setPrix(vol.getPrix() * 1.2);
+        }
+        else {
+            reservation.setPrix(vol.getPrix());
+        }
 
         return reservationDAO.save(reservation);
     }

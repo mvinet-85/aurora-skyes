@@ -43,7 +43,7 @@ export class HomeComponent implements OnInit {
     departureDate: new FormControl(null, [Validators.required]),
     returnDate: new FormControl(null, [Validators.required]),
     passengers: new FormControl(1, [Validators.required]),
-    class: new FormControl('economy', [Validators.required]),
+    class: new FormControl('ECONOMY', [Validators.required]),
     currency: new FormControl('EUR', [Validators.required]),
   });
 

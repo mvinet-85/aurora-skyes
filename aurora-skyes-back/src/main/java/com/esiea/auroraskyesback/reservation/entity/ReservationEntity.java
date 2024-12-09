@@ -1,5 +1,6 @@
 package com.esiea.auroraskyesback.reservation.entity;
 
+import com.esiea.auroraskyesback.reservation.model.Classe;
 import com.esiea.auroraskyesback.utilisateur.entity.UtilisateurEntity;
 import com.esiea.auroraskyesback.vol.entity.VolEntity;
 import jakarta.persistence.*;
@@ -25,7 +26,11 @@ public class ReservationEntity {
     @Column(nullable = false)
     private String siege;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String classe;
+    private Classe classe;
+
+    @Column(nullable = false)
+    private double prix;
 
 }

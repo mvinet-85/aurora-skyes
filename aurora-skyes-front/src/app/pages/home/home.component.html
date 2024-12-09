@@ -58,8 +58,8 @@
       <div class="form-group">
         <label for="class">Classe</label>
         <select formControlName="class" id="class">
-          <option value="economy">Economie</option>
-          <option value="first">Première</option>
+          <option value="ECONOMY">Economie</option>
+          <option value="FIRST">Première</option>
         </select>
       </div>
 
@@ -87,7 +87,7 @@
               <p class="long-text">{{ flight.aeroportDepart.ville }}({{ flight.aeroportDepart.nom }})
                 ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
               <p class="short-text">{{ flight.dateDepart | date:'HH:mm' }} 🕰️ {{ flight.dateArrive | date:'HH:mm' }}</p>
-              <p class="tag">{{ flightSearchForm.controls.class.value == 'economy' ? 'Economie' : 'Business' }}</p>
+              <p class="tag">{{ flightSearchForm.controls.class.value == 'ECONOMY' ? 'Economie' : 'Business' }}</p>
               <p class="short-text">{{ flight.prix }} {{ flightSearchForm.controls.currency.value }}/personne</p>
               <button type="button" (click)="selectFlight(flight)">Réserver</button>
             </div>
@@ -106,7 +106,7 @@
               <p class="long-text">{{ flight.aeroportDepart.ville }}({{ flight.aeroportDepart.nom }})
                 ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
               <p class="short-text">{{ flight.dateDepart | date:'HH:mm' }} 🕰️ {{ flight.dateArrive | date:'HH:mm' }}</p>
-              <p class="tag">{{ flightSearchForm.controls.class.value == 'economy' ? 'Economie' : 'Business' }}</p>
+              <p class="tag">{{ flightSearchForm.controls.class.value == 'ECONOMY' ? 'Economie' : 'Business' }}</p>
               <p class="short-text">{{ flight.prix }} {{ flightSearchForm.controls.currency.value }}/personne</p>
               <button type="button" (click)="selectFlight(flight)">Réserver</button>
             </div>
@@ -116,13 +116,13 @@
     } @else {
       <div class="flight-section">
         <h3>Liste de tous les vols</h3>
-        @for (flight of flightList; track flightList) {
+        @for (flight of flightList; track flight.id) {
           <div class="destination-item">
             <div class="destination-info">
               <p class="long-text">{{ flight.aeroportDepart.ville }}({{ flight.aeroportDepart.nom }})
                 ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
               <p class="short-text">{{ flight.dateDepart | date:'HH:mm' }} 🕰️ {{ flight.dateArrive | date:'HH:mm' }}</p>
-              <p class="tag">{{ flightSearchForm.controls.class.value == 'economy' ? 'Economie' : 'Business' }}</p>
+              <p class="tag">{{ flightSearchForm.controls.class.value == 'ECONOMY' ? 'Economie' : 'Business' }}</p>
               <p class="short-text">{{ flight.prix }} EUR/personne</p>
               <button type="button" (click)="selectFlight(flight)">Réserver</button>
             </div>
