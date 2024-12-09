@@ -47,8 +47,12 @@ export class LoginComponent {
         this.toastService.showToast('Vous êtes connecté', 'info')
       },
       (error) => {
+        if (error.status === 401) {
+          this.toastService.showToast('Ce compte est introuvable', 'error')
+        } else {
+          this.toastService.showToast('Erreur lors de la connexion de l\'utilisateur', 'error')
+        }
         console.error('Erreur lors de la connexion de l\'utilisateur', error);
-        this.toastService.showToast('Erreur lors de la connexion de l\'utilisateur', 'error')
       }
     );
   }
