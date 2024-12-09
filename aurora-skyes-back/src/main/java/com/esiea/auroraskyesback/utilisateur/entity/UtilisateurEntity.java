@@ -12,7 +12,7 @@ public class UtilisateurEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column()
+    @Column(nullable = false)
     private String nom;
 
     @Column(nullable = false, unique = true)
