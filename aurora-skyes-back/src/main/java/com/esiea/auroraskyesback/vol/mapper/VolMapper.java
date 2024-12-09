@@ -19,7 +19,6 @@ public class VolMapper {
         if (volEntity == null) {
             return null;
         }
-
         VolDTO volDTO = new VolDTO();
         volDTO.setId(volEntity.getId());
         volDTO.setDateDepart(volEntity.getDateDepart());
@@ -28,7 +27,7 @@ public class VolMapper {
         volDTO.setAeroportDepart(aeroportMapper.toDTO(volEntity.getAeroportDepart()));
         volDTO.setAeroportArrivee(aeroportMapper.toDTO(volEntity.getAeroportArrivee()));
         volDTO.setPrix(volEntity.getPrix());
-
+        volDTO.setEscale(volEntity.isEscale());
         return volDTO;
     }
 
@@ -36,14 +35,13 @@ public class VolMapper {
         if (volDTO == null) {
             return null;
         }
-
         VolEntity volEntity = new VolEntity();
         volEntity.setDateDepart(volDTO.getDateDepart());
         volEntity.setDateArrive(volDTO.getDateArrive());
         volEntity.setPlaceDisponible(volDTO.getPlaceDisponible());
         volEntity.setAeroportDepart(aeroportMapper.toEntity(volDTO.getAeroportDepart()));
         volEntity.setAeroportArrivee(aeroportMapper.toEntity(volDTO.getAeroportArrivee()));
-
+        volEntity.setEscale(volDTO.isEscale());
         return volEntity;
     }
 

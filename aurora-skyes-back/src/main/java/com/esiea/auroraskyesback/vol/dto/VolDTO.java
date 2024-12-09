@@ -29,4 +29,7 @@ public class VolDTO {
     /** Prix du vol */
     private int prix;
 
+    /** Escale */
+    private boolean escale;
+
 }

@@ -8,4 +8,5 @@ export interface vol {
   aeroportArrivee: aeroport;
   placeDisponible: number;
   prix: number;
+  escale: boolean;
 }

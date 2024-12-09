@@ -37,4 +37,7 @@ public class VolEntity {
     @Column(nullable = false)
     private int prix;
 
+    @Column(nullable = false)
+    private boolean escale;
+
 }
