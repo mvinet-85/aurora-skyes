@@ -27,6 +27,7 @@ public class VolMapper {
         volDTO.setPlaceDisponible(volEntity.getPlaceDisponible());
         volDTO.setAeroportDepart(aeroportMapper.toDTO(volEntity.getAeroportDepart()));
         volDTO.setAeroportArrivee(aeroportMapper.toDTO(volEntity.getAeroportArrivee()));
+        volDTO.setPrix(volEntity.getPrix());
 
         return volDTO;
     }
