@@ -1,4 +1,4 @@
-import {Routes} from '@angular/router';
+import {provideRouter, Routes} from '@angular/router';
 import {LoginComponent} from './pages/authentification/login/login.component';
 import {RegisterComponent} from './pages/authentification/register/register.component';
 import {VerifyEmailComponent} from './pages/authentification/verify-email/verify-email.component';
@@ -17,3 +17,5 @@ export const routes: Routes = [
   },
   {path: '**', redirectTo: 'login'}
 ];
+
+export const appRoutingProviders = [provideRouter(routes)];
