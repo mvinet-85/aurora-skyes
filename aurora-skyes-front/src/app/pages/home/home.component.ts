@@ -15,14 +15,16 @@ import {AuthService} from "../../core/services/authentification/auth.service";
 import {ToastService} from '../../core/services/toast/toast.service';
 import {monnaie} from '../../core/models/monnaie';
 import {MonnaieService} from '../../core/services/monnaie/monnaie.service';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-home',
   imports: [
-	DatePipe,
-	ReactiveFormsModule,
-	HeaderComponent,
-	ConfirmModalComponent,
+    DatePipe,
+    ReactiveFormsModule,
+    HeaderComponent,
+    ConfirmModalComponent,
+    TranslatePipe,
   ],
   templateUrl: './home.component.html',
   standalone: true,
