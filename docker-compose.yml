@@ -11,11 +11,15 @@ services:
       POSTGRES_PASSWORD: admin123
       POSTGRES_DB: aurora-skyes
     ports:
-      - "5432:5432"
+      - "9999:9999"
+    expose:
+      - "9999:9999"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - aurora-skyes
+    command :
+      -p 9999
 
   pgadmin:
     image: dpage/pgadmin4:8.12
