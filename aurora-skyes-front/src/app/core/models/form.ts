@@ -9,4 +9,5 @@ export interface SearchFormModel {
   passengers: FormControl<number | null>,
   class: FormControl<string | null>,
   currency: FormControl<string | null>,
+  escale: FormControl<boolean>
 }

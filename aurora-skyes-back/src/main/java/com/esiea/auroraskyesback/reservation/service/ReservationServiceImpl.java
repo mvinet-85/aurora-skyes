@@ -16,6 +16,8 @@ import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class ReservationServiceImpl implements ReservationService {
 
@@ -75,6 +77,10 @@ public class ReservationServiceImpl implements ReservationService {
         }
         else {
             reservation.setPrix(vol.getPrix());
+        }
+
+        if (vol.isEscale()) {
+            reservation.setPrix(vol.getPrix() * 0.8);
         }
 
         return reservationDAO.save(reservation);
