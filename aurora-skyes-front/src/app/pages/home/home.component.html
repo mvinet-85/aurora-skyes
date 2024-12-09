@@ -14,10 +14,10 @@
 
         <div class="form-group">
           <label for="currency">Monnaie</label>
-          <select formControlName="currencyRate" id="currency">
+          <select formControlName="currency" id="currency">
             <option disabled selected value="">Veuillez sélectionner une monnaie</option>
             @for (item of monnaieList; track item) {
-              <option [value]="item.taux">{{ item.nom }}</option>
+              <option [value]="item.nom">{{ item.nom }}</option>
             }
           </select>
         </div>
@@ -88,7 +88,7 @@
                 ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
               <p class="short-text">{{ flight.dateDepart | date:'HH:mm' }} 🕰️ {{ flight.dateArrive | date:'HH:mm' }}</p>
               <p class="tag">{{ flightSearchForm.controls.class.value == 'economy' ? 'Economie' : 'Business' }}</p>
-              <p class="short-text">{{ flight.prix }}/personne</p>
+              <p class="short-text">{{ flight.prix }} {{ flightSearchForm.controls.currency.value }}/personne</p>
               <button type="button" (click)="selectFlight(flight)">Réserver</button>
             </div>
           </div>
@@ -107,7 +107,7 @@
                 ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
               <p class="short-text">{{ flight.dateDepart | date:'HH:mm' }} 🕰️ {{ flight.dateArrive | date:'HH:mm' }}</p>
               <p class="tag">{{ flightSearchForm.controls.class.value == 'economy' ? 'Economie' : 'Business' }}</p>
-              <p class="short-text">{{ flight.prix }}/personne</p>
+              <p class="short-text">{{ flight.prix }} {{ flightSearchForm.controls.currency.value }}/personne</p>
               <button type="button" (click)="selectFlight(flight)">Réserver</button>
             </div>
           </div>
@@ -123,7 +123,7 @@
                 ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
               <p class="short-text">{{ flight.dateDepart | date:'HH:mm' }} 🕰️ {{ flight.dateArrive | date:'HH:mm' }}</p>
               <p class="tag">{{ flightSearchForm.controls.class.value == 'economy' ? 'Economie' : 'Business' }}</p>
-              <p class="short-text">{{ flight.prix }}/personne</p>
+              <p class="short-text">{{ flight.prix }} EUR/personne</p>
               <button type="button" (click)="selectFlight(flight)">Réserver</button>
             </div>
           </div>

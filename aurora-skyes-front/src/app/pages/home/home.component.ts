@@ -45,7 +45,7 @@ export class HomeComponent implements OnInit {
     returnDate: new FormControl(null, [Validators.required]),
     passengers: new FormControl(1, [Validators.required]),
     class: new FormControl('economy', [Validators.required]),
-    currencyRate: new FormControl(1, [Validators.required]),
+    currency: new FormControl('EUR', [Validators.required]),
   });
 
   public flightList: vol[] = [];
@@ -112,14 +112,15 @@ export class HomeComponent implements OnInit {
           return false;
         });
 
-        if (this.flightSearchForm.controls.currencyRate.value != null && this.flightSearchForm.controls.currencyRate.value !== 1) {
-          const currencyRate: number = this.flightSearchForm.controls.currencyRate.value;
+        if (this.flightSearchForm.controls.currency.value != null && this.flightSearchForm.controls.currency.value !== 'EUR') {
+          const defaultMonnaie: monnaie = {nom: 'EUR', taux: 1};
+          const monnaie: monnaie = this.monnaieList.find(monnaie => monnaie.nom == this.flightSearchForm.controls.currency.value) ?? defaultMonnaie;
           this.outboundFlights.forEach(flight => {
-            flight.prix = this.monnaieService.getPrice(currencyRate, flight.prix);
+            flight.prix = this.monnaieService.getPrice(monnaie.taux, flight.prix);
           });
 
           this.returnFlights.forEach(flight => {
-            flight.prix = this.monnaieService.getPrice(currencyRate, flight.prix);
+            flight.prix = this.monnaieService.getPrice(monnaie.taux, flight.prix);
           });
         }
       }
