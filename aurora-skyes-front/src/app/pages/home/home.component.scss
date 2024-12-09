@@ -134,4 +134,13 @@
   .short-text {
     width: 15%;
   }
+
+  .flex {
+    display: flex;
+    gap: 10px;
+
+    .form-group {
+      width: 50%;
+    }
+  }
 }

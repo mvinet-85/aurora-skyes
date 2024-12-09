@@ -3,11 +3,24 @@
 <div class="container">
   <div class="flight-search-form">
     <form [formGroup]="flightSearchForm" class="search-section">
-      <div class="form-group">
-        <label for="trip-type">Type de trajet</label>
-        <select formControlName="tripType" id="trip-type">
-          <option value="aller-retour">Aller-retour</option>
-        </select>
+
+      <div class="flex">
+        <div class="form-group">
+          <label for="trip-type">Type de trajet</label>
+          <select formControlName="tripType" id="trip-type">
+            <option value="aller-retour">Aller-retour</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="currency">Monnaie</label>
+          <select formControlName="currencyRate" id="currency">
+            <option disabled selected value="">Veuillez sélectionner une monnaie</option>
+            @for (item of monnaieList; track item) {
+              <option [value]="item.taux">{{ item.nom }}</option>
+            }
+          </select>
+        </div>
       </div>
 
       <div class="form-group">
@@ -47,13 +60,6 @@
         <select formControlName="class" id="class">
           <option value="economy">Economie</option>
           <option value="first">Première</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="currency">Monnaie</label>
-        <select formControlName="currency" id="currency">
-          <option disabled selected value="">Veuillez sélectionner une monnaie</option>
-          <option *ngFor="let monnaie of monnaieList" [value]="monnaie">{{ monnaie }}</option>
         </select>
       </div>
 
