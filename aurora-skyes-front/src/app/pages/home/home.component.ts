@@ -1,7 +1,7 @@
 import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {vol} from '../../core/models/vol';
 import {aeroport} from '../../core/models/aeroport';
-import {DatePipe, NgForOf} from '@angular/common';
+import {DatePipe} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {SearchFormModel} from '../../core/models/form';
 import {HeaderComponent} from '../../shared/header/header.component';
@@ -23,7 +23,6 @@ import {MonnaieService} from '../../core/services/monnaie/monnaie.service';
     ReactiveFormsModule,
     HeaderComponent,
     ConfirmModalComponent,
-    NgForOf
   ],
   templateUrl: './home.component.html',
   standalone: true,
