@@ -1,0 +1,29 @@
+{
+  "app": {
+    "title": "Aurora Skyes"
+  },
+  "form": {
+    "tripType": "Trip Type",
+    "roundTrip": "Round-trip",
+    "currency": "Currency",
+    "selectCurrency": "Please select a currency",
+    "departure": "Departure from",
+    "selectDeparture": "Please select an airport",
+    "arrival": "Arrival at",
+    "selectArrival": "Please select an airport",
+    "dates": "Travel dates",
+    "departureDate": "Departure",
+    "returnDate": "Return",
+    "passengers": "Passengers",
+    "class": "Class",
+    "economy": "Economy",
+    "first": "First",
+    "search": "Search flights",
+    "bookFlight": "Book",
+    "outboundFlight": "Outbound flight",
+    "returnFlight": "Return flight",
+    "noOutboundFlight": "No outbound flight found for your search",
+    "noReturnFlight": "No return flight found for your search",
+    "allFlights": "List of all flights"
+  }
+}
