@@ -37,8 +37,12 @@ export class RegisterComponent implements OnInit {
     this.auth.signUp(utilisateur).subscribe(response => {
       this.toastService.showToast('Vous êtes inscrit et connecté', 'success')
     }, error => {
+      if (error.status === 403) {
+        this.toastService.showToast('Cet email appartient déjà à un compte', 'error')
+      } else {
+        this.toastService.showToast('Erreur lors de l\'inscription', 'error')
+      }
       console.error('Erreur lors de l\'inscription de l\'utilisateur', error);
-      this.toastService.showToast('Erreur lors de l\'inscription', 'error')
     });
 
     this.registerForm.reset();
