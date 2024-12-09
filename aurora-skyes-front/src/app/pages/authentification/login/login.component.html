@@ -17,7 +17,7 @@
           />
           <div class="error">
             @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
-              Une adresse email valide est requise
+              Un email valide est requis
             }
           </div>
         </div>
@@ -34,7 +34,7 @@
           />
           <div class="error">
             @if (loginForm.get('mdp')?.invalid && loginForm.get('mdp')?.touched) {
-              Un mot de passe valide est requise
+              Un mot de passe valide est requis (minimum 6 caractères)
             }
           </div>
         </div>

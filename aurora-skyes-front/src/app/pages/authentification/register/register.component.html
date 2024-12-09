@@ -17,7 +17,7 @@
           />
           <div class="error">
             @if (registerForm.get('nom')?.invalid && registerForm.get('nom')?.touched) {
-              Un nom valide est requise
+              Un nom valide est requis (minimum 2 caractères)
             }
           </div>
         </div>
@@ -33,7 +33,7 @@
           />
           <div class="error">
             @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
-              Une email valide est requise
+              Une email valide est requis
             }
           </div>
         </div>
@@ -49,7 +49,7 @@
           />
           <div class="error">
             @if (registerForm.get('mdp')?.invalid && registerForm.get('mdp')?.touched) {
-              Un mot de passe valide est requise
+              Un mot de passe valide est requis (minimum 6 caractères)
             }
           </div>
         </div>
@@ -67,7 +67,7 @@
           />
           <div class="error">
             @if (registerForm.get('mdpConfirmation')?.invalid && registerForm.get('mdpConfirmation')?.touched) {
-              Un mot de passe valide est requise
+              Un mot de passe valide est requis (minimum 6 caractères)
             }
             @if (registerForm.get('mdpConfirmation')?.touched && registerForm.get('mdp')?.value != registerForm.get('mdpConfirmation')?.value) {
               Les deux mots de passe sont différents
