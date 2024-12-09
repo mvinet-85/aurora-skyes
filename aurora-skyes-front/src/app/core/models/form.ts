@@ -8,5 +8,5 @@ export interface SearchFormModel {
   returnDate: FormControl<Date | null>,
   passengers: FormControl<number | null>,
   class: FormControl<string | null>,
-  currency: FormControl<string | null>,
+  currencyRate: FormControl<number | null>,
 }

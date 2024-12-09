@@ -13,6 +13,8 @@ import {ReservationService} from '../../core/services/reservation/reservation.se
 import {AirportService} from "../../core/services/airport/airport.service";
 import {AuthService} from "../../core/services/authentification/auth.service";
 import {ToastService} from '../../core/services/toast/toast.service';
+import {monnaie} from '../../core/models/monnaie';
+import {MonnaieService} from '../../core/services/monnaie/monnaie.service';
 
 @Component({
   selector: 'app-home',
@@ -41,13 +43,15 @@ export class HomeComponent implements OnInit {
     departureDate: new FormControl(null, [Validators.required]),
     returnDate: new FormControl(null, [Validators.required]),
     passengers: new FormControl(1, [Validators.required]),
-    class: new FormControl('economy', [Validators.required])
+    class: new FormControl('economy', [Validators.required]),
+    currencyRate: new FormControl(1, [Validators.required]),
   });
 
   public flightList: vol[] = [];
   public outboundFlights: vol[] = [];
   public returnFlights: vol[] = [];
   public airportList: aeroport[] = [];
+  public monnaieList: monnaie[] = [];
   public search: boolean = false;
   public error: string = '';
   public selectedFlight: vol | undefined;
@@ -58,10 +62,12 @@ export class HomeComponent implements OnInit {
   private readonly reservationService: ReservationService = inject(ReservationService);
   private readonly authService: AuthService = inject(AuthService);
   private readonly toastService: ToastService = inject(ToastService);
+  private readonly monnaieService: MonnaieService = inject(MonnaieService);
 
   ngOnInit(): void {
     this.getAllVols();
     this.getAllAirports();
+    this.getAllCurrencies();
     this.currentUser = this.authService.getUser();
   }
 
@@ -83,10 +89,7 @@ export class HomeComponent implements OnInit {
         return;
       }
 
-      if (searchCriteria && searchCriteria.departure && searchCriteria.arrival && searchCriteria.departureDate && searchCriteria.returnDate) {
-
-        const departureDate = new Date(searchCriteria.departureDate);
-        const returnDate = new Date(searchCriteria.returnDate);
+      if (searchCriteria.departure && searchCriteria.arrival && searchCriteria.departureDate && searchCriteria.returnDate) {
 
         this.outboundFlights = this.flightList.filter(flight => {
           if (flight.aeroportDepart && flight.aeroportArrivee) {
@@ -107,6 +110,17 @@ export class HomeComponent implements OnInit {
           }
           return false;
         });
+
+        if (this.flightSearchForm.controls.currencyRate.value != null && this.flightSearchForm.controls.currencyRate.value !== 1) {
+          const currencyRate: number = this.flightSearchForm.controls.currencyRate.value;
+          this.outboundFlights.forEach(flight => {
+            flight.prix = this.monnaieService.getPrice(currencyRate, flight.prix);
+          });
+
+          this.returnFlights.forEach(flight => {
+            flight.prix = this.monnaieService.getPrice(currencyRate, flight.prix);
+          });
+        }
       }
 
       this.search = true;
@@ -166,12 +180,24 @@ export class HomeComponent implements OnInit {
 
   private getAllAirports(): void {
     this.airportService.getAllAirports().subscribe(
-      (data) => {
+      (data: aeroport[]) => {
         this.airportList = data;
       },
       (error) => {
         console.error('Erreur lors de la récupération des aéroports', error);
         this.toastService.showToast('Erreur lors de la récupération des aéroports', 'error')
+      }
+    );
+  }
+
+  private getAllCurrencies(): void {
+    this.monnaieService.getAllCurrencies().subscribe(
+      (data: monnaie[]) => {
+        this.monnaieList = data;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des monnaies', error);
+        this.toastService.showToast('Erreur lors de la récupération des monnaies', 'error')
       }
     );
   }
