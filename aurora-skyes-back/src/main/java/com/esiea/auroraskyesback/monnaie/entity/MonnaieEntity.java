@@ -23,5 +23,8 @@ public class MonnaieEntity {
         this.taux = taux;
     }
 
-    public MonnaieEntity() {}
+    public MonnaieEntity() {
+
+    }
+
 }
