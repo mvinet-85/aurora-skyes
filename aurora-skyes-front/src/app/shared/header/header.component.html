@@ -1,7 +1,15 @@
 <header>
+  <div class="langage">
+    <select id="langage" name="langage" (change)="changeLanguage($event)">
+      <option value="fr">FR</option>
+      <option value="es">ES</option>
+      <option value="en">EN</option>
+    </select>
+  </div>
+
   <div class="logo">
     <img src="https://img.icons8.com/?size=100&id=o21PmwHBoj5l&format=png&color=000000">
-    <h1>Aurora Skyes</h1>
+    <h1>{{ 'app.title' | translate }}</h1>
   </div>
 
   <div class="deconnexion">

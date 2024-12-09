@@ -1,14 +1,20 @@
-import {Component} from '@angular/core';
-import {RouterOutlet} from '@angular/router';
-import {ToastComponent} from './shared/toast/toast.component';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ToastComponent } from './shared/toast/toast.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ToastComponent],
-  templateUrl: './app.component.html',
   standalone: true,
-  styleUrl: './app.component.scss'
+  imports: [RouterOutlet, ToastComponent, TranslateModule],
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   title = 'aurora-skyes-front';
+
+  constructor(private translate: TranslateService) {
+    this.translate.addLangs(['en', 'fr', 'es']);
+    this.translate.setDefaultLang('fr');
+  }
 }

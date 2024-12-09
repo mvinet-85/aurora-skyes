@@ -1,0 +1,29 @@
+{
+  "app": {
+    "title": "Aurora Skyes"
+  },
+  "form": {
+    "tripType": "Tipo de viaje",
+    "roundTrip": "Ida y vuelta",
+    "currency": "Moneda",
+    "selectCurrency": "Seleccione una moneda",
+    "departure": "Salida de",
+    "selectDeparture": "Seleccione un aeropuerto",
+    "arrival": "Llegada a",
+    "selectArrival": "Seleccione un aeropuerto",
+    "dates": "Fechas de viaje",
+    "departureDate": "Salida",
+    "returnDate": "Regreso",
+    "passengers": "Pasajeros",
+    "class": "Clase",
+    "economy": "Económica",
+    "first": "Primera",
+    "search": "Buscar vuelos",
+    "bookFlight": "Reservar",
+    "outboundFlight": "Vuelo de ida",
+    "returnFlight": "Vuelo de vuelta",
+    "noOutboundFlight": "No se encontró vuelo de ida para su búsqueda",
+    "noReturnFlight": "No se encontró vuelo de vuelta para su búsqueda",
+    "allFlights": "Lista de todos los vuelos"
+  }
+}

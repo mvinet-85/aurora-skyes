@@ -1,80 +1,71 @@
 <app-header />
 
 <div class="container">
-	<div class="flight-search-form">
-		<form [formGroup]="flightSearchForm" class="search-section">
+  <div class="flight-search-form">
+    <form [formGroup]="flightSearchForm" class="search-section">
+      <div class="flex">
+        <div class="form-group">
+          <label for="trip-type">{{ 'form.tripType' | translate }}</label>
+          <select formControlName="tripType" id="trip-type">
+            <option value="aller-retour">{{ 'form.roundTrip' | translate }}</option>
+          </select>
+        </div>
 
-			<div class="flex">
-				<div class="form-group">
-					<label for="trip-type">Type de trajet</label>
-					<select formControlName="tripType" id="trip-type">
-						<option value="aller-retour">Aller-retour</option>
-					</select>
-				</div>
+        <div class="form-group">
+          <label for="currency">{{ 'form.currency' | translate }}</label>
+          <select formControlName="currency" id="currency">
+            <option disabled selected value="">{{ 'form.selectCurrency' | translate }}</option>
+            @for (item of monnaieList; track item) {
+              <option [value]="item.nom">{{ item.nom }}</option>
+            }
+          </select>
+        </div>
+      </div>
 
-				<div class="form-group">
-					<label for="currency">Monnaie</label>
-					<select formControlName="currency" id="currency">
-						<option disabled selected value="">Veuillez sélectionner une monnaie</option>
-						@for (item of monnaieList; track item) {
-						<option [value]="item.nom">{{ item.nom }}</option>
-						}
-					</select>
-				</div>
-			</div>
+      <div class="form-group">
+        <label for="departure">{{ 'form.departure' | translate }}</label>
+        <select formControlName="departure" id="departure">
+          <option disabled selected value="">{{ 'form.selectDeparture' | translate }}</option>
+          @for (item of airportList; track item) {
+            <option [value]="item.nom">{{ item.ville }}({{ item.nom }})</option>
+          }
+        </select>
+      </div>
 
-			<div class="form-group">
-				<label for="class">Départ de</label>
-				<select formControlName="departure" id="departure">
-					<option disabled selected value="">Veuillez sélectionner un aéroport</option>
-					@for (item of airportList; track item) {
-					<option [value]="item.nom">{{ item.ville }}({{ item.nom }})</option>
-					}
-				</select>
-			</div>
+      <div class="form-group">
+        <label for="arrival">{{ 'form.arrival' | translate }}</label>
+        <select formControlName="arrival" id="arrival">
+          <option disabled selected value="">{{ 'form.selectArrival' | translate }}</option>
+          @for (item of airportList; track item) {
+            <option [value]="item.nom">{{ item.ville }}({{ item.nom }})</option>
+          }
+        </select>
+      </div>
 
-			<div class="form-group">
-				<label for="arrival">Arrivée à</label>
-				<select formControlName="arrival" id="arrival">
-					<option disabled selected value="">Veuillez sélectionner un aéroport</option>
-					@for (item of airportList; track item) {
-					<option [value]="item.nom">{{ item.ville }}({{ item.nom }})</option>
-					}
-				</select>
-			</div>
+      <div class="form-group">
+        <label for="dates">{{ 'form.dates' | translate }}</label>
+        <div class="date-range" id="dates">
+          <input formControlName="departureDate" placeholder="{{ 'form.departureDate' | translate }}" type="date"/>
+          <input formControlName="returnDate" placeholder="{{ 'form.returnDate' | translate }}" type="date"/>
+        </div>
+      </div>
 
-			<div class="form-group">
-				<label for="date">Dates de voyage</label>
-				<div class="date-range" id="date">
-					<input formControlName="departureDate" placeholder="Départ" type="date" />
-					<input formControlName="returnDate" placeholder="Retour" type="date" />
-				</div>
-			</div>
+      <div class="form-group">
+        <label for="passengers">{{ 'form.passengers' | translate }}</label>
+        <input formControlName="passengers" id="passengers" min="1" type="number" value="1"/>
+      </div>
 
-			<div class="form-group">
-				<label for="passengers">Passagers</label>
-				<input formControlName="passengers" id="passengers" min="1" type="number" value="1" />
-			</div>
+      <div class="form-group">
+        <label for="class">{{ 'form.class' | translate }}</label>
+        <select formControlName="class" id="class">
+          <option value="economy">{{ 'form.economy' | translate }}</option>
+          <option value="first">{{ 'form.first' | translate }}</option>
+        </select>
+      </div>
 
-			<div class="form-group">
-				<label for="class">Classe</label>
-				<select formControlName="class" id="class">
-					<option value="ECONOMY">Economie</option>
-					<option value="FIRST">Première</option>
-				</select>
-			</div>
-
-			<div class="form-group">
-				<label>
-					<input type="checkbox" formControlName="escale" />
-					Inclure les vols avec escale
-				</label>
-			</div>
-
-			<button (click)="onSearch()" [disabled]="flightSearchForm.invalid" class="search-button"
-				type="button">Rechercher
-				les vols
-			</button>
+      <button (click)="onSearch()" [disabled]="flightSearchForm.invalid" class="search-button" type="button">
+        {{ 'form.search' | translate }}
+      </button>
 
 			@if (error != '') {
 			<p class="error">{{ error }}</p>
@@ -82,70 +73,63 @@
 		</form>
 	</div>
 
-	<div class="destination-list">
-		@if (search) {
-		<div class="flight-section">
-			<h3>Vol aller</h3>
-			@if (outboundFlights.length == 0) {
-			<p>Pas de vol allé trouvé pour votre recherche</p>
-			}
-			@for (flight of outboundFlights; track outboundFlights) {
-			<div class="destination-item">
-				<div class="destination-info">
-					<p class="long-text">{{ flight.aeroportDepart.ville }}({{ flight.aeroportDepart.nom }})
-						➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
-					<p class="short-text">{{ flight.dateDepart | date:'HH:mm' }} 🕰️ {{ flight.dateArrive | date:'HH:mm'
-						}}</p>
-					<p class="tag">{{ flightSearchForm.controls.class.value == 'ECONOMY' ? 'Economie' : 'Business' }}
-					</p>
-					<p class="short-text">{{ calculerPrix(flight) }} {{ flightSearchForm.controls.currency.value }}/personne</p>
-					<button type="button" (click)="selectFlight(flight)">Réserver</button>
-				</div>
-			</div>
-			}
-		</div>
-		<hr>
-		<div class="flight-section">
-			<h3>Vol retour</h3>
-			@if (returnFlights.length == 0) {
-			<p>Pas de vol retour trouvé pour votre recherche</p>
-			}
-			@for (flight of returnFlights; track returnFlights) {
-			<div class="destination-item">
-				<div class="destination-info">
-					<p class="long-text">{{ flight.aeroportDepart.ville }}({{ flight.aeroportDepart.nom }})
-						➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
-					<p class="short-text">{{ flight.dateDepart | date:'HH:mm' }} 🕰️ {{ flight.dateArrive | date:'HH:mm'
-						}}</p>
-					<p class="tag">{{ flightSearchForm.controls.class.value == 'ECONOMY' ? 'Economie' : 'Business' }}
-					</p>
-					<p class="short-text">{{ calculerPrix(flight) }} {{ flightSearchForm.controls.currency.value }}/personne</p>
-					<button type="button" (click)="selectFlight(flight)">Réserver</button>
-				</div>
-			</div>
-			}
-		</div>
-		} @else {
-		<div class="flight-section">
-			<h3>Liste de tous les vols</h3>
-			@for (flight of flightList; track flight.id) {
-			<div class="destination-item">
-				<div class="destination-info">
-					<p class="long-text">{{ flight.aeroportDepart.ville }}({{ flight.aeroportDepart.nom }})
-						➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
-					<p class="short-text">{{ flight.dateDepart | date:'HH:mm' }} 🕰️ {{ flight.dateArrive | date:'HH:mm'
-						}}</p>
-					<p class="tag">{{ flightSearchForm.controls.class.value == 'ECONOMY' ? 'Economie' : 'Business' }}
-					</p>
-					<p class="short-text">{{ calculerPrix(flight) }} {{ flightSearchForm.controls.currency.value }}/personne</p>
-					<button type="button" (click)="selectFlight(flight)">Réserver</button>
-				</div>
-			</div>
-			}
-		</div>
-		}
-	</div>
+  <div class="destination-list">
+    @if (search) {
+      <div class="flight-section">
+        <h3>{{ 'form.outboundFlight' | translate }}</h3>
+        @if (outboundFlights.length == 0) {
+          <p>{{ 'form.noOutboundFlight' | translate }}</p>
+        }
+        @for (flight of outboundFlights; track outboundFlights) {
+          <div class="destination-item">
+            <div class="destination-info">
+              <p class="long-text">{{ flight.aeroportDepart.ville }}({{ flight.aeroportDepart.nom }})
+                ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
+              <p class="short-text">{{ flight.dateDepart | date:'HH:mm' }} 🕰️ {{ flight.dateArrive | date:'HH:mm' }}</p>
+              <p class="tag">{{ flightSearchForm.controls.class.value == 'economy' ? 'Economy' : 'Business' }}</p>
+              <p class="short-text">{{ flight.prix }} {{ flightSearchForm.controls.currency.value }}/person</p>
+              <button type="button" (click)="selectFlight(flight)">{{ 'form.bookFlight' | translate }}</button>
+            </div>
+          </div>
+        }
+      </div>
+      <hr>
+      <div class="flight-section">
+        <h3>{{ 'form.returnFlight' | translate }}</h3>
+        @if (returnFlights.length == 0) {
+          <p>{{ 'form.noReturnFlight' | translate }}</p>
+        }
+        @for (flight of returnFlights; track returnFlights) {
+          <div class="destination-item">
+            <div class="destination-info">
+              <p class="long-text">{{ flight.aeroportDepart.ville }}({{ flight.aeroportDepart.nom }})
+                ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
+              <p class="short-text">{{ flight.dateDepart | date:'HH:mm' }} 🕰️ {{ flight.dateArrive | date:'HH:mm' }}</p>
+              <p class="tag">{{ flightSearchForm.controls.class.value == 'economy' ? 'Economy' : 'Business' }}</p>
+              <p class="short-text">{{ flight.prix }} {{ flightSearchForm.controls.currency.value }}/person</p>
+              <button type="button" (click)="selectFlight(flight)">{{ 'form.bookFlight' | translate }}</button>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="flight-section">
+        <h3>{{ 'form.allFlights' | translate }}</h3>
+        @for (flight of flightList; track flightList) {
+          <div class="destination-item">
+            <div class="destination-info">
+              <p class="long-text">{{ flight.aeroportDepart.ville }}({{ flight.aeroportDepart.nom }})
+                ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
+              <p class="short-text">{{ flight.dateDepart | date:'HH:mm' }} 🕰️ {{ flight.dateArrive | date:'HH:mm' }}</p>
+              <p class="tag">{{ flightSearchForm.controls.class.value == 'economy' ? 'Economy' : 'Business' }}</p>
+              <p class="short-text">{{ flight.prix }} EUR/person</p>
+              <button type="button" (click)="selectFlight(flight)">{{ 'form.bookFlight' | translate }}</button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
 
-	<app-confirm-modal (confirm)="handleConfirmation($event)"></app-confirm-modal>
-
+  <app-confirm-modal (confirm)="handleConfirmation($event)"></app-confirm-modal>
 </div>
