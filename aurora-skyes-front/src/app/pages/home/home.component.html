@@ -49,6 +49,14 @@
           <option value="first">Première</option>
         </select>
       </div>
+      <div class="form-group">
+        <label for="currency">Monnaie</label>
+        <select formControlName="currency" id="currency">
+          <option disabled selected value="">Veuillez sélectionner une monnaie</option>
+          <option *ngFor="let monnaie of monnaieList" [value]="monnaie">{{ monnaie }}</option>
+        </select>
+      </div>
+
 
       <button (click)="onSearch()" [disabled]="flightSearchForm.invalid" class="search-button" type="button">Rechercher
         les vols
