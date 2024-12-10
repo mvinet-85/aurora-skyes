@@ -4,6 +4,7 @@ import com.esiea.auroraskyesback.vol.dto.VolDTO;
 import com.esiea.auroraskyesback.vol.mapper.VolMapper;
 import com.esiea.auroraskyesback.vol.service.VolService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,6 +33,16 @@ public class VolController {
     @GetMapping
     public List<VolDTO> getAllVols() {
         return volService.getAllVols().stream().map(this.volMapper::toDTO).toList();
+    }
+
+    /**
+     * Endpoint permettant de récupérer un vol
+     * @param id du vol a récupérer
+     * @return le vol
+     */
+    @GetMapping("/{id}")
+    public VolDTO getVolById(@PathVariable Long id) {
+        return this.volMapper.toDTO(volService.findVolById(id));
     }
 
 }
