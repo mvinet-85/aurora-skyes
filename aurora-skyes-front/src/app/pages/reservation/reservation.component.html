@@ -1,2 +1,32 @@
-<app-header/>
-<p>reservation works!</p>
+<div class="reservation-container">
+    <h2>Liste des Réservations</h2>
+
+    <p *ngIf="!reservationList?.length">Aucune réservation trouvée.</p>
+
+    <table *ngIf="reservationList?.length" class="reservation-table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Nom</th>
+            <th>Vol</th>
+            <th>Date</th>
+            <th>Passagers</th>
+            <th>Classe</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let reservation of reservationList; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ reservation.nom }}</td>
+            <td>{{ reservation.vol }}</td>
+            <td>{{ reservation.date | date: 'yyyy-MM-dd' }}</td>
+            <td>{{ reservation.passagers }}</td>
+            <td>{{ reservation.classe }}</td>
+        </tr>
+        </tbody>
+        <div class="button-container">
+            <button (click)="navigateToHome()">Nouvelle Réservation</button>
+        </div>
+
+    </table>
+</div>
