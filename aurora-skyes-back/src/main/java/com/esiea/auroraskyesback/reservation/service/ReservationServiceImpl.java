@@ -119,4 +119,9 @@ public class ReservationServiceImpl implements ReservationService {
                 });
     }
 
+    /** {@inheritDoc} */
+    public List<ReservationEntity> getUserReservation(Long id) {
+        return reservationDAO.findByUserId(id);
+    }
+
 }

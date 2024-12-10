@@ -5,6 +5,7 @@ import {VerifyEmailComponent} from './pages/authentification/verify-email/verify
 import {ForgotPasswordComponent} from './pages/authentification/forgot-password/forgot-password.component';
 import {HomeComponent} from './pages/home/home.component';
 import {AuthGuard} from './core/guards/auth.guard';
+import {ReservationComponent} from './pages/reservation/reservation.component';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -14,6 +15,9 @@ export const routes: Routes = [
   {path: 'forgot-password', component: ForgotPasswordComponent},
   {
     path: 'home', component: HomeComponent, canActivate: [AuthGuard],
+  },
+  {
+    path: 'reservation', component: ReservationComponent, canActivate: [AuthGuard],
   },
   {path: '**', redirectTo: 'login'}
 ];
