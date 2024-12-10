@@ -1,5 +1,6 @@
 package com.esiea.auroraskyesback.reservation.controller;
 
+import com.esiea.auroraskyesback.error.service.ErrorService;
 import com.esiea.auroraskyesback.reservation.dto.ReservationDTO;
 import com.esiea.auroraskyesback.reservation.mapper.ReservationMapper;
 import com.esiea.auroraskyesback.reservation.service.ReservationService;
@@ -29,10 +30,15 @@ public class ReservationController {
     /** {@link ReservationMapper} */
     private final ReservationMapper reservationMapper;
 
+    /** {@link ErrorService} */
+    private final ErrorService errorService;
+
     public ReservationController(ReservationService reservationService,
-                                 ReservationMapper reservationMapper) {
+                                 ReservationMapper reservationMapper,
+                                 ErrorService errorService) {
         this.reservationService = reservationService;
         this.reservationMapper = reservationMapper;
+        this.errorService = errorService;
     }
 
     /**
@@ -95,6 +101,19 @@ public class ReservationController {
                         .id(String.valueOf(event.getKey()))
                         .data(event.getValue())
                         .event("ReservationOK")
+                        .build());
+    }
+
+    @GetMapping(value = "/historique/error/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<ServerSentEvent<String>> streamErrors(@PathVariable Long id) {
+        Sinks.Many<String> errorSink = errorService.getErrorSink();
+
+        return errorSink.asFlux()
+                .filter(error -> error.contains("Vol ID : " + id))
+                .map(error -> ServerSentEvent.<String>builder()
+                        .id(String.valueOf(System.currentTimeMillis()))
+                        .data(error)
+                        .event("ReservationError")
                         .build());
     }
 

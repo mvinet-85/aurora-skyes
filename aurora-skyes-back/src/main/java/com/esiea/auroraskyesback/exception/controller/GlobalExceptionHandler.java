@@ -1,6 +1,7 @@
 package com.esiea.auroraskyesback.exception.controller;
 
 import com.esiea.auroraskyesback.authentification.exception.InvalidPasswordException;
+import com.esiea.auroraskyesback.error.service.ErrorService;
 import com.esiea.auroraskyesback.monnaie.exception.MonnaieNotFoundException;
 import com.esiea.auroraskyesback.monnaie.exception.MonnaieUpdateException;
 import com.esiea.auroraskyesback.reservation.exception.NoAvailableSeatsException;
@@ -15,22 +16,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Sinks;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    private final ConcurrentLinkedQueue<String> reservationsCountfailPerMinute = new ConcurrentLinkedQueue<>();
+    private final ErrorService errorService;
 
-    private final Sinks.Many<String> errorSink = Sinks.many().multicast().onBackpressureBuffer();
-
-    private void logError(String errorMessage) {
-        reservationsCountfailPerMinute.add(errorMessage);
-        errorSink.tryEmitNext(errorMessage);
+    public GlobalExceptionHandler(ErrorService errorService) {
+        this.errorService = errorService;
     }
 
     /**
@@ -130,7 +125,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoAvailableSeatsException.class)
     public ResponseEntity<String> handleNoAvailableSeatsException(NoAvailableSeatsException ex) {
         String errorMessage = "Erreur (NoAvailableSeatsException) : Vol ID : " + ex.getVolId() + " - " + ex.getMessage() + " à " + LocalDateTime.now();
-        logError(errorMessage);
+        errorService.logError(errorMessage);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
@@ -143,17 +138,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGlobalException(Exception ex) {
         return new ResponseEntity<>("Une erreur est survenue: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @GetMapping(value = "/reservations/historique/error/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<ServerSentEvent<String>> getReservationErrors(@PathVariable Long id) {
-        return errorSink.asFlux()
-                .filter(error -> error.contains("Vol ID : " + id))
-                .map(error -> ServerSentEvent.<String>builder()
-                        .id(String.valueOf(System.currentTimeMillis()))
-                        .data(error)
-                        .event("ReservationError")
-                        .build());
     }
 
 }
