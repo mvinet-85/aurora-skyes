@@ -7,6 +7,8 @@ import com.esiea.auroraskyesback.utilisateur.entity.UtilisateurEntity;
 import com.esiea.auroraskyesback.utilisateur.exception.InvalidUtilisateurException;
 import com.esiea.auroraskyesback.utilisateur.exception.UtilisateurNotFoundException;
 import com.esiea.auroraskyesback.utilisateur.mapper.UtilisateurMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 
 @Service
 public class UtilisateurServiceImpl implements UserDetailsService, UtilisateurService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UtilisateurServiceImpl.class);
 
     /** {@link UtilisateurDAO} */
     private final UtilisateurDAO utilisateurDAO;
@@ -40,6 +43,7 @@ public class UtilisateurServiceImpl implements UserDetailsService, UtilisateurSe
     @Transactional
     public UtilisateurDTO creerUtilisateur(UtilisateurDTO utilisateurDTO) {
         if (utilisateurDTO.getEmail() == null || utilisateurDTO.getMotDePasse() == null) {
+            LOGGER.error("Les champs email et mot de passe sont obligatoires");
             throw new InvalidUtilisateurException("Les champs email et mot de passe sont obligatoires");
         }
         UtilisateurEntity utilisateur = this.utilisateurMapper.toEntity(utilisateurDTO);
@@ -52,19 +56,28 @@ public class UtilisateurServiceImpl implements UserDetailsService, UtilisateurSe
     /** {@inheritDoc} */
     public UtilisateurEntity findUtilisateurByEmail(String email) {
         return this.utilisateurDAO.findByEmail(email)
-                .orElseThrow(() -> new UtilisateurNotFoundException("Utilisateur avec l'email " + email + " introuvable"));
+                .orElseThrow(() -> {
+                    LOGGER.error("Utilisateur avec l'email " + email + " introuvable");
+                    return new UtilisateurNotFoundException("Utilisateur avec l'email " + email + " introuvable");
+                });
     }
 
     public UtilisateurEntity findUtilisateurById(Long id) {
         return this.utilisateurDAO.findById(id)
-                .orElseThrow(() -> new UtilisateurNotFoundException("Utilisateur avec l'ID " + id + " introuvable"));
+                .orElseThrow(() -> {
+                    LOGGER.error("Utilisateur avec l'ID " + id + " introuvable");
+                    return new UtilisateurNotFoundException("Utilisateur avec l'ID " + id + " introuvable");
+                });
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         UtilisateurEntity utilisateur = this.utilisateurDAO.findByEmail(email)
-                .orElseThrow(() -> new UtilisateurNotFoundException("Utilisateur avec l'email " + email + " introuvable"));
+                .orElseThrow(() -> {
+                    LOGGER.error("Utilisateur avec l'email " + email + " introuvable");
+                    return new UtilisateurNotFoundException("Utilisateur avec l'email " + email + " introuvable");
+                });
 
         return new User(utilisateur.getEmail(), utilisateur.getMotDePasse(), new ArrayList<>());
 

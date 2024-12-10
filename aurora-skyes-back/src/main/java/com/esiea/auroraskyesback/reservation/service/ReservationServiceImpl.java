@@ -15,6 +15,8 @@ import com.esiea.auroraskyesback.vol.service.VolService;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,7 @@ import java.util.List;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReservationServiceImpl.class);
 
     /** {@link ReservationDAO} */
     private final ReservationDAO reservationDAO;
@@ -57,6 +60,7 @@ public class ReservationServiceImpl implements ReservationService {
         VolEntity vol = volService.findVolById(reservationDTO.getVolId());
 
         if (vol.getPlaceDisponible() <= 0) {
+            LOGGER.error("Aucune place disponible pour le vol ID : " + vol.getId());
             throw new NoAvailableSeatsException("Aucune place disponible pour le vol ID : " + vol.getId());
         }
 
@@ -92,7 +96,11 @@ public class ReservationServiceImpl implements ReservationService {
     @Transactional
     public ReservationEntity updateReservation(ReservationDTO reservationDTO) {
         ReservationEntity existingReservation = reservationDAO.findById(reservationDTO.getId())
-                .orElseThrow(() -> new ReservationNotFoundException("Réservation introuvable pour ID : " + reservationDTO.getId()));
+                .orElseThrow(() -> {
+                    LOGGER.error("Réservation introuvable pour ID : " + reservationDTO.getId());
+                    return new ReservationNotFoundException("Réservation introuvable pour ID : " + reservationDTO.getId());
+                });
+
 
         volService.findVolById(reservationDTO.getVolId());
 
@@ -105,7 +113,10 @@ public class ReservationServiceImpl implements ReservationService {
     /** {@inheritDoc} */
     public ReservationEntity getReservation(Long id) {
         return reservationDAO.findById(id)
-                .orElseThrow(() -> new ReservationNotFoundException("Réservation introuvable pour ID : " + id));
+                .orElseThrow(() -> {
+                    LOGGER.error("Réservation introuvable pour ID : " + id);
+                    return new ReservationNotFoundException("Réservation introuvable pour ID : " + id);
+                });
     }
 
 }

@@ -4,6 +4,8 @@ import com.esiea.auroraskyesback.vol.dao.VolDAO;
 import com.esiea.auroraskyesback.vol.entity.VolEntity;
 import com.esiea.auroraskyesback.vol.exception.VolNotFoundException;
 import com.esiea.auroraskyesback.vol.exception.InvalidVolException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.annotation.PostConstruct;
@@ -13,6 +15,7 @@ import java.util.List;
 
 @Service
 public class VolServiceImpl implements VolService {
+	private static final Logger LOGGER = LoggerFactory.getLogger(VolServiceImpl.class);
 
 	/** {@link VolDAO} */
 	private final VolDAO volDAO;
@@ -47,12 +50,16 @@ public class VolServiceImpl implements VolService {
 	/** {@inheritDoc} */
 	public VolEntity findVolById(Long id) {
 		return this.volDAO.findById(id)
-				.orElseThrow(() -> new VolNotFoundException("Vol avec l'ID " + id + " introuvable"));
+				.orElseThrow(() -> {
+					LOGGER.error("Vol avec l'ID " + id + " introuvable");
+					return new VolNotFoundException("Vol avec l'ID " + id + " introuvable");
+				});
 	}
 
 	/** {@inheritDoc} */
 	public void modifierVol(VolEntity vol) {
 		if (vol == null || vol.getId() == null) {
+			LOGGER.error("Le vol est invalide ou ne possède pas d'ID");
 			throw new InvalidVolException("Le vol est invalide ou ne possède pas d'ID");
 		}
 		this.volDAO.save(vol);
