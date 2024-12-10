@@ -33,21 +33,21 @@ import {TranslatePipe} from '@ngx-translate/core';
 export class HomeComponent implements OnInit {
 
   public currentUser: utilisateur | null = {
-	nom: '',
-	motDePasse: '',
-	email: '',
+    nom: '',
+    motDePasse: '',
+    email: '',
   };
 
   public flightSearchForm: FormGroup<SearchFormModel> = new FormGroup<SearchFormModel>({
-	tripType: new FormControl('aller-retour', [Validators.required]),
-	departure: new FormControl(null, [Validators.required]),
-	arrival: new FormControl(null, [Validators.required]),
-	departureDate: new FormControl(null, [Validators.required]),
-	returnDate: new FormControl(null, [Validators.required]),
-	passengers: new FormControl(1, [Validators.required]),
-	class: new FormControl('ECONOMY', [Validators.required]),
-	currency: new FormControl('EUR', [Validators.required]),
-	escale: new FormControl(false, { nonNullable: true }),
+    tripType: new FormControl('aller-retour', [Validators.required]),
+    departure: new FormControl(null, [Validators.required]),
+    arrival: new FormControl(null, [Validators.required]),
+    departureDate: new FormControl(null, [Validators.required]),
+    returnDate: new FormControl(null, [Validators.required]),
+    passengers: new FormControl(1, [Validators.required]),
+    class: new FormControl('ECONOMY', [Validators.required]),
+    currency: new FormControl('EUR', [Validators.required]),
+    escale: new FormControl(false, {nonNullable: true}),
   });
 
   public flightList: vol[] = [];
@@ -68,160 +68,160 @@ export class HomeComponent implements OnInit {
   private readonly monnaieService: MonnaieService = inject(MonnaieService);
 
   ngOnInit(): void {
-	this.getAllVols();
-	this.getAllAirports();
-	this.getAllCurrencies();
-	this.currentUser = this.authService.getUser();
+    this.getAllVols();
+    this.getAllAirports();
+    this.getAllCurrencies();
+    this.currentUser = this.authService.getUser();
   }
 
   public onSearch(): void {
-	this.error = '';
+    this.error = '';
 
-	if (this.flightSearchForm.valid) {
-	  const searchCriteria = this.flightSearchForm.value;
-	  const departureDate = searchCriteria.departureDate ? new Date(searchCriteria.departureDate) : null;
-	  const returnDate = searchCriteria.returnDate ? new Date(searchCriteria.returnDate) : null;
+    if (this.flightSearchForm.valid) {
+      const searchCriteria = this.flightSearchForm.value;
+      const departureDate = searchCriteria.departureDate ? new Date(searchCriteria.departureDate) : null;
+      const returnDate = searchCriteria.returnDate ? new Date(searchCriteria.returnDate) : null;
 
-	  if (departureDate && returnDate && departureDate > returnDate) {
-		this.error = 'La date de retour doit être postérieure à la date de départ';
-		return;
-	  }
+      if (departureDate && returnDate && departureDate > returnDate) {
+        this.error = 'La date de retour doit être postérieure à la date de départ';
+        return;
+      }
 
-	  if (searchCriteria.arrival == searchCriteria.departure) {
-		this.error = 'L\'aéroport de départ et d\'arrivée doivent être differents';
-		return;
-	  }
+      if (searchCriteria.arrival == searchCriteria.departure) {
+        this.error = 'L\'aéroport de départ et d\'arrivée doivent être differents';
+        return;
+      }
 
-	  if (searchCriteria.departure && searchCriteria.arrival && searchCriteria.departureDate && searchCriteria.returnDate) {
+      if (searchCriteria.departure && searchCriteria.arrival && searchCriteria.departureDate && searchCriteria.returnDate) {
 
-		const includeEscale = searchCriteria.escale;
+        const includeEscale = searchCriteria.escale;
 
-		this.outboundFlights = this.flightList.filter(flight => {
-		  if (flight.aeroportDepart && flight.aeroportArrivee) {
-			return (
-			  flight.aeroportArrivee.nom === searchCriteria.arrival &&
-			  flight.aeroportDepart.nom === searchCriteria.departure &&
-			  (includeEscale || !flight.escale)
-			);
-		  }
-		  return false;
-		});
+        this.outboundFlights = this.flightList.filter(flight => {
+          if (flight.aeroportDepart && flight.aeroportArrivee) {
+            return (
+              flight.aeroportArrivee.nom === searchCriteria.arrival &&
+              flight.aeroportDepart.nom === searchCriteria.departure &&
+              (includeEscale || !flight.escale)
+            );
+          }
+          return false;
+        });
 
-		this.returnFlights = this.flightList.filter(flight => {
-		  if (flight.aeroportDepart && flight.aeroportArrivee) {
-			return (
-			  flight.aeroportArrivee.nom === searchCriteria.departure &&
-			  flight.aeroportDepart.nom === searchCriteria.arrival &&
-			  (includeEscale || !flight.escale)
-			);
-		  }
-		  return false;
-		});
+        this.returnFlights = this.flightList.filter(flight => {
+          if (flight.aeroportDepart && flight.aeroportArrivee) {
+            return (
+              flight.aeroportArrivee.nom === searchCriteria.departure &&
+              flight.aeroportDepart.nom === searchCriteria.arrival &&
+              (includeEscale || !flight.escale)
+            );
+          }
+          return false;
+        });
 
-		if (this.flightSearchForm.controls.currency.value != null && this.flightSearchForm.controls.currency.value !== 'EUR') {
-		  const defaultMonnaie: monnaie = {nom: 'EUR', taux: 1};
-		  const monnaie: monnaie = this.monnaieList.find(monnaie => monnaie.nom == this.flightSearchForm.controls.currency.value) ?? defaultMonnaie;
-		  this.outboundFlights.forEach(flight => {
-			flight.prix = this.monnaieService.getPrice(monnaie.taux, flight.prix);
-		  });
+        if (this.flightSearchForm.controls.currency.value != null && this.flightSearchForm.controls.currency.value !== 'EUR') {
+          const defaultMonnaie: monnaie = {nom: 'EUR', taux: 1};
+          const monnaie: monnaie = this.monnaieList.find(monnaie => monnaie.nom == this.flightSearchForm.controls.currency.value) ?? defaultMonnaie;
+          this.outboundFlights.forEach(flight => {
+            flight.prix = this.monnaieService.getPrice(monnaie.taux, flight.prix);
+          });
 
-		  this.returnFlights.forEach(flight => {
-			flight.prix = this.monnaieService.getPrice(monnaie.taux, flight.prix);
-		  });
-		}
-	  }
+          this.returnFlights.forEach(flight => {
+            flight.prix = this.monnaieService.getPrice(monnaie.taux, flight.prix);
+          });
+        }
+      }
 
-	  this.search = true;
-	}
+      this.search = true;
+    }
   }
 
   openConfirmDialog(): void {
-	this.confirmModal.show();
+    this.confirmModal.show();
   }
 
   handleConfirmation(isConfirmed: boolean): void {
-	if (
-	  isConfirmed &&
-	  this.flightSearchForm.controls.class &&
-	  this.selectedFlight && this.currentUser?.id &&
-	  this.flightSearchForm.controls.class.value
-	) {
+    if (
+      isConfirmed &&
+      this.flightSearchForm.controls.class &&
+      this.selectedFlight && this.currentUser?.id &&
+      this.flightSearchForm.controls.class.value
+    ) {
 
-	  const reservation: reservation = {
-		volId: this.selectedFlight.id,
-		userId: this.currentUser?.id,
-		classe: this.flightSearchForm.controls.class.value,
-		siege: 'siege',
-	  }
-	  this.saveReservation(reservation);
-	}
+      const reservation: reservation = {
+        volId: this.selectedFlight.id,
+        userId: this.currentUser?.id,
+        classe: this.flightSearchForm.controls.class.value,
+        siege: 'siege',
+      }
+      this.saveReservation(reservation);
+    }
   }
 
   saveReservation(reservation: reservation): void {
-	this.reservationService.save(reservation).subscribe(
-	  response => {
-		this.toastService.showToast('Résevration enregistrée', 'success')
-	  },
-	  error => {
-		console.error('Erreur lors de la sauvegarde de la réservation', error);
-		this.toastService.showToast('Erreur lors de la sauvegarde de la réservation', 'error')
-	  }
-	);
+    this.reservationService.save(reservation).subscribe(
+      response => {
+        this.toastService.showToast('Résevration enregistrée', 'success')
+      },
+      error => {
+        console.error('Erreur lors de la sauvegarde de la réservation', error);
+        this.toastService.showToast('Erreur lors de la sauvegarde de la réservation', 'error')
+      }
+    );
   }
 
   selectFlight(flight: vol): void {
-	this.selectedFlight = flight;
-	this.openConfirmDialog();
-  }
-
-  private getAllVols(): void {
-	this.flightService.getAllVols().subscribe(
-	  (data) => {
-		this.flightList = data;
-	  },
-	  (error) => {
-		console.error('Erreur lors de la récupération des vols', error);
-		this.toastService.showToast('Erreur lors de la récupération des vols', 'error')
-	  }
-	);
-  }
-
-  private getAllAirports(): void {
-	this.airportService.getAllAirports().subscribe(
-	  (data: aeroport[]) => {
-		this.airportList = data;
-	  },
-	  (error) => {
-		console.error('Erreur lors de la récupération des aéroports', error);
-		this.toastService.showToast('Erreur lors de la récupération des aéroports', 'error')
-	  }
-	);
-  }
-
-  private getAllCurrencies(): void {
-	this.monnaieService.getAllCurrencies().subscribe(
-	  (data: monnaie[]) => {
-		this.monnaieList = data;
-	  },
-	  (error) => {
-		console.error('Erreur lors de la récupération des monnaies', error);
-		this.toastService.showToast('Erreur lors de la récupération des monnaies', 'error')
-	  }
-	);
+    this.selectedFlight = flight;
+    this.openConfirmDialog();
   }
 
   public calculerPrix(flight: vol): number {
-		let prix = flight.prix;
-		const defaultMonnaie: monnaie = { nom: 'EUR', taux: 1 };
-		const selectedMonnaie: monnaie = this.monnaieList.find(m => m.nom === this.flightSearchForm.controls.currency.value) ?? defaultMonnaie;
-		prix = this.monnaieService.getPrice(selectedMonnaie.taux, prix);
-		if (flight.escale) {
-			prix *= 0.8;
-		}
-		if (this.flightSearchForm.controls.class.value === "FIRST") {
-			prix *= 1.2;
-		}
-		return prix;
-	}
+    let prix = flight.prix;
+    const defaultMonnaie: monnaie = {nom: 'EUR', taux: 1};
+    const selectedMonnaie: monnaie = this.monnaieList.find(m => m.nom === this.flightSearchForm.controls.currency.value) ?? defaultMonnaie;
+    prix = this.monnaieService.getPrice(selectedMonnaie.taux, prix);
+    if (flight.escale) {
+      prix *= 0.8;
+    }
+    if (this.flightSearchForm.controls.class.value === "FIRST") {
+      prix *= 1.2;
+    }
+    return prix;
+  }
+
+  private getAllVols(): void {
+    this.flightService.getAllVols().subscribe(
+      (data) => {
+        this.flightList = data;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des vols', error);
+        this.toastService.showToast('Erreur lors de la récupération des vols', 'error')
+      }
+    );
+  }
+
+  private getAllAirports(): void {
+    this.airportService.getAllAirports().subscribe(
+      (data: aeroport[]) => {
+        this.airportList = data;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des aéroports', error);
+        this.toastService.showToast('Erreur lors de la récupération des aéroports', 'error')
+      }
+    );
+  }
+
+  private getAllCurrencies(): void {
+    this.monnaieService.getAllCurrencies().subscribe(
+      (data: monnaie[]) => {
+        this.monnaieList = data;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des monnaies', error);
+        this.toastService.showToast('Erreur lors de la récupération des monnaies', 'error')
+      }
+    );
+  }
 
 }

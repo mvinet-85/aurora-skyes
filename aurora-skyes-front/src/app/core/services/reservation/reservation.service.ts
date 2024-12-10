@@ -16,4 +16,8 @@ export class ReservationService {
   save(reservation: reservation): Observable<reservation> {
     return this.http.post<reservation>(this.apiUrl, reservation);
   }
+
+  reservationByUserId(userId: number): Observable<reservation[]> {
+    return this.http.get<reservation[]>(`${this.apiUrl}/user/${userId}`);
+  }
 }
