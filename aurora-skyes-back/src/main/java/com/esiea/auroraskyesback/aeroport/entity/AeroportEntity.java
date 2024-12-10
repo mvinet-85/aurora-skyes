@@ -8,12 +8,15 @@ import lombok.Data;
 @Table(name = "aeroport")
 public class AeroportEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aeroport_id_generator")
+	@SequenceGenerator(name = "aeroport_id_generator", sequenceName = "seq_aeroport", allocationSize = 1)
+	private Long id;
 
-    private String nom;
+	@Column(nullable = false)
+	private String nom;
 
-    private String ville;
+	@Column(nullable = false)
+	private String ville;
 
 }

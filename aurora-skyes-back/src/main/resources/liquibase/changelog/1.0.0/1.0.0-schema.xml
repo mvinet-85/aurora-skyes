@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+	<changeSet id="schema-1.0.0-init-bdd" author="mehdi">
+
+		<!-- Table aeroport -->
+		<createTable tableName="aeroport">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" primaryKeyName="pk_aeroport" />
+			</column>
+			<column name="nom" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="ville" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<createSequence sequenceName="seq_aeroport" />
+
+		<!-- Table monnaie -->
+		<createTable tableName="monnaie">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" primaryKeyName="pk_monnaie" />
+			</column>
+			<column name="nom" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="taux" type="double">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<createSequence sequenceName="seq_monnaie" />
+
+		<!-- Table utilisateur -->
+		<createTable tableName="utilisateur">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" primaryKeyName="pk_utilisateur" />
+			</column>
+			<column name="nom" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="email" type="VARCHAR(255)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="mot_de_passe" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<createSequence sequenceName="seq_utilisateur" />
+
+		<!-- Table vol -->
+		<createTable tableName="vol">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" primaryKeyName="pk_vol" />
+			</column>
+			<column name="date_depart" type="timestamp">
+				<constraints nullable="false" />
+			</column>
+			<column name="date_arrive" type="timestamp">
+				<constraints nullable="false" />
+			</column>
+			<column name="aeroport_depart_id" type="bigint">
+				<constraints nullable="false" />
+			</column>
+			<column name="aeroport_arrive_id" type="bigint">
+				<constraints nullable="false" />
+			</column>
+			<column name="place_disponible" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="prix" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="escale" type="boolean">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<addForeignKeyConstraint constraintName="fk_vol_aeroport_depart"
+			baseTableName="vol" baseColumnNames="aeroport_depart_id"
+			referencedTableName="aeroport" referencedColumnNames="id" />
+		<addForeignKeyConstraint constraintName="fk_vol_aeroport_arrive"
+			baseTableName="vol" baseColumnNames="aeroport_arrive_id"
+			referencedTableName="aeroport" referencedColumnNames="id" />
+		<createSequence sequenceName="seq_vol" />
+
+		<!-- Table reservation -->
+		<createTable tableName="reservation">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" primaryKeyName="pk_reservation" />
+			</column>
+			<column name="vol_id" type="BIGINT">
+				<constraints nullable="false" />
+			</column>
+			<column name="user_id" type="BIGINT">
+				<constraints nullable="false" />
+			</column>
+			<column name="siege" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="classe" type="VARCHAR(50)">
+				<constraints nullable="false" />
+			</column>
+			<column name="prix" type="DOUBLE">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<addForeignKeyConstraint constraintName="fk_reservation_vol"
+			baseTableName="reservation" baseColumnNames="vol_id"
+			referencedTableName="vol" referencedColumnNames="id" />
+		<addForeignKeyConstraint constraintName="fk_reservation_utilisateur"
+			baseTableName="reservation" baseColumnNames="user_id"
+			referencedTableName="utilisateur" referencedColumnNames="id" />
+		<createSequence sequenceName="seq_reservation" />
+
+	</changeSet>
+
+
+</databaseChangeLog>
