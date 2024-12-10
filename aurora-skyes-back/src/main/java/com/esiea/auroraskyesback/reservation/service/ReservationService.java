@@ -3,6 +3,8 @@ package com.esiea.auroraskyesback.reservation.service;
 import com.esiea.auroraskyesback.reservation.dto.ReservationDTO;
 import com.esiea.auroraskyesback.reservation.entity.ReservationEntity;
 
+import java.util.List;
+
 public interface ReservationService {
 
     /**
@@ -25,5 +27,12 @@ public interface ReservationService {
      * @return la réservation
      */
     ReservationEntity getReservation(Long id);
+
+    /**
+     * Récupère les réservation
+     * @param id de l'utilisateur
+     * @return les réservations
+     */
+    List<ReservationEntity> getUserReservation(Long id);
 
 }

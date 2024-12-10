@@ -106,4 +106,9 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationDAO.findById(id).orElseThrow(() -> new RuntimeException("Réservation introuvable"));
     }
 
+    /** {@inheritDoc} */
+    public List<ReservationEntity> getUserReservation(Long id) {
+        return reservationDAO.findByUserId(id);
+    }
+
 }
