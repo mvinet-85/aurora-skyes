@@ -3,6 +3,8 @@ package com.esiea.auroraskyesback.reservation.service;
 import com.esiea.auroraskyesback.reservation.dao.ReservationDAO;
 import com.esiea.auroraskyesback.reservation.dto.ReservationDTO;
 import com.esiea.auroraskyesback.reservation.entity.ReservationEntity;
+import com.esiea.auroraskyesback.reservation.exception.NoAvailableSeatsException;
+import com.esiea.auroraskyesback.reservation.exception.ReservationNotFoundException;
 import com.esiea.auroraskyesback.reservation.mapper.ReservationMapper;
 import com.esiea.auroraskyesback.reservation.model.Classe;
 import com.esiea.auroraskyesback.utilisateur.entity.UtilisateurEntity;
@@ -55,7 +57,7 @@ public class ReservationServiceImpl implements ReservationService {
         VolEntity vol = volService.findVolById(reservationDTO.getVolId());
 
         if (vol.getPlaceDisponible() <= 0) {
-            throw new RuntimeException("Aucune place disponible pour le vol");
+            throw new NoAvailableSeatsException("Aucune place disponible pour le vol ID : " + vol.getId());
         }
 
         vol.setPlaceDisponible(vol.getPlaceDisponible() - 1);
@@ -89,9 +91,8 @@ public class ReservationServiceImpl implements ReservationService {
     /** {@inheritDoc} */
     @Transactional
     public ReservationEntity updateReservation(ReservationDTO reservationDTO) {
-
         ReservationEntity existingReservation = reservationDAO.findById(reservationDTO.getId())
-                .orElseThrow(() -> new RuntimeException("Réservation introuvable"));
+                .orElseThrow(() -> new ReservationNotFoundException("Réservation introuvable pour ID : " + reservationDTO.getId()));
 
         volService.findVolById(reservationDTO.getVolId());
 
@@ -103,7 +104,8 @@ public class ReservationServiceImpl implements ReservationService {
 
     /** {@inheritDoc} */
     public ReservationEntity getReservation(Long id) {
-        return reservationDAO.findById(id).orElseThrow(() -> new RuntimeException("Réservation introuvable"));
+        return reservationDAO.findById(id)
+                .orElseThrow(() -> new ReservationNotFoundException("Réservation introuvable pour ID : " + id));
     }
 
 }

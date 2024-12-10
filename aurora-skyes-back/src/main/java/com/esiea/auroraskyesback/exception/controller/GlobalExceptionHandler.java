@@ -3,6 +3,8 @@ package com.esiea.auroraskyesback.exception.controller;
 import com.esiea.auroraskyesback.authentification.exception.InvalidPasswordException;
 import com.esiea.auroraskyesback.monnaie.exception.MonnaieNotFoundException;
 import com.esiea.auroraskyesback.monnaie.exception.MonnaieUpdateException;
+import com.esiea.auroraskyesback.reservation.exception.NoAvailableSeatsException;
+import com.esiea.auroraskyesback.reservation.exception.ReservationNotFoundException;
 import com.esiea.auroraskyesback.utilisateur.exception.InvalidUtilisateurException;
 import com.esiea.auroraskyesback.utilisateur.exception.UtilisateurNotFoundException;
 import com.esiea.auroraskyesback.vol.exception.InvalidVolException;
@@ -48,6 +50,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MonnaieUpdateException.class)
     public ResponseEntity<String> handleMonnaieUpdateException(MonnaieUpdateException ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(ReservationNotFoundException.class)
+    public ResponseEntity<String> handleReservationNotFoundException(ReservationNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(NoAvailableSeatsException.class)
+    public ResponseEntity<String> handleNoAvailableSeatsException(NoAvailableSeatsException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
     /**
