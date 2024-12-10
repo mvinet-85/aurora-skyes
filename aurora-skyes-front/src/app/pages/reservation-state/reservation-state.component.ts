@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {HeaderComponent} from '../../shared/header/header.component';
 import {ReservationStatService} from "../../core/services/statistique/reservation-stat.service";
 import {Subscription} from "rxjs";
@@ -17,6 +17,7 @@ import {
   DoughnutController,
   Legend,
   LinearScale,
+  LineController,
   LineElement,
   PieController,
   PointElement,
@@ -27,11 +28,12 @@ import {
 Chart.register(
   ArcElement,
   BarElement,
-  LineElement,
-  PointElement,
   BarController,
   DoughnutController,
   PieController,
+  LineElement,
+  PointElement,
+  LineController,
   CategoryScale,
   LinearScale,
   Legend,
@@ -53,6 +55,7 @@ export class ReservationStateComponent implements OnInit, OnDestroy {
 
   public reservationOK: number = 0;
   public reservationKO: number = 0;
+  @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
   public flightList: vol[] = [];
   public chartData: ChartConfiguration<'line'>['data'] = {
     labels: [],
@@ -61,12 +64,14 @@ export class ReservationStateComponent implements OnInit, OnDestroy {
         label: 'Réservations OK',
         data: [],
         borderColor: '#007bff',
+        backgroundColor: '#007bff',
         fill: false
       },
       {
         label: 'Réservations KO',
         data: [],
         borderColor: '#f44336',
+        backgroundColor: '#f44336',
         fill: false
       }
     ]
@@ -113,7 +118,7 @@ export class ReservationStateComponent implements OnInit, OnDestroy {
     this.flightService.getAllVols().subscribe(
       (data) => {
         this.flightList = data;
-        this.listenToAllFlights(); // Commence à écouter les SSE après avoir récupéré les vols
+        this.listenToAllFlights();
       },
       (error) => {
         console.error('Erreur lors de la récupération des vols', error);
@@ -123,16 +128,32 @@ export class ReservationStateComponent implements OnInit, OnDestroy {
   }
 
   private listenToAllFlights(): void {
+    const MAX_POINTS = 20;
+
     this.flightList.forEach(vol => {
       const subscription = this.reservationStatService.startListening(vol.id).subscribe(
         (event) => {
+          const currentTime = new Date().toLocaleTimeString();
+
           if (event.event === 'ReservationOK') {
             this.reservationOK = event.data;
           } else if (event.event === 'ReservationError') {
-            console.error('Erreur reçue :', event.data);
-            this.reservationKO++;
+            this.reservationKO = event.data;
           }
-          this.updateChartData();
+
+          // Ajout des nouvelles données
+          this.chartData.labels?.push(currentTime);
+          this.chartData.datasets[0].data.push(this.reservationOK);
+          this.chartData.datasets[1].data.push(this.reservationKO);
+
+          // Limitation des données affichées
+          if (this.chartData.labels && this.chartData.labels.length > MAX_POINTS) {
+            this.chartData.labels.shift();
+            this.chartData.datasets[0].data.shift();
+            this.chartData.datasets[1].data.shift();
+          }
+
+          this.chart?.update();
         },
         (error) => {
           console.error('Erreur dans le flux SSE :', error);
@@ -142,6 +163,7 @@ export class ReservationStateComponent implements OnInit, OnDestroy {
       this.subscriptions.push(subscription);
     });
   }
+
 
   private updateChartData(): void {
     this.chartData.datasets[0].data = [this.reservationOK, this.reservationKO];
