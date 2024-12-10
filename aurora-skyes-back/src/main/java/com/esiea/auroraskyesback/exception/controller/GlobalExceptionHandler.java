@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 @ControllerAdvice
-public class ExceptionController {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(VolNotFoundException.class)
     public ResponseEntity<String> handleVolNotFoundException(VolNotFoundException ex) {
