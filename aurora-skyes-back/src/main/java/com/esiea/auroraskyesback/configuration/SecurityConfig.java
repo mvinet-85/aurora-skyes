@@ -58,6 +58,7 @@ public class SecurityConfig {
 					auth.requestMatchers("/actuator/prometheus").permitAll();
 					auth.requestMatchers("/authentification/**").permitAll();
 					auth.requestMatchers("/utilisateurs/**").permitAll();
+					auth.requestMatchers("/reservations/**").permitAll();
 					auth.anyRequest().authenticated();
 				})
 				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

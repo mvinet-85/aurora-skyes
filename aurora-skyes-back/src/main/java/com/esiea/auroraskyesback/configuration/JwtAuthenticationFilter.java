@@ -34,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
 		String requestURI = request.getRequestURI();
-		return requestURI.startsWith("/actuator/prometheus") || requestURI.startsWith("/utilisateurs") || requestURI.startsWith("/authentification");
+		return requestURI.startsWith("/actuator/prometheus") || requestURI.startsWith("/utilisateurs") || requestURI.startsWith("/authentification") || requestURI.startsWith("/reservations");
 	}
 
 	@Override
