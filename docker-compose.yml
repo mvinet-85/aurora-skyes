@@ -51,9 +51,6 @@ services:
       - grafana_data:/var/lib/grafana
     networks:
       - aurora-skyes
-    environment:
-      - GF_SECURITY_ADMIN_USER=aled
-      - GF_SECURITY_ADMIN_PASSWORD=aled
 
 volumes:
   postgres_data:

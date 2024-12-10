@@ -1,7 +1,6 @@
 package com.esiea.auroraskyesback.reservation.controller;
 
 import com.esiea.auroraskyesback.reservation.dto.ReservationDTO;
-import com.esiea.auroraskyesback.reservation.entity.ReservationEntity;
 import com.esiea.auroraskyesback.reservation.mapper.ReservationMapper;
 import com.esiea.auroraskyesback.reservation.service.ReservationService;
 import org.springframework.web.bind.annotation.*;

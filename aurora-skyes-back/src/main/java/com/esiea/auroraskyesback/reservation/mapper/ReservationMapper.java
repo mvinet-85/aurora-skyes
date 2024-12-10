@@ -4,8 +4,6 @@ import com.esiea.auroraskyesback.reservation.dto.ReservationDTO;
 import com.esiea.auroraskyesback.reservation.entity.ReservationEntity;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 public class ReservationMapper {
 

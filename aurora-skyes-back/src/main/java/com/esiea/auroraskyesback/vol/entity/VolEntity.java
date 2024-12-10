@@ -11,33 +11,34 @@ import java.util.Date;
 @Table(name = "vol")
 public class VolEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vol_id_generator")
+	@SequenceGenerator(name = "vol_id_generator", sequenceName = "seq_vol", allocationSize = 1)
+	private Long id;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false)
-    private Date dateDepart;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(nullable = false)
+	private Date dateDepart;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false)
-    private Date dateArrive;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(nullable = false)
+	private Date dateArrive;
 
-    @ManyToOne
-    @JoinColumn(name = "aeroport_depart_id", nullable = false)
-    private AeroportEntity aeroportDepart;
+	@ManyToOne
+	@JoinColumn(name = "aeroport_depart_id", nullable = false)
+	private AeroportEntity aeroportDepart;
 
-    @ManyToOne
-    @JoinColumn(name = "aeroport_arrive_id", nullable = false)
-    private AeroportEntity aeroportArrivee;
+	@ManyToOne
+	@JoinColumn(name = "aeroport_arrive_id", nullable = false)
+	private AeroportEntity aeroportArrivee;
 
-    @Column(nullable = false)
-    private int placeDisponible;
+	@Column(nullable = false)
+	private int placeDisponible;
 
-    @Column(nullable = false)
-    private int prix;
+	@Column(nullable = false)
+	private int prix;
 
-    @Column(nullable = false)
-    private boolean escale;
+	@Column(nullable = false)
+	private boolean escale;
 
 }
