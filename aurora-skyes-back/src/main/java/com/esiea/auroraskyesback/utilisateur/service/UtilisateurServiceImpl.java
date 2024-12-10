@@ -4,6 +4,8 @@ import com.esiea.auroraskyesback.authentification.service.AuthentificationServic
 import com.esiea.auroraskyesback.utilisateur.dao.UtilisateurDAO;
 import com.esiea.auroraskyesback.utilisateur.dto.UtilisateurDTO;
 import com.esiea.auroraskyesback.utilisateur.entity.UtilisateurEntity;
+import com.esiea.auroraskyesback.utilisateur.exception.InvalidUtilisateurException;
+import com.esiea.auroraskyesback.utilisateur.exception.UtilisateurNotFoundException;
 import com.esiea.auroraskyesback.utilisateur.mapper.UtilisateurMapper;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,7 +39,9 @@ public class UtilisateurServiceImpl implements UserDetailsService, UtilisateurSe
     /** {@inheritDoc} */
     @Transactional
     public UtilisateurDTO creerUtilisateur(UtilisateurDTO utilisateurDTO) {
-
+        if (utilisateurDTO.getEmail() == null || utilisateurDTO.getMotDePasse() == null) {
+            throw new InvalidUtilisateurException("Les champs email et mot de passe sont obligatoires");
+        }
         UtilisateurEntity utilisateur = this.utilisateurMapper.toEntity(utilisateurDTO);
         utilisateur.setMotDePasse(this.authentificationService.hashMotDePasse(utilisateurDTO.getMotDePasse()));
         UtilisateurEntity savedUser = utilisateurDAO.save(utilisateur);
@@ -47,18 +51,20 @@ public class UtilisateurServiceImpl implements UserDetailsService, UtilisateurSe
 
     /** {@inheritDoc} */
     public UtilisateurEntity findUtilisateurByEmail(String email) {
-        return this.utilisateurDAO.findByEmail(email).orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+        return this.utilisateurDAO.findByEmail(email)
+                .orElseThrow(() -> new UtilisateurNotFoundException("Utilisateur avec l'email " + email + " introuvable"));
     }
 
     public UtilisateurEntity findUtilisateurById(Long id) {
-        return this.utilisateurDAO.findById(id).orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+        return this.utilisateurDAO.findById(id)
+                .orElseThrow(() -> new UtilisateurNotFoundException("Utilisateur avec l'ID " + id + " introuvable"));
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         UtilisateurEntity utilisateur = this.utilisateurDAO.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
+                .orElseThrow(() -> new UtilisateurNotFoundException("Utilisateur avec l'email " + email + " introuvable"));
 
         return new User(utilisateur.getEmail(), utilisateur.getMotDePasse(), new ArrayList<>());
 

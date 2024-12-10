@@ -1,5 +1,7 @@
 package com.esiea.auroraskyesback.exception.controller;
 
+import com.esiea.auroraskyesback.utilisateur.exception.InvalidUtilisateurException;
+import com.esiea.auroraskyesback.utilisateur.exception.UtilisateurNotFoundException;
 import com.esiea.auroraskyesback.vol.exception.InvalidVolException;
 import com.esiea.auroraskyesback.vol.exception.VolNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidVolException.class)
     public ResponseEntity<String> handleInvalidVolException(InvalidVolException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(UtilisateurNotFoundException.class)
+    public ResponseEntity<String> handleUtilisateurNotFoundException(UtilisateurNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(InvalidUtilisateurException.class)
+    public ResponseEntity<String> handleInvalidUtilisateurException(InvalidUtilisateurException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
