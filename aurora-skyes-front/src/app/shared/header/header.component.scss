@@ -33,7 +33,11 @@ header {
   }
 
   .deconnexion {
-    width: 150px;
+    width: 200px;
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    justify-content: end;
 
     button {
       border-radius: 20px;
@@ -41,6 +45,11 @@ header {
       padding: 10px 20px;
       background: white;
       color: #007bff;
+    }
+
+    svg {
+      width: 30px;
+      margin-right: 10px;
     }
   }
 }
