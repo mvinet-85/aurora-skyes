@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {reservationStat} from '../../models/reservation-stat';
 
 @Injectable({
     providedIn: 'root'
@@ -13,18 +12,21 @@ export class ReservationStatService {
     constructor() {
     }
 
-    startListening(): Observable<reservationStat> {
+    startListening(volId: number): Observable<{ event: string, data: any }> {
         return new Observable(observer => {
-            this.eventSource = new EventSource(this.url);
+            this.eventSource = new EventSource(`${this.url}/${volId}`);
 
             this.eventSource.onmessage = (event) => {
-                try {
-                    const data: reservationStat = JSON.parse(event.data);
-                    observer.next(data);
-                } catch (error) {
-                    observer.error('Erreur lors du parsing des données SSE');
-                }
+                observer.next({event: 'message', data: event.data});
             };
+
+            this.eventSource.addEventListener('ReservationOK', (event: MessageEvent) => {
+                observer.next({event: 'ReservationOK', data: JSON.parse(event.data)});
+            });
+
+            this.eventSource.addEventListener('ReservationError', (event: MessageEvent) => {
+                observer.next({event: 'ReservationError', data: event.data});
+            });
 
             this.eventSource.onerror = (error) => {
                 observer.error(error);

@@ -1,14 +1,5 @@
 <app-header/>
-@if (reservationStats) {
-    <div>
-        <h2>Statistiques des réservations</h2>
-        <p>Date : {{ reservationStats.date | date }}</p>
-        <p>Réservations OK : {{ reservationStats.reservationOK }}</p>
-        <p>Réservations KO : {{ reservationStats.reservationKO }}</p>
-    </div>
-} @else {
-    <div>
-        <p>En attente des données...</p>
-    </div>
-}
+
+reservationOK : {{ reservationOK }}
+reservationKO : {{ reservationKO }}
 
