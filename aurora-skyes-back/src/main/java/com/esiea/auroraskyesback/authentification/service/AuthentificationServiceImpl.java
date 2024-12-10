@@ -1,5 +1,6 @@
 package com.esiea.auroraskyesback.authentification.service;
 
+import com.esiea.auroraskyesback.authentification.exception.InvalidPasswordException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,9 @@ public class AuthentificationServiceImpl implements AuthentificationService {
 
     /** {@inheritDoc} */
     public String hashMotDePasse(String motDePasse) {
+        if (motDePasse == null || motDePasse.isEmpty()) {
+            throw new InvalidPasswordException("Le mot de passe fourni est invalide");
+        }
         return passwordEncoder.encode(motDePasse);
     }
 
