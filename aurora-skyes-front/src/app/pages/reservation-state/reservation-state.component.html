@@ -3,3 +3,13 @@
 reservationOK : {{ reservationOK }}
 reservationKO : {{ reservationKO }}
 
+<div class="chart-container">
+    <h2>Statistiques des réservations</h2>
+    <canvas [data]="chartData"
+            [options]="chartOptions"
+            baseChart
+            chartType="doughnut">
+    </canvas>
+</div>
+
+
