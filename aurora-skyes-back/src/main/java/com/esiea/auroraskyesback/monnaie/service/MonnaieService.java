@@ -3,7 +3,11 @@ package com.esiea.auroraskyesback.monnaie.service;
 import com.esiea.auroraskyesback.monnaie.dto.MonnaieDTO;
 import com.esiea.auroraskyesback.monnaie.entity.MonnaieEntity;
 import com.esiea.auroraskyesback.monnaie.dao.MonnaieDAO;
+import com.esiea.auroraskyesback.monnaie.exception.MonnaieNotFoundException;
+import com.esiea.auroraskyesback.monnaie.exception.MonnaieUpdateException;
 import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
@@ -21,6 +25,7 @@ import java.util.List;
 
 @Service
 public class MonnaieService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MonnaieService.class);
 
     private final MonnaieDAO monnaieDAO;
 
@@ -31,6 +36,10 @@ public class MonnaieService {
     public List<MonnaieDTO> getExchangeRates() {
 
         List<MonnaieEntity> monnaies = monnaieDAO.findAll();
+
+        if (monnaies.isEmpty()) {
+            throw new MonnaieNotFoundException("Aucune monnaie disponible dans la base de données.");
+        }
 
         List<MonnaieDTO> monnaieDTOs = new ArrayList<>();
 
@@ -100,7 +109,8 @@ public class MonnaieService {
             System.out.println("Exchange rates updated successfully");
 
         } catch (Exception e) {
-            System.err.println("Failed to update exchange rates: " + e.getMessage());
+            LOGGER.error("Échec de la mise à jour des taux de change.");
+            throw new MonnaieUpdateException("Échec de la mise à jour des taux de change.", e);
         }
     }
 
