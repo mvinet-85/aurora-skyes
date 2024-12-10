@@ -61,7 +61,7 @@ public class ReservationServiceImpl implements ReservationService {
 
         if (vol.getPlaceDisponible() <= 0) {
             LOGGER.error("Aucune place disponible pour le vol ID : " + vol.getId());
-            throw new NoAvailableSeatsException("Aucune place disponible pour le vol ID : " + vol.getId());
+            throw new NoAvailableSeatsException("Aucune place disponible pour le vol ID : " + vol.getId(), vol.getId());
         }
 
         vol.setPlaceDisponible(vol.getPlaceDisponible() - 1);

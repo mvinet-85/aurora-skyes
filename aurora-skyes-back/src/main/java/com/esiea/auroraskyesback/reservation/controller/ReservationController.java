@@ -7,14 +7,21 @@ import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
-
-import java.time.Duration;
+import reactor.core.publisher.Sinks;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 @RequestMapping("/reservations")
 public class ReservationController {
+
+    // Map pour compter les réservations par vol et minute
+    private final ConcurrentHashMap<Long, AtomicLong> reservationsCountPerVol = new ConcurrentHashMap<>();
+
+    private final Sinks.Many<Map.Entry<Long, Long>> sink = Sinks.many().multicast().onBackpressureBuffer();
 
     /** {@link ReservationService} */
     private final ReservationService reservationService;
@@ -35,7 +42,18 @@ public class ReservationController {
      */
     @PostMapping
     public ReservationDTO createReservation(@RequestBody ReservationDTO reservationDTO) {
-        return this.reservationMapper.toDTO(reservationService.createReservation(reservationDTO));
+        ReservationDTO createdReservation = this.reservationMapper.toDTO(reservationService.createReservation(reservationDTO));
+        Long volId = reservationDTO.getVolId();
+
+        // Ajouter ou incrémenter le compteur pour cet ID de vol
+        long count = reservationsCountPerVol
+                .computeIfAbsent(volId, id -> new AtomicLong(0))
+                .incrementAndGet();
+
+        // Publier un événement dans le sink
+        sink.tryEmitNext(Map.entry(volId, count));
+
+        return createdReservation;
     }
 
     /**
@@ -69,14 +87,14 @@ public class ReservationController {
     }
 
 
-    @GetMapping(name = "/historique", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<ServerSentEvent<String>> getEvents() {
-        return Flux.interval(Duration.ofSeconds(1))
-                .map(counter -> ServerSentEvent.<String>builder()
-                        .id(String.valueOf(counter))
-                        .data("Message bidon #" + counter)
+    @GetMapping(value = "/historique/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<ServerSentEvent<Long>> getReservationHistory(@PathVariable Long id) {
+        return sink.asFlux()
+                .filter(event -> event.getKey().equals(id))
+                .map(event -> ServerSentEvent.<Long>builder()
+                        .id(String.valueOf(event.getKey()))
+                        .data(event.getValue())
                         .event("ReservationOK")
-                        .retry(Duration.ofSeconds(1))
                         .build());
     }
 

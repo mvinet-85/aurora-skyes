@@ -10,12 +10,28 @@ import com.esiea.auroraskyesback.utilisateur.exception.UtilisateurNotFoundExcept
 import com.esiea.auroraskyesback.vol.exception.InvalidVolException;
 import com.esiea.auroraskyesback.vol.exception.VolNotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Sinks;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    private final ConcurrentLinkedQueue<String> reservationsCountfailPerMinute = new ConcurrentLinkedQueue<>();
+
+    private final Sinks.Many<String> errorSink = Sinks.many().multicast().onBackpressureBuffer();
+
+    private void logError(String errorMessage) {
+        reservationsCountfailPerMinute.add(errorMessage);
+        errorSink.tryEmitNext(errorMessage);
+    }
 
     /**
      * Gère l'exception VolNotFoundException.
@@ -113,6 +129,8 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(NoAvailableSeatsException.class)
     public ResponseEntity<String> handleNoAvailableSeatsException(NoAvailableSeatsException ex) {
+        String errorMessage = "Erreur (NoAvailableSeatsException) : Vol ID : " + ex.getVolId() + " - " + ex.getMessage() + " à " + LocalDateTime.now();
+        logError(errorMessage);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
@@ -120,11 +138,22 @@ public class GlobalExceptionHandler {
      * Gère toutes les autres exceptions non traitées spécifiquement par les autres gestionnaires d'exceptions.
      *
      * @param ex l'exception générale levée.
-     * @param request l'objet WebRequest contenant des informations supplémentaires sur la demande.
      * @return la réponse HTTP avec un message générique et le code de statut 500 (INTERNAL_SERVER_ERROR).
      */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleGlobalException(Exception ex, WebRequest request) {
+    public ResponseEntity<String> handleGlobalException(Exception ex) {
         return new ResponseEntity<>("Une erreur est survenue: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @GetMapping(value = "/reservations/historique/error/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<ServerSentEvent<String>> getReservationErrors(@PathVariable Long id) {
+        return errorSink.asFlux()
+                .filter(error -> error.contains("Vol ID : " + id))
+                .map(error -> ServerSentEvent.<String>builder()
+                        .id(String.valueOf(System.currentTimeMillis()))
+                        .data(error)
+                        .event("ReservationError")
+                        .build());
+    }
+
 }
