@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router'; // Import pour la navigation
-import { DatePipe, NgForOf, NgIf } from '@angular/common';
+import {Component, inject, OnInit} from '@angular/core';
+import {DatePipe} from '@angular/common';
+import {reservation} from '../../core/models/reservation';
+import {ReservationService} from '../../core/services/reservation/reservation.service';
+import {ToastService} from '../../core/services/toast/toast.service';
+import {AuthService} from '../../core/services/authentification/auth.service';
+import {Router} from '@angular/router';
+import {HeaderComponent} from '../../shared/header/header.component';
 
 interface Reservation {
   nom: string;
@@ -16,39 +21,42 @@ interface Reservation {
   standalone: true,
   imports: [
     DatePipe,
-    NgIf,
-    NgForOf
+    HeaderComponent,
   ],
   styleUrls: ['./reservation.component.scss'],
 })
 export class ReservationComponent implements OnInit {
-  reservationList: Reservation[] = [];
 
-  constructor(private router: Router) {}
+  public reservationList: reservation[] = [];
+  public userId: number | undefined = undefined;
+
+  private readonly reservationService: ReservationService = inject(ReservationService);
+  private readonly toastService: ToastService = inject(ToastService);
+  private readonly authService: AuthService = inject(AuthService);
+  private readonly router: Router = inject(Router);
 
   ngOnInit(): void {
-    this.loadReservations();
+    this.userId = this.authService.getUser()?.id;
+    this.getUserReservation();
   }
 
-  loadReservations(): void {
-    this.reservationList = [
-      {
-        nom: 'John Doe',
-        vol: 'Paris - New York',
-        date: new Date('2023-12-10'),
-        passagers: 2,
-        classe: 'Economy',
-      },
-      {
-        nom: 'Jane Smith',
-        vol: 'London - Tokyo',
-        date: new Date('2023-12-15'),
-        passagers: 1,
-        classe: 'Business',
-      },
-    ];
-  }
   navigateToHome(): void {
-    this.router.navigate(['/home']).then(r => {});
+    this.router.navigate(['/home']).then(r => {
+    });
+  }
+
+  private getUserReservation(): void {
+    if (this.userId) {
+      this.reservationService.reservationByUserId(this.userId).subscribe(
+        (data: reservation[]) => {
+          this.reservationList = data;
+        },
+        (error) => {
+          console.error('Erreur lors de la récupération des réservation', error);
+          this.toastService.showToast('Erreur lors de la récupération des réservation', 'error')
+        }
+      );
+    }
   }
 }
+
