@@ -10,18 +10,25 @@
       <tr>
         <th>#</th>
         <th>Vol</th>
+        <th>Date</th>
         <th>Classe</th>
         <th>Siege</th>
       </tr>
       </thead>
       <tbody>
         @for (reservation of reservationList; track reservationList.length) {
-          <tr>
-            <td>{{ reservation.id }}</td>
-            <td>{{ reservation.volId }}</td>
-            <td>{{ reservation.classe }}</td>
-            <td>{{ reservation.siege }}</td>
-          </tr>
+          @if (reservation.vol) {
+            <tr>
+              <td>{{ reservation.id }}</td>
+              <td>{{ reservation.vol.aeroportDepart.ville }}({{ reservation.vol.aeroportDepart.nom }})
+                ➡️ {{ reservation.vol.aeroportArrivee.ville }}({{ reservation.vol.aeroportArrivee.nom }})
+              </td>
+              <td>{{ reservation.vol.dateDepart | date:'HH:mm' }}🕰️ {{ reservation.vol.dateArrive | date:'HH:mm' }}
+              </td>
+              <td>{{ reservation.classe == 'ECONOMY' ? 'Economie' : 'Business' }}</td>
+              <td>{{ reservation.siege }}</td>
+            </tr>
+          }
         }
       </tbody>
     </table>

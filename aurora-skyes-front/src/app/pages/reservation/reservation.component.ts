@@ -6,6 +6,9 @@ import {ToastService} from '../../core/services/toast/toast.service';
 import {AuthService} from '../../core/services/authentification/auth.service';
 import {Router} from '@angular/router';
 import {HeaderComponent} from '../../shared/header/header.component';
+import {FlightService} from '../../core/services/flight/flight.service';
+import {vol} from '../../core/models/vol';
+import {Observable} from 'rxjs';
 
 interface Reservation {
   nom: string;
@@ -31,6 +34,7 @@ export class ReservationComponent implements OnInit {
   public userId: number | undefined = undefined;
 
   private readonly reservationService: ReservationService = inject(ReservationService);
+  private readonly flightService: FlightService = inject(FlightService);
   private readonly toastService: ToastService = inject(ToastService);
   private readonly authService: AuthService = inject(AuthService);
   private readonly router: Router = inject(Router);
@@ -45,15 +49,36 @@ export class ReservationComponent implements OnInit {
     });
   }
 
+  public getFlightById(id: number): Observable<vol> {
+    if (id) {
+      return this.flightService.getVolById(id);
+    } else {
+      throw new Error('Invalid flight ID');
+    }
+  }
+
   private getUserReservation(): void {
     if (this.userId) {
       this.reservationService.reservationByUserId(this.userId).subscribe(
         (data: reservation[]) => {
           this.reservationList = data;
+          this.reservationList.forEach((reservation: reservation) => {
+            if (reservation.volId) {
+              this.getFlightById(reservation.volId).subscribe(
+                (flightData: vol) => {
+                  reservation.vol = flightData;
+                },
+                (error) => {
+                  console.error('Erreur lors de la récupération du vol', error);
+                  this.toastService.showToast('Erreur lors de la récupération du vol', 'error');
+                }
+              );
+            }
+          });
         },
         (error) => {
-          console.error('Erreur lors de la récupération des réservation', error);
-          this.toastService.showToast('Erreur lors de la récupération des réservation', 'error')
+          console.error('Erreur lors de la récupération des réservations', error);
+          this.toastService.showToast('Erreur lors de la récupération des réservations', 'error');
         }
       );
     }
