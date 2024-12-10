@@ -65,17 +65,26 @@ export class ReservationStateComponent implements OnInit, OnDestroy {
         data: [],
         borderColor: '#007bff',
         backgroundColor: '#007bff',
-        fill: false
+        pointBackgroundColor: '#007bff',
+        pointBorderColor: '#ffffff',
+        pointBorderWidth: 2,
+        fill: false,
+        tension: 0.2
       },
       {
         label: 'Réservations KO',
         data: [],
         borderColor: '#f44336',
         backgroundColor: '#f44336',
-        fill: false
+        pointBackgroundColor: '#f44336',
+        pointBorderColor: '#ffffff',
+        pointBorderWidth: 2,
+        fill: false,
+        tension: 0.2
       }
     ]
   };
+
   public chartOptions: ChartOptions<'line'> = {
     responsive: true,
     plugins: {
