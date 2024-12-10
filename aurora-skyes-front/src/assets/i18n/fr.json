@@ -24,6 +24,7 @@
     "returnFlight": "Vol retour",
     "noOutboundFlight": "Pas de vol allé trouvé pour votre recherche",
     "noReturnFlight": "Pas de vol retour trouvé pour votre recherche",
-    "allFlights": "Liste de tous les vols"
+    "allFlights": "Liste de tous les vols",
+    "stopover": "Inclure les vols avec escale"
   }
 }

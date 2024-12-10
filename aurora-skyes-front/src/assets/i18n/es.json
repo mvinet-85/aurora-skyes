@@ -24,6 +24,7 @@
     "returnFlight": "Vuelo de vuelta",
     "noOutboundFlight": "No se encontró vuelo de ida para su búsqueda",
     "noReturnFlight": "No se encontró vuelo de vuelta para su búsqueda",
-    "allFlights": "Lista de todos los vuelos"
+    "allFlights": "Lista de todos los vuelos",
+    "stopover": "Incluir vuelos con escala"
   }
 }

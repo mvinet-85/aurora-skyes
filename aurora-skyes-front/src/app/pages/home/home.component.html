@@ -58,10 +58,17 @@
       <div class="form-group">
         <label for="class">{{ 'form.class' | translate }}</label>
         <select formControlName="class" id="class">
-          <option value="economy">{{ 'form.economy' | translate }}</option>
-          <option value="first">{{ 'form.first' | translate }}</option>
+          <option value="ECONOMY">{{ 'form.economy' | translate }}</option>
+          <option value="FIRST">{{ 'form.first' | translate }}</option>
         </select>
       </div>
+
+      <div class="form-group">
+				<label>
+          {{ 'form.stopover' | translate }}
+          <input type="checkbox" formControlName="escale" />
+				</label>
+			</div>
 
       <button (click)="onSearch()" [disabled]="flightSearchForm.invalid" class="search-button" type="button">
         {{ 'form.search' | translate }}
@@ -86,8 +93,8 @@
               <p class="long-text">{{ flight.aeroportDepart.ville }}({{ flight.aeroportDepart.nom }})
                 ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
               <p class="short-text">{{ flight.dateDepart | date:'HH:mm' }} 🕰️ {{ flight.dateArrive | date:'HH:mm' }}</p>
-              <p class="tag">{{ flightSearchForm.controls.class.value == 'economy' ? 'Economy' : 'Business' }}</p>
-              <p class="short-text">{{ flight.prix }} {{ flightSearchForm.controls.currency.value }}/person</p>
+              <p class="tag">{{ flightSearchForm.controls.class.value == 'ECONOMY' ? 'Economy' : 'Business' }}</p>
+              <p class="short-text">{{ calculerPrix(flight) }} {{ flightSearchForm.controls.currency.value }}/person</p>
               <button type="button" (click)="selectFlight(flight)">{{ 'form.bookFlight' | translate }}</button>
             </div>
           </div>
@@ -105,8 +112,8 @@
               <p class="long-text">{{ flight.aeroportDepart.ville }}({{ flight.aeroportDepart.nom }})
                 ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
               <p class="short-text">{{ flight.dateDepart | date:'HH:mm' }} 🕰️ {{ flight.dateArrive | date:'HH:mm' }}</p>
-              <p class="tag">{{ flightSearchForm.controls.class.value == 'economy' ? 'Economy' : 'Business' }}</p>
-              <p class="short-text">{{ flight.prix }} {{ flightSearchForm.controls.currency.value }}/person</p>
+              <p class="tag">{{ flightSearchForm.controls.class.value == 'ECONOMY' ? 'Economy' : 'Business' }}</p>
+              <p class="short-text">{{ calculerPrix(flight) }} {{ flightSearchForm.controls.currency.value }}/person</p>
               <button type="button" (click)="selectFlight(flight)">{{ 'form.bookFlight' | translate }}</button>
             </div>
           </div>
@@ -121,8 +128,8 @@
               <p class="long-text">{{ flight.aeroportDepart.ville }}({{ flight.aeroportDepart.nom }})
                 ➡️ {{ flight.aeroportArrivee.ville }}({{ flight.aeroportArrivee.nom }})</p>
               <p class="short-text">{{ flight.dateDepart | date:'HH:mm' }} 🕰️ {{ flight.dateArrive | date:'HH:mm' }}</p>
-              <p class="tag">{{ flightSearchForm.controls.class.value == 'economy' ? 'Economy' : 'Business' }}</p>
-              <p class="short-text">{{ flight.prix }} EUR/person</p>
+              <p class="tag">{{ flightSearchForm.controls.class.value == 'ECONOMY' ? 'Economy' : 'Business' }}</p>
+              <p class="short-text">{{ calculerPrix(flight) }} {{ flightSearchForm.controls.currency.value }}/person</p>
               <button type="button" (click)="selectFlight(flight)">{{ 'form.bookFlight' | translate }}</button>
             </div>
           </div>

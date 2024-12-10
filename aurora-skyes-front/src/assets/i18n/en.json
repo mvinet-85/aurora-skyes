@@ -24,6 +24,7 @@
     "returnFlight": "Return flight",
     "noOutboundFlight": "No outbound flight found for your search",
     "noReturnFlight": "No return flight found for your search",
-    "allFlights": "List of all flights"
+    "allFlights": "List of all flights",
+    "stopover": "Include flights with a layover"
   }
 }
