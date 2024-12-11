@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface UtilisateurMapper {
 
-    UtilisateurBDDTO utilisateurBDDTOToUtilisateurBDDTO(UtilisateurDTO utilisateurDTO);
+    UtilisateurBDDTO utilisateurDTOToUtilisateurBDDTO(UtilisateurDTO utilisateurDTO);
 
     UtilisateurDTO utilisateurBDDTOToUtilisateurDTO(UtilisateurBDDTO utilisateurBDDTO);
 

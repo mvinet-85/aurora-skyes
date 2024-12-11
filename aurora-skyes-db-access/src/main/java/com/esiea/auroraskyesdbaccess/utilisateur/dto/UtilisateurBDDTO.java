@@ -1,8 +1,12 @@
 package com.esiea.auroraskyesdbaccess.utilisateur.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UtilisateurBDDTO {
 
     /** Id de l'utilisateur */

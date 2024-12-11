@@ -1,20 +1,19 @@
 package com.esiea.auroraskyesdbaccess.monnaie.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class MonnaieBDDTO {
 
     /** Nom de la monnaie */
-    private final String nom;
+    private String nom;
 
     /** Taux de la monnaie */
-    private final double taux;
-
-    public MonnaieBDDTO(String nom, double taux) {
-        this.nom = nom;
-        this.taux = taux;
-    }
+    private double taux;
 
 }
 

@@ -13,8 +13,11 @@ import java.util.List;
 @RequestMapping("/monnaies")
 public class MonnaieController {
 
-    @Autowired
-    private MonnaieService exchangeRateService;
+    private final MonnaieService exchangeRateService;
+
+    public MonnaieController(final MonnaieService exchangeRateService) {
+        this.exchangeRateService = exchangeRateService;
+    }
 
     @GetMapping
     public List<MonnaieBDDTO> getExchangeRates() {

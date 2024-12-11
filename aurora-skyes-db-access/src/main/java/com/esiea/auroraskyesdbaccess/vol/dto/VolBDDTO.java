@@ -1,11 +1,15 @@
 package com.esiea.auroraskyesdbaccess.vol.dto;
 
 import com.esiea.auroraskyesdbaccess.aeroport.dto.AeroportBDDTO;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class VolBDDTO {
 
     /** Id du vol */

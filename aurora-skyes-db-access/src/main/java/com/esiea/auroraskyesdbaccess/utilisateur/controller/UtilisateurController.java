@@ -3,8 +3,6 @@ package com.esiea.auroraskyesdbaccess.utilisateur.controller;
 import com.esiea.auroraskyesdbaccess.utilisateur.dto.UtilisateurBDDTO;
 import com.esiea.auroraskyesdbaccess.utilisateur.mapper.UtilisateurMapper;
 import com.esiea.auroraskyesdbaccess.utilisateur.service.UtilisateurService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,10 +27,8 @@ public class UtilisateurController {
      * @return l'utilisateur créé
      */
     @PostMapping
-    public ResponseEntity<?> creerUtilisateur(@RequestBody UtilisateurBDDTO utilisateurDTO) {
-        UtilisateurBDDTO utilisateur = utilisateurService.creerUtilisateur(utilisateurDTO);
-
-        return new ResponseEntity<>(utilisateur.getId(), HttpStatus.CREATED);
+    public UtilisateurBDDTO creerUtilisateur(@RequestBody UtilisateurBDDTO utilisateurDTO) {
+        return this.utilisateurService.creerUtilisateur(utilisateurDTO);
     }
 
     /**

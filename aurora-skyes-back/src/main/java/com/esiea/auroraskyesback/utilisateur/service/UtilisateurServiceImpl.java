@@ -4,6 +4,7 @@ import com.esiea.auroraskyesback.authentification.service.AuthentificationServic
 import com.esiea.auroraskyesback.exception.controller.exception.ExternalApiException;
 import com.esiea.auroraskyesback.utilisateur.dto.UtilisateurDTO;
 import com.esiea.auroraskyesback.utilisateur.exception.InvalidUtilisateurException;
+import com.esiea.auroraskyesback.utilisateur.mapper.UtilisateurMapper;
 import com.esiea.auroraskyesdbaccess.utilisateur.dto.UtilisateurBDDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,11 +33,14 @@ public class UtilisateurServiceImpl implements UserDetailsService, UtilisateurSe
 
     private final RestTemplate restTemplate;
     private final AuthentificationService authentificationService;
+    private final UtilisateurMapper utilisateurMapper;
 
     public UtilisateurServiceImpl(RestTemplate restTemplate,
-                                  AuthentificationService authentificationService) {
+                                  AuthentificationService authentificationService,
+                                  UtilisateurMapper utilisateurMapper) {
         this.restTemplate = restTemplate;
         this.authentificationService = authentificationService;
+        this.utilisateurMapper = utilisateurMapper;
     }
 
     /** {@inheritDoc} */
@@ -50,9 +54,10 @@ public class UtilisateurServiceImpl implements UserDetailsService, UtilisateurSe
         try {
             // Hacher le mot de passe
             utilisateurDTO.setMotDePasse(authentificationService.hashMotDePasse(utilisateurDTO.getMotDePasse()));
+            UtilisateurBDDTO utilisateurBDDTO = this.utilisateurMapper.utilisateurDTOToUtilisateurBDDTO(utilisateurDTO);
 
             // Effectuer la requête POST
-            return makeRequest(fullUrl, HttpMethod.POST, utilisateurDTO, UtilisateurBDDTO.class).getBody();
+            return makeRequest(fullUrl, HttpMethod.POST, utilisateurBDDTO , UtilisateurBDDTO.class).getBody();
         } catch (Exception e) {
             LOGGER.error("Erreur lors de la création d'un utilisateur : {}", e.getMessage(), e);
             throw new ExternalApiException("Erreur lors de l'appel à l'API externe pour créer un utilisateur.", e);
@@ -118,7 +123,39 @@ public class UtilisateurServiceImpl implements UserDetailsService, UtilisateurSe
      * @return La réponse sous forme d'un objet {@link ResponseEntity}.
      */
     private <T> ResponseEntity<T> makeRequest(String url, HttpMethod method, Object requestBody, Class<T> responseType) {
-        HttpEntity<Object> requestEntity = new HttpEntity<>(requestBody, createHeaders());
-        return restTemplate.exchange(url, method, requestEntity, responseType);
+        try {
+            // Créer l'entité de requête avec les headers
+            HttpHeaders headers = createHeaders();
+            HttpEntity<Object> requestEntity = new HttpEntity<>(requestBody, headers);
+
+            // Log de la requête
+            LOGGER.info("Envoi de la requête HTTP");
+            LOGGER.info("URL: {}", url);
+            LOGGER.info("Méthode: {}", method);
+            LOGGER.info("Headers: {}", headers);
+            if (requestBody != null) {
+                LOGGER.info("Corps de la requête: {}", requestBody);
+            } else {
+                LOGGER.info("Aucun corps de requête.");
+            }
+
+            // Effectuer la requête
+            ResponseEntity<T> response = restTemplate.exchange(url, method, requestEntity, responseType);
+
+            // Log de la réponse
+            LOGGER.info("Réponse reçue avec statut: {}", response.getStatusCode());
+            if (response.getBody() != null) {
+                LOGGER.info("Corps de la réponse: {}", response.getBody());
+            } else {
+                LOGGER.info("La réponse ne contient aucun corps.");
+            }
+
+            return response;
+        } catch (Exception e) {
+            // Log de l'erreur
+            LOGGER.error("Erreur lors de la requête HTTP: {}", e.getMessage(), e);
+            throw new ExternalApiException("Erreur lors de l'appel à l'API externe.", e);
+        }
     }
+
 }

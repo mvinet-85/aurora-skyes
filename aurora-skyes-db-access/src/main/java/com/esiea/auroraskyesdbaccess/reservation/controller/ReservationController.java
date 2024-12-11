@@ -38,7 +38,7 @@ public class ReservationController {
      * @param reservationDTO informations mise a jour de la réservation
      * @return la réservation modifiée
      */
-    @PutMapping()
+    @PutMapping
     public ReservationBDDTO updateReservation(@RequestBody ReservationBDDTO reservationDTO) {
         return this.reservationMapper.reservationEntityToReservationBDDTO(this.reservationService.updateReservation(reservationDTO));
     }
