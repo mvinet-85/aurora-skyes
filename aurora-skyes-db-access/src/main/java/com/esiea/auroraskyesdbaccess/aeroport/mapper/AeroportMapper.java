@@ -6,9 +6,11 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface AeroportMapper {
 
     List<AeroportBDDTO> aeroportEntitiesToAeroportBDDTO(List<AeroportEntity> aeroportEntities);
+
+    AeroportBDDTO aeroportEntityToAeroportBDDTO(AeroportEntity aeroportEntity);
 
 }

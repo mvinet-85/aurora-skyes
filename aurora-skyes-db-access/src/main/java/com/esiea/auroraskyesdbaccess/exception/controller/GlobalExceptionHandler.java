@@ -1,6 +1,5 @@
 package com.esiea.auroraskyesdbaccess.exception.controller;
 
-import com.esiea.auroraskyesdbaccess.authentification.exception.InvalidPasswordException;
 import com.esiea.auroraskyesdbaccess.monnaie.exception.MonnaieNotFoundException;
 import com.esiea.auroraskyesdbaccess.monnaie.exception.MonnaieUpdateException;
 import com.esiea.auroraskyesdbaccess.reservation.exception.NoAvailableSeatsException;
@@ -58,17 +57,6 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(InvalidUtilisateurException.class)
     public ResponseEntity<String> handleInvalidUtilisateurException(InvalidUtilisateurException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-    }
-
-    /**
-     * Gère l'exception InvalidPasswordException.
-     *
-     * @param ex l'exception levée lorsqu'un mot de passe est invalide.
-     * @return la réponse HTTP avec un message d'erreur et le code de statut 400 (BAD_REQUEST).
-     */
-    @ExceptionHandler(InvalidPasswordException.class)
-    public ResponseEntity<String> handleInvalidPasswordException(InvalidPasswordException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 

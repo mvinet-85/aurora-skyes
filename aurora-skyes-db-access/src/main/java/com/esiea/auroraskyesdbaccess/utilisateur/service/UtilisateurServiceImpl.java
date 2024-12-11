@@ -1,6 +1,5 @@
 package com.esiea.auroraskyesdbaccess.utilisateur.service;
 
-import com.esiea.auroraskyesdbaccess.authentification.service.AuthentificationService;
 import com.esiea.auroraskyesdbaccess.utilisateur.dao.UtilisateurDAO;
 import com.esiea.auroraskyesdbaccess.utilisateur.dto.UtilisateurBDDTO;
 import com.esiea.auroraskyesdbaccess.utilisateur.entity.UtilisateurEntity;
@@ -28,15 +27,10 @@ public class UtilisateurServiceImpl implements UserDetailsService, UtilisateurSe
     /** {@link UtilisateurMapper} */
     private final UtilisateurMapper utilisateurMapper;
 
-    /** {@link AuthentificationService} */
-    private final AuthentificationService authentificationService;
-
     public UtilisateurServiceImpl(UtilisateurDAO utilisateurDAO,
-                              UtilisateurMapper utilisateurMapper,
-                              AuthentificationService authentificationService) {
+                              UtilisateurMapper utilisateurMapper) {
         this.utilisateurDAO = utilisateurDAO;
         this.utilisateurMapper = utilisateurMapper;
-        this.authentificationService = authentificationService;
     }
 
     /** {@inheritDoc} */
@@ -47,7 +41,6 @@ public class UtilisateurServiceImpl implements UserDetailsService, UtilisateurSe
             throw new InvalidUtilisateurException("Les champs email et mot de passe sont obligatoires");
         }
         UtilisateurEntity utilisateur = this.utilisateurMapper.utilisateurBDDTOToUtilisateurEntity(utilisateurDTO);
-        utilisateur.setMotDePasse(this.authentificationService.hashMotDePasse(utilisateurDTO.getMotDePasse()));
         UtilisateurEntity savedUser = utilisateurDAO.save(utilisateur);
 
         return this.utilisateurMapper.utilisateurEntityToUtilisateurBDDTO(savedUser);

@@ -6,10 +6,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-public class AuroraSkyesBackApplication {
+public class AuroraSkyesDBAccessApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AuroraSkyesBackApplication.class, args);
+		SpringApplication.run(AuroraSkyesDBAccessApplication.class, args);
 	}
 
 }
