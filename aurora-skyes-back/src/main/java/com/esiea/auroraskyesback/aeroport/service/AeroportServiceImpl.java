@@ -1,43 +1,46 @@
 package com.esiea.auroraskyesback.aeroport.service;
 
-import com.esiea.auroraskyesback.aeroport.dao.AeroportDAO;
+import com.esiea.auroraskyesback.aeroport.dto.AeroportDTO;
+
+// import com.esiea.auroraskyesback.exception.controller.exception.ExternalApiException;
 import com.esiea.auroraskyesback.aeroport.entity.AeroportEntity;
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Timer;
 import org.springframework.stereotype.Service;
+// import org.springframework.web.client.RestTemplate;
+// import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
 @Service
 public class AeroportServiceImpl implements AeroportService {
 
-	/** {@link AeroportDAO} */
-	private final AeroportDAO aeroportDAO;
-
-	/** Counter pour suivre le nombre d'appels */
-	private final Counter aeroportCounter;
-
-	/** Timer pour mesurer la durée des appels */
-	private final Timer aeroportTimer;
-
-	public AeroportServiceImpl(AeroportDAO aeroportDAO, MeterRegistry meterRegistry) {
-		this.aeroportDAO = aeroportDAO;
-
-		// Initialisation du compteur
-		this.aeroportCounter = meterRegistry.counter("service.aeroports.calls");
-
-		// Initialisation du timer
-		this.aeroportTimer = meterRegistry.timer("service.aeroports.execution.time");
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public List<AeroportEntity> getAllAeroports() {
-		aeroportCounter.increment(); // Incrémente le compteur à chaque appel
-
-		// Mesure la durée d'exécution de la méthode
-		return aeroportTimer.record(() -> this.aeroportDAO.findAll());
-	}
 	
+	// private final RestTemplate restTemplate;
+
+	// public AeroportServiceImpl(RestTemplate restTemplate) {
+    //     this.restTemplate = restTemplate;
+    // }
+
+	/**
+	 * Appelle l'API externe pour récupérer la liste des aéroports.
+	 *
+	 * @return liste des AeroportDTO
+	 */
+	public List<AeroportEntity> getAllAeroports() {
+		return null;
+		
+		// String apiUrl = "http://localhost:8080/aeroports";
+
+		// String fullUrl = UriComponentsBuilder.fromUriString(apiUrl)
+		// 		.build()
+		// 		.toUriString();
+
+		// try {
+		// 	AeroportDTO[] aeroportArray = null; // restTemplate.getForObject(fullUrl, AeroportBDDTO[].class);
+		// 	return Arrays.asList(aeroportArray);
+		// } catch (Exception e) {
+		// 	throw new ExternalApiException("Erreur lors de l'appel à l'API externe", e);
+		// }
+
+	}
+
 }

@@ -2,29 +2,13 @@ package com.esiea.auroraskyesback.aeroport.mapper;
 
 import com.esiea.auroraskyesback.aeroport.dto.AeroportDTO;
 import com.esiea.auroraskyesback.aeroport.entity.AeroportEntity;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
 
-@Component
-public class AeroportMapper {
+import java.util.List;
 
-    public AeroportEntity toEntity(AeroportDTO aeroportDTO) {
-        if (aeroportDTO == null) {
-            return null;
-        }
-        AeroportEntity aeroportEntity = new AeroportEntity();
-        aeroportEntity.setNom(aeroportDTO.getNom());
-        aeroportEntity.setVille(aeroportDTO.getVille());
-        return aeroportEntity;
-    }
+@Mapper
+public interface AeroportMapper {
 
-    public AeroportDTO toDTO(AeroportEntity aeroportEntity) {
-        if (aeroportEntity == null) {
-            return null;
-        }
-        AeroportDTO aeroportDTO = new AeroportDTO();
-        aeroportDTO.setId(aeroportEntity.getId());
-        aeroportDTO.setNom(aeroportEntity.getNom());
-        aeroportDTO.setVille(aeroportEntity.getVille());
-        return aeroportDTO;
-    }
+    List<AeroportDTO> aeroportEntitiesToAeroportDTO(List<AeroportEntity> aeroportEntities);
+
 }

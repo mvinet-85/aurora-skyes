@@ -1,8 +1,8 @@
-package com.esiea.auroraskyesback.aeroport.controller;
+package com.esiea.auroraskyesdbaccess.aeroport.controller;
 
-import com.esiea.auroraskyesback.aeroport.dto.AeroportDTO;
-import com.esiea.auroraskyesback.aeroport.mapper.AeroportMapper;
-import com.esiea.auroraskyesback.aeroport.service.AeroportService;
+import com.esiea.auroraskyesdbaccess.aeroport.dto.AeroportBDDTO;
+import com.esiea.auroraskyesdbaccess.aeroport.mapper.AeroportMapper;
+import com.esiea.auroraskyesdbaccess.aeroport.service.AeroportService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,8 +28,8 @@ public class AeroportController {
      * @return la liste des aéroports
      */
     @GetMapping
-    public List<AeroportDTO> getAllAeroports() {
-        return this.aeroportMapper.aeroportEntitiesToAeroportDTO(this.aeroportService.getAllAeroports());
+    public List<AeroportBDDTO> getAllAeroports() {
+        return this.aeroportMapper.aeroportEntitiesToAeroportBDDTO(this.aeroportService.getAllAeroports());
     }
 
 }

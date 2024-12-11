@@ -1,8 +1,9 @@
 package com.esiea.auroraskyesback.aeroport.service;
 
-import com.esiea.auroraskyesback.aeroport.entity.AeroportEntity;
-
 import java.util.List;
+
+import com.esiea.auroraskyesback.aeroport.dto.AeroportDTO;
+import com.esiea.auroraskyesback.aeroport.entity.AeroportEntity;
 
 public interface AeroportService {
 

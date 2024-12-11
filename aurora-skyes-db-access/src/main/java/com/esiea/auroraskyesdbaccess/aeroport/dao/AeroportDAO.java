@@ -1,6 +1,6 @@
-package com.esiea.auroraskyesback.aeroport.dao;
+package com.esiea.auroraskyesdbaccess.aeroport.dao;
 
-import com.esiea.auroraskyesback.aeroport.entity.AeroportEntity;
+import com.esiea.auroraskyesdbaccess.aeroport.entity.AeroportEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
