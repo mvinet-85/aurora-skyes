@@ -2,7 +2,6 @@ package com.esiea.auroraskyesback.exception.controller;
 
 import com.esiea.auroraskyesback.authentification.exception.InvalidPasswordException;
 import com.esiea.auroraskyesback.monnaie.exception.MonnaieNotFoundException;
-import com.esiea.auroraskyesback.monnaie.exception.MonnaieUpdateException;
 import com.esiea.auroraskyesback.reservation.exception.NoAvailableSeatsException;
 import com.esiea.auroraskyesback.reservation.exception.ReservationNotFoundException;
 import com.esiea.auroraskyesback.utilisateur.exception.InvalidUtilisateurException;
@@ -84,17 +83,6 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Gère l'exception MonnaieUpdateException.
-     *
-     * @param ex l'exception levée lorsqu'une mise à jour de monnaie échoue.
-     * @return la réponse HTTP avec un message d'erreur et le code de statut 500 (INTERNAL_SERVER_ERROR).
-     */
-    @ExceptionHandler(MonnaieUpdateException.class)
-    public ResponseEntity<String> handleMonnaieUpdateException(MonnaieUpdateException ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
-    }
-
-    /**
      * Gère l'exception ReservationNotFoundException.
      *
      * @param ex l'exception levée lorsqu'une réservation n'est pas trouvée.
@@ -120,11 +108,10 @@ public class GlobalExceptionHandler {
      * Gère toutes les autres exceptions non traitées spécifiquement par les autres gestionnaires d'exceptions.
      *
      * @param ex l'exception générale levée.
-     * @param request l'objet WebRequest contenant des informations supplémentaires sur la demande.
      * @return la réponse HTTP avec un message générique et le code de statut 500 (INTERNAL_SERVER_ERROR).
      */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleGlobalException(Exception ex, WebRequest request) {
+    public ResponseEntity<String> handleGlobalException(Exception ex) {
         return new ResponseEntity<>("Une erreur est survenue: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

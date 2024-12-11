@@ -1,7 +1,7 @@
 package com.esiea.auroraskyesback.reservation.service;
 
 import com.esiea.auroraskyesback.reservation.dto.ReservationDTO;
-import com.esiea.auroraskyesback.reservation.entity.ReservationEntity;
+import com.esiea.auroraskyesdbaccess.reservation.dto.ReservationBDDTO;
 
 import java.util.List;
 
@@ -12,27 +12,27 @@ public interface ReservationService {
      * @param reservationDTO informations de la réservation
      * @return la réservation créée
      */
-    ReservationEntity createReservation(ReservationDTO reservationDTO);
+    ReservationBDDTO createReservation(ReservationDTO reservationDTO);
 
     /**
      * Modifie la réservation
      * @param reservationDTO informations de la réservation a modifier
      * @return la réservation modifiée
      */
-    ReservationEntity updateReservation(ReservationDTO reservationDTO);
+    ReservationBDDTO updateReservation(ReservationDTO reservationDTO);
 
     /**
      * Récupère une réservation
      * @param id de la réservation
      * @return la réservation
      */
-    ReservationEntity getReservation(Long id);
+    ReservationBDDTO getReservation(Long id);
 
     /**
      * Récupère les réservation
      * @param id de l'utilisateur
      * @return les réservations
      */
-    List<ReservationEntity> getUserReservation(Long id);
+    List<ReservationBDDTO> getUserReservation(Long id);
 
 }

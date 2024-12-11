@@ -1,68 +1,90 @@
 package com.esiea.auroraskyesback.vol.service;
 
-import com.esiea.auroraskyesback.vol.dao.VolDAO;
-import com.esiea.auroraskyesback.vol.entity.VolEntity;
-import com.esiea.auroraskyesback.vol.exception.VolNotFoundException;
-import com.esiea.auroraskyesback.vol.exception.InvalidVolException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.esiea.auroraskyesback.exception.controller.exception.ExternalApiException;
+import com.esiea.auroraskyesdbaccess.vol.dto.VolBDDTO;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import io.micrometer.core.instrument.MeterRegistry;
-import jakarta.annotation.PostConstruct;
-import io.micrometer.core.instrument.Gauge;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class VolServiceImpl implements VolService {
-	private static final Logger LOGGER = LoggerFactory.getLogger(VolServiceImpl.class);
 
-	/** {@link VolDAO} */
-	private final VolDAO volDAO;
+	private static final String API_BASE_URL = "http://localhost:8081/vols";
+	private static final String API_KEY = "aled_aled_aled_aled_aled";
 
-	/** {@link MeterRegistry} */
-	private final MeterRegistry meterRegistry;
+	private final RestTemplate restTemplate;
 
-	public VolServiceImpl(VolDAO volDAO,
-			MeterRegistry meterRegistry) {
-		this.volDAO = volDAO;
-		this.meterRegistry = meterRegistry;
-	}
-
-	@PostConstruct
-	public void initializeMetrics() {
-		this.volDAO.findAll().forEach(vol -> {
-			Gauge.builder("vol.places_disponibles", () -> {
-				VolEntity updatedVol = volDAO.findById(vol.getId()).orElse(null);
-				return updatedVol != null ? updatedVol.getPlaceDisponible() : 0;
-			})
-			.description("Nombre de places disponibles pour chaque vol")
-			.tags("volId", String.valueOf(vol.getId()))
-			.register(meterRegistry);
-		});
+	public VolServiceImpl(RestTemplate restTemplate) {
+		this.restTemplate = restTemplate;
 	}
 
 	/** {@inheritDoc} */
-	public List<VolEntity> getAllVols() {
-		return this.volDAO.findAll();
-	}
+	@Override
+	public List<VolBDDTO> getAllVols() {
+		String fullUrl = buildUrl(API_BASE_URL);
 
-	/** {@inheritDoc} */
-	public VolEntity findVolById(Long id) {
-		return this.volDAO.findById(id)
-				.orElseThrow(() -> {
-					LOGGER.error("Vol avec l'ID " + id + " introuvable");
-					return new VolNotFoundException("Vol avec l'ID " + id + " introuvable");
-				});
-	}
-
-	/** {@inheritDoc} */
-	public void modifierVol(VolEntity vol) {
-		if (vol == null || vol.getId() == null) {
-			LOGGER.error("Le vol est invalide ou ne possède pas d'ID");
-			throw new InvalidVolException("Le vol est invalide ou ne possède pas d'ID");
+		try {
+			ResponseEntity<VolBDDTO[]> response = makeRequest(fullUrl, HttpMethod.GET, null, VolBDDTO[].class);
+			return Arrays.asList(response.getBody());
+		} catch (Exception e) {
+			throw new ExternalApiException("Erreur lors de l'appel à l'API externe pour récupérer tous les vols.", e);
 		}
-		this.volDAO.save(vol);
 	}
 
+	/** {@inheritDoc} */
+	@Override
+	public VolBDDTO findVolById(Long id) {
+		String fullUrl = buildUrl(API_BASE_URL + "/" + id);
+
+		try {
+			return makeRequest(fullUrl, HttpMethod.GET, null, VolBDDTO.class).getBody();
+		} catch (Exception e) {
+			throw new ExternalApiException("Erreur lors de l'appel à l'API externe pour le vol avec ID " + id, e);
+		}
+	}
+
+	/**
+	 * Construit une URL complète à partir d'une base.
+	 *
+	 * @param baseUrl L'URL de base.
+	 * @return L'URL complète.
+	 */
+	private String buildUrl(String baseUrl) {
+		return UriComponentsBuilder.fromUriString(baseUrl)
+				.build()
+				.toUriString();
+	}
+
+	/**
+	 * Crée des en-têtes HTTP avec la clé API.
+	 *
+	 * @return Les en-têtes HTTP.
+	 */
+	private HttpHeaders createHeaders() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("x-api-key", API_KEY);
+		return headers;
+	}
+
+	/**
+	 * Effectue une requête HTTP avec des paramètres génériques.
+	 *
+	 * @param url         L'URL cible.
+	 * @param method      La méthode HTTP (GET, POST, etc.).
+	 * @param requestBody Le corps de la requête (peut être null).
+	 * @param responseType Le type de la réponse attendue.
+	 * @param <T>         Le type de la réponse.
+	 * @return La réponse sous forme d'un objet {@link ResponseEntity}.
+	 */
+	private <T> ResponseEntity<T> makeRequest(String url, HttpMethod method, Object requestBody, Class<T> responseType) {
+		HttpEntity<Object> requestEntity = new HttpEntity<>(requestBody, createHeaders());
+		return restTemplate.exchange(url, method, requestEntity, responseType);
+	}
 }

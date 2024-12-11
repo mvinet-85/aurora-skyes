@@ -1,33 +1,23 @@
 package com.esiea.auroraskyesback.reservation.mapper;
 
 import com.esiea.auroraskyesback.reservation.dto.ReservationDTO;
-import com.esiea.auroraskyesback.reservation.entity.ReservationEntity;
-import org.springframework.stereotype.Component;
+import com.esiea.auroraskyesdbaccess.reservation.dto.ReservationBDDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-@Component
-public class ReservationMapper {
+import java.util.List;
 
-    public ReservationDTO toDTO(ReservationEntity reservation) {
-        if (reservation == null) {
-            return null;
-        }
-        ReservationDTO dto = new ReservationDTO();
-        dto.setId(reservation.getId());
-        dto.setUserId(reservation.getUser().getId());
-        dto.setVolId(reservation.getVol().getId());
-        dto.setSiege(reservation.getSiege());
-        dto.setClasse(reservation.getClasse());
-        return dto;
-    }
+@Mapper(componentModel = "spring")
+public interface ReservationMapper {
 
-    public ReservationEntity toEntity(ReservationDTO reservationDTO) {
-        if (reservationDTO == null) {
-            return null;
-        }
-        ReservationEntity entity = new ReservationEntity();
-        entity.setId(reservationDTO.getId());
-        entity.setSiege(reservationDTO.getSiege());
-        entity.setClasse(reservationDTO.getClasse());
-        return entity;
-    }
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "vol", ignore = true)
+    ReservationBDDTO reservationDTOToReservationBDDTO(ReservationDTO reservationDTO);
+
+    @Mapping(target = "userId", ignore = true)
+    @Mapping(target = "volId", ignore = true)
+    ReservationDTO reservationBDDTOToReservationDTO(ReservationBDDTO reservationBDDTO);
+
+    List<ReservationDTO> reservationBDDTOSToReservationDTO(List<ReservationBDDTO> reservationBDDTOS);
 }
+

@@ -1,7 +1,7 @@
 package com.esiea.auroraskyesback.utilisateur.service;
 
 import com.esiea.auroraskyesback.utilisateur.dto.UtilisateurDTO;
-import com.esiea.auroraskyesback.utilisateur.entity.UtilisateurEntity;
+import com.esiea.auroraskyesdbaccess.utilisateur.dto.UtilisateurBDDTO;
 
 public interface UtilisateurService {
 
@@ -10,20 +10,6 @@ public interface UtilisateurService {
      * @param utilisateurDTO informations de l'utilisateur
      * @return l'utilisateur créer
      */
-    UtilisateurDTO creerUtilisateur(UtilisateurDTO utilisateurDTO);
-
-    /**
-     * Cherche un utilisateur par son email
-     * @param email de l'utilisateur
-     * @return l'utilisateur trouvé
-     */
-    UtilisateurEntity findUtilisateurByEmail(String email);
-
-    /**
-     * Cherche un utilisateur par son id
-     * @param id de l'utilisateur
-     * @return l'utilisateur trouvé
-     */
-    UtilisateurEntity findUtilisateurById(Long id);
+    UtilisateurBDDTO creerUtilisateur(UtilisateurDTO utilisateurDTO);
 
 }

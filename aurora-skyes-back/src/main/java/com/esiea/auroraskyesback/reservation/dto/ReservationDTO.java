@@ -1,6 +1,6 @@
 package com.esiea.auroraskyesback.reservation.dto;
 
-import com.esiea.auroraskyesback.reservation.model.Classe;
+import com.esiea.auroraskyesdbaccess.reservation.model.Classe;
 import lombok.Data;
 
 @Data

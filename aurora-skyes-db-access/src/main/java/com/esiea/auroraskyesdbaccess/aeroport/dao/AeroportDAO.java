@@ -9,6 +9,4 @@ import java.util.Optional;
 @Repository
 public interface AeroportDAO extends JpaRepository<AeroportEntity, Long> {
 
-    Optional<AeroportEntity> findByNom(String name);
-
 }

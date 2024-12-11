@@ -29,7 +29,7 @@ public class AeroportController {
      */
     @GetMapping
     public List<AeroportDTO> getAllAeroports() {
-        return this.aeroportMapper.aeroportEntitiesToAeroportDTO(this.aeroportService.getAllAeroports());
+        return this.aeroportMapper.aeroportBDDTOSToAeroportDTO(this.aeroportService.getAllAeroports());
     }
 
 }

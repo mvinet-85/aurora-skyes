@@ -56,8 +56,8 @@ public class ReservationServiceImpl implements ReservationService {
     /** {@inheritDoc} */
     @Transactional
     public ReservationEntity createReservation(ReservationBDDTO reservationDTO) {
-        UtilisateurEntity user = utilisateurService.findUtilisateurById(reservationDTO.getUserId());
-        VolEntity vol = volService.findVolById(reservationDTO.getVolId());
+        UtilisateurEntity user = utilisateurService.findUtilisateurById(reservationDTO.getUser().getId());
+        VolEntity vol = volService.findVolById(reservationDTO.getVol().getId());
 
         if (vol.getPlaceDisponible() <= 0) {
             LOGGER.error("Aucune place disponible pour le vol ID : " + vol.getId());
@@ -102,7 +102,7 @@ public class ReservationServiceImpl implements ReservationService {
                 });
 
 
-        volService.findVolById(reservationDTO.getVolId());
+        volService.findVolById(reservationDTO.getVol().getId());
 
         existingReservation.setSiege(reservationDTO.getSiege());
         existingReservation.setClasse(reservationDTO.getClasse());

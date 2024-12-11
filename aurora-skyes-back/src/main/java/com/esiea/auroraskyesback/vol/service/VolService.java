@@ -1,6 +1,6 @@
 package com.esiea.auroraskyesback.vol.service;
 
-import com.esiea.auroraskyesback.vol.entity.VolEntity;
+import com.esiea.auroraskyesdbaccess.vol.dto.VolBDDTO;
 
 import java.util.List;
 
@@ -10,19 +10,13 @@ public interface VolService {
      * Retourne la liste des vols
      * @return liste des vols
      */
-    List<VolEntity> getAllVols();
+    List<VolBDDTO> getAllVols();
 
     /**
      * Recherche un vol par son id
      * @param id du vol
      * @return le vol
      */
-    VolEntity findVolById(Long id);
+    VolBDDTO findVolById(Long id);
 
-    /**
-     * Modifie un vol
-     * @param vol informations du vol
-     * @return le vol modifié
-     */
-    void modifierVol(VolEntity vol);
 }

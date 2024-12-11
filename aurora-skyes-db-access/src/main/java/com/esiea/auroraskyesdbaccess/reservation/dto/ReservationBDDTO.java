@@ -1,6 +1,8 @@
 package com.esiea.auroraskyesdbaccess.reservation.dto;
 
 import com.esiea.auroraskyesdbaccess.reservation.model.Classe;
+import com.esiea.auroraskyesdbaccess.utilisateur.dto.UtilisateurBDDTO;
+import com.esiea.auroraskyesdbaccess.vol.dto.VolBDDTO;
 import lombok.Data;
 
 @Data
@@ -10,10 +12,10 @@ public class ReservationBDDTO {
     private Long id;
 
     /** Utilisateur */
-    private Long userId;
+    private UtilisateurBDDTO user;
 
     /** Vol associé */
-    private Long volId;
+    private VolBDDTO vol;
 
     /** CLasse */
     private Classe classe;
