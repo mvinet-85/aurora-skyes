@@ -1,6 +1,6 @@
 package com.esiea.auroraskyesback.reservation.service;
 
-import com.esiea.auroraskyesback.exception.controller.exception.ExternalApiException;
+import com.esiea.auroraskyesback.exception.ExternalApiException;
 import com.esiea.auroraskyesback.reservation.dto.ReservationDTO;
 import com.esiea.auroraskyesback.reservation.exception.NoAvailableSeatsException;
 import com.esiea.auroraskyesback.reservation.mapper.ReservationMapper;
@@ -8,8 +8,6 @@ import com.esiea.auroraskyesdbaccess.reservation.dto.ReservationBDDTO;
 import com.esiea.auroraskyesdbaccess.reservation.model.Classe;
 import com.esiea.auroraskyesdbaccess.utilisateur.dto.UtilisateurBDDTO;
 import com.esiea.auroraskyesdbaccess.vol.dto.VolBDDTO;
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -34,14 +32,11 @@ public class ReservationServiceImpl implements ReservationService {
 
     private final RestTemplate restTemplate;
     private final ReservationMapper reservationMapper;
-    private final MeterRegistry meterRegistry;
 
     public ReservationServiceImpl(RestTemplate restTemplate,
-                                  ReservationMapper reservationMapper,
-                                  MeterRegistry meterRegistry) {
+                                  ReservationMapper reservationMapper) {
         this.restTemplate = restTemplate;
         this.reservationMapper = reservationMapper;
-        this.meterRegistry = meterRegistry;
     }
 
     /** {@inheritDoc} */
@@ -59,13 +54,6 @@ public class ReservationServiceImpl implements ReservationService {
         // Mise à jour des places disponibles
         vol.setPlaceDisponible(vol.getPlaceDisponible() - 1);
         updateVol(vol);
-
-        // Ajouter un compteur pour les statistiques
-        Counter.builder("reservations.total")
-                .description("Total des réservations par vol")
-                .tags("volId", String.valueOf(vol.getId()))
-                .register(meterRegistry)
-                .increment();
 
         // Préparer la réservation
         ReservationBDDTO reservation = reservationMapper.reservationDTOToReservationBDDTO(reservationDTO);
@@ -131,7 +119,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     private void updateVol(VolBDDTO vol) {
-        String fullUrl = buildUrl(API_BASE_URL + "/vols/" + vol.getId());
+        String fullUrl = buildUrl(API_BASE_URL + "/vols");
         try {
             makeRequest(fullUrl, HttpMethod.PUT, vol, Void.class);
         } catch (Exception e) {

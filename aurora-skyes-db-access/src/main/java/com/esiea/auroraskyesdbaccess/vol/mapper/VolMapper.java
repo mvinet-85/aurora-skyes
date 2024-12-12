@@ -13,5 +13,7 @@ public interface VolMapper {
 
     List<VolBDDTO> volEntitiesToVolBDDTO(List<VolEntity> volEntities);
 
+    VolEntity volBDDTOToVolVolEntity(VolBDDTO volBDDTO);
+
 }
 

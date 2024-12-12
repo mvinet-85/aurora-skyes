@@ -1,6 +1,6 @@
 package com.esiea.auroraskyesback.vol.service;
 
-import com.esiea.auroraskyesback.exception.controller.exception.ExternalApiException;
+import com.esiea.auroraskyesback.exception.ExternalApiException;
 import com.esiea.auroraskyesdbaccess.vol.dto.VolBDDTO;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

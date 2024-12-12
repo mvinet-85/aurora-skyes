@@ -1,6 +1,6 @@
 package com.esiea.auroraskyesback.aeroport.service;
 
-import com.esiea.auroraskyesback.exception.controller.exception.ExternalApiException;
+import com.esiea.auroraskyesback.exception.ExternalApiException;
 import com.esiea.auroraskyesdbaccess.aeroport.dto.AeroportBDDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

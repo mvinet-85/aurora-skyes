@@ -3,7 +3,7 @@ package com.esiea.auroraskyesback.authentification.controller;
 import com.esiea.auroraskyesback.authentification.dto.AuthentificationDTO;
 import com.esiea.auroraskyesback.authentification.dto.ResponseDTO;
 import com.esiea.auroraskyesback.authentification.utils.JwtUtil;
-import com.esiea.auroraskyesback.utilisateur.service.UtilisateurService;
+import com.esiea.auroraskyesback.exception.ExternalApiException;
 import com.esiea.auroraskyesdbaccess.utilisateur.dto.UtilisateurBDDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,19 +29,14 @@ public class AuthentificationController {
     /** {@link AuthenticationManager} */
     private final AuthenticationManager authenticationManager;
 
-    /** {@link UtilisateurService} */
-    private final UtilisateurService utilisateurService;
-
     /** {@link JwtUtil} */
     private final JwtUtil jwtUtil;
 
     public AuthentificationController(AuthenticationManager authenticationManager,
                                       JwtUtil jwtUtil,
-                                      UtilisateurService utilisateurService,
                                       RestTemplate restTemplate) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
-        this.utilisateurService = utilisateurService;
         this.restTemplate = restTemplate;
     }
 
@@ -80,7 +75,7 @@ public class AuthentificationController {
             try {
                 userId = restTemplate.getForObject(fullUrl, UtilisateurBDDTO.class).getId();
             } catch (Exception e) {
-                throw new com.esiea.auroraskyesback.exception.controller.exception.ExternalApiException("Erreur lors de l'appel à l'API externe", e);
+                throw new ExternalApiException("Erreur lors de l'appel à l'API externe", e);
             }
 
             responseDTO.setId(userId);

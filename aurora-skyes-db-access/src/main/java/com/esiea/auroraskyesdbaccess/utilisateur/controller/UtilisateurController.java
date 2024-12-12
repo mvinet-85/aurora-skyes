@@ -41,4 +41,14 @@ public class UtilisateurController {
         return this.utilisateurMapper.utilisateurEntityToUtilisateurBDDTO(this.utilisateurService.findUtilisateurByEmail(email));
     }
 
+    /**
+     * Permet de créer un utilisateur
+     * @param id de l'utilisateur
+     * @return l'utilisateur trouvé
+     */
+    @GetMapping("/{id}")
+    public UtilisateurBDDTO findUtilisateurById(@PathVariable Long id) {
+        return this.utilisateurMapper.utilisateurEntityToUtilisateurBDDTO(this.utilisateurService.findUtilisateurById(id));
+    }
+
 }

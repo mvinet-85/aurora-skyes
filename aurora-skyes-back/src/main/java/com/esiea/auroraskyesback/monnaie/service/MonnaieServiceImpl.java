@@ -1,6 +1,6 @@
 package com.esiea.auroraskyesback.monnaie.service;
 
-import com.esiea.auroraskyesback.exception.controller.exception.ExternalApiException;
+import com.esiea.auroraskyesback.exception.ExternalApiException;
 import com.esiea.auroraskyesback.monnaie.exception.MonnaieNotFoundException;
 import com.esiea.auroraskyesdbaccess.monnaie.dto.MonnaieBDDTO;
 import org.slf4j.Logger;

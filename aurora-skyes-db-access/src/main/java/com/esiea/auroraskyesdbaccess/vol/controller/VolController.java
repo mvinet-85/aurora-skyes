@@ -1,12 +1,10 @@
 package com.esiea.auroraskyesdbaccess.vol.controller;
 
+import com.esiea.auroraskyesdbaccess.reservation.dto.ReservationBDDTO;
 import com.esiea.auroraskyesdbaccess.vol.dto.VolBDDTO;
 import com.esiea.auroraskyesdbaccess.vol.mapper.VolMapper;
 import com.esiea.auroraskyesdbaccess.vol.service.VolService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -43,6 +41,17 @@ public class VolController {
     @GetMapping("/{id}")
     public VolBDDTO getVolById(@PathVariable Long id) {
         return this.volMapper.volEntityToVolBDDTO(volService.findVolById(id));
+    }
+
+    //TODO voir pour modifier juste des places
+    /**
+     * Endpoint permettant de modifier le vol
+     * @param volBDDTO informations mise a jour du vol
+     * @return le vol modifie
+     */
+    @PutMapping
+    public void updateVol(@RequestBody VolBDDTO volBDDTO) {
+        this.volService.modifierVol(this.volMapper.volBDDTOToVolVolEntity(volBDDTO));
     }
 
 }

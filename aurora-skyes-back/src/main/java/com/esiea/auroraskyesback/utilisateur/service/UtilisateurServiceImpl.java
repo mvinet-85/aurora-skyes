@@ -1,7 +1,7 @@
 package com.esiea.auroraskyesback.utilisateur.service;
 
 import com.esiea.auroraskyesback.authentification.service.AuthentificationService;
-import com.esiea.auroraskyesback.exception.controller.exception.ExternalApiException;
+import com.esiea.auroraskyesback.exception.ExternalApiException;
 import com.esiea.auroraskyesback.utilisateur.dto.UtilisateurDTO;
 import com.esiea.auroraskyesback.utilisateur.exception.InvalidUtilisateurException;
 import com.esiea.auroraskyesback.utilisateur.mapper.UtilisateurMapper;
