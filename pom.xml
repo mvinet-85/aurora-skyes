@@ -17,6 +17,7 @@
     <modules>
         <module>aurora-skyes-db-access</module>
         <module>aurora-skyes-back</module>
+        <module>aurora-skyes-api</module>
     </modules>
 
 </project>

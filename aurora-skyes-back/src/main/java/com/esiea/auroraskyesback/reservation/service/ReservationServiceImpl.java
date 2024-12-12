@@ -15,7 +15,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -40,7 +39,6 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     /** {@inheritDoc} */
-    @Transactional
     @Override
     public ReservationBDDTO createReservation(ReservationDTO reservationDTO) {
         UtilisateurBDDTO utilisateur = fetchUtilisateurById(reservationDTO.getUserId());
@@ -73,7 +71,6 @@ public class ReservationServiceImpl implements ReservationService {
         return postReservation(reservation);
     }
 
-    @Transactional
     @Override
     public ReservationBDDTO updateReservation(ReservationDTO reservationDTO) {
         ReservationBDDTO existingReservation = fetchReservationById(reservationDTO.getId());

@@ -17,7 +17,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -44,7 +43,6 @@ public class UtilisateurServiceImpl implements UserDetailsService, UtilisateurSe
     }
 
     /** {@inheritDoc} */
-    @Transactional
     @Override
     public UtilisateurBDDTO creerUtilisateur(UtilisateurDTO utilisateurDTO) {
         validateUtilisateurDTO(utilisateurDTO);

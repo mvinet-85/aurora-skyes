@@ -1,4 +1,4 @@
-package com.esiea.auroraskyesback;
+package com.esiea.auroraskyesapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,10 +11,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 		HibernateJpaAutoConfiguration.class
 })
 @EnableScheduling
-public class AuroraSkyesBackApplication {
+public class AuroraSkyesApiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AuroraSkyesBackApplication.class, args);
+		SpringApplication.run(AuroraSkyesApiApplication.class, args);
 	}
 
 }
