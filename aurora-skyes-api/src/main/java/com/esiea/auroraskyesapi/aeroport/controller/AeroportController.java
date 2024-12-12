@@ -3,9 +3,7 @@ package com.esiea.auroraskyesapi.aeroport.controller;
 import com.esiea.auroraskyesapi.aeroport.dto.AeroportGlobaleDTO;
 import com.esiea.auroraskyesapi.aeroport.mapper.AeroportMapper;
 import com.esiea.auroraskyesapi.aeroport.service.AeroportService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,6 +30,11 @@ public class AeroportController {
     @GetMapping
     public List<AeroportGlobaleDTO> getAllAeroports() {
         return this.aeroportMapper.aeroportBDDTOSToAeroportGlobaleDTO(this.aeroportService.getAllAeroports());
+    }
+
+    @PostMapping()
+    public AeroportGlobaleDTO createVol(@RequestBody AeroportGlobaleDTO dto) {
+        return this.aeroportMapper.aeroportBDDTOToAeroportGlobaleDTO(this.aeroportService.createAeroport(dto));
     }
 
 }

@@ -53,13 +53,13 @@ public class AeroportServiceImpl implements AeroportService {
 	/** {@inheritDoc} */
 	@Override
 	public AeroportBDDTO createAeroport(AeroportGlobaleDTO aeroportGlobaleDTO) {
-		return null;//return postVol(this.aeroportMapper.aer(aeroportGlobaleDTO));
+		return postVol(this.aeroportMapper.aeroportGlobaleDTOToAeroportBDDTO(aeroportGlobaleDTO));
 	}
 
-	private AeroportGlobaleDTO postVol(AeroportGlobaleDTO vol) {
+	private AeroportBDDTO postVol(AeroportBDDTO vol) {
 		String fullUrl = buildUrl(API_BASE_URL + "/aeroports/external");
 		try {
-			return makeRequest(fullUrl, HttpMethod.POST, vol, AeroportGlobaleDTO.class).getBody();
+			return makeRequest(fullUrl, HttpMethod.POST, vol, AeroportBDDTO.class).getBody();
 		} catch (Exception e) {
 			throw new com.esiea.auroraskyesapi.exception.ExternalApiException("Erreur lors de la création de la réservation.", e);
 		}
