@@ -30,7 +30,7 @@ public class ReservationController {
      */
     @PostMapping
     public ReservationDTO createReservation(@RequestBody ReservationDTO reservationDTO) {
-        return this.reservationMapper.toDTO(reservationService.createReservation(reservationDTO));
+        return this.reservationMapper.reservationBDDTOToReservationDTO(reservationService.createReservation(reservationDTO));
     }
 
     /**
@@ -40,7 +40,7 @@ public class ReservationController {
      */
     @PutMapping()
     public ReservationDTO updateReservation(@RequestBody ReservationDTO reservationDTO) {
-        return this.reservationMapper.toDTO(reservationService.updateReservation(reservationDTO));
+        return this.reservationMapper.reservationBDDTOToReservationDTO(reservationService.updateReservation(reservationDTO));
     }
 
     /**
@@ -50,7 +50,7 @@ public class ReservationController {
      */
     @GetMapping("/{id}")
     public ReservationDTO getReservation(@PathVariable Long id) {
-        return this.reservationMapper.toDTO(reservationService.getReservation(id));
+        return this.reservationMapper.reservationBDDTOToReservationDTO(reservationService.getReservation(id));
     }
 
     /**
@@ -60,6 +60,6 @@ public class ReservationController {
      */
     @GetMapping("/user/{id}")
     public List<ReservationDTO> getUserReservation(@PathVariable Long id) {
-        return reservationService.getUserReservation(id).stream().map(this.reservationMapper::toDTO).toList();
+        return this.reservationMapper.reservationBDDTOSToReservationDTO(this.reservationService.getUserReservation(id));
     }
 }

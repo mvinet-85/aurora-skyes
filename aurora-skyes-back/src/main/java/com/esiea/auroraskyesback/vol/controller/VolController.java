@@ -32,7 +32,7 @@ public class VolController {
      */
     @GetMapping
     public List<VolDTO> getAllVols() {
-        return volService.getAllVols().stream().map(this.volMapper::toDTO).toList();
+        return this.volMapper.volBDDTOSToVolDTO(this.volService.getAllVols());
     }
 
     /**
@@ -42,7 +42,7 @@ public class VolController {
      */
     @GetMapping("/{id}")
     public VolDTO getVolById(@PathVariable Long id) {
-        return this.volMapper.toDTO(volService.findVolById(id));
+        return this.volMapper.volBDDTOToVolDTO(this.volService.findVolById(id));
     }
 
 }

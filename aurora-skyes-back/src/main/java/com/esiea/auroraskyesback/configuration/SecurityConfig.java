@@ -1,6 +1,6 @@
 package com.esiea.auroraskyesback.configuration;
 
-import com.esiea.auroraskyesback.utilisateur.dao.UtilisateurDAO;
+import com.esiea.auroraskyesdbaccess.utilisateur.dto.UtilisateurBDDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 
@@ -27,23 +28,36 @@ import java.util.ArrayList;
 public class SecurityConfig {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfig.class);
+	private static final String API_BASE_URL = "http://localhost:8081";
+
+	private final RestTemplate restTemplate;
+
+	public SecurityConfig(RestTemplate restTemplate) {
+		this.restTemplate = restTemplate;
+	}
 
 	@Bean
-	public UserDetailsService userDetailsService(UtilisateurDAO utilisateurDAO) {
+	public UserDetailsService userDetailsService() {
 		return email -> {
 			LOGGER.info("Tentative de chargement de l'utilisateur avec l'email : {}", email);
-			return utilisateurDAO.findByEmail(email)
-					.map(user -> {
-						LOGGER.info("Utilisateur trouvé : {}", user.getEmail());
-						return new org.springframework.security.core.userdetails.User(
-								user.getEmail(),
-								user.getMotDePasse(),
-								new ArrayList<>());
-					})
-					.orElseThrow(() -> {
-						LOGGER.error("Aucun utilisateur trouvé avec l'email : {}", email);
-						return new UsernameNotFoundException("Utilisateur non trouvé : " + email);
-					});
+			try {
+				// Effectuer une requête HTTP vers l'API externe pour récupérer l'utilisateur
+				String url = API_BASE_URL + "/utilisateurs/email/" + email;
+				UtilisateurBDDTO utilisateur = restTemplate.getForObject(url, UtilisateurBDDTO.class);
+
+				if (utilisateur == null) {
+					throw new UsernameNotFoundException("Utilisateur non trouvé : " + email);
+				}
+
+				LOGGER.info("Utilisateur trouvé : {}", utilisateur.getEmail());
+				return new org.springframework.security.core.userdetails.User(
+						utilisateur.getEmail(),
+						utilisateur.getMotDePasse(),
+						new ArrayList<>()); // Vous pouvez ajouter des rôles ici si nécessaire
+			} catch (Exception e) {
+				LOGGER.error("Erreur lors de la récupération de l'utilisateur avec l'email : {}", email, e);
+				throw new UsernameNotFoundException("Utilisateur non trouvé : " + email, e);
+			}
 		};
 	}
 
@@ -74,7 +88,7 @@ public class SecurityConfig {
 
 	@Bean
 	public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService,
-			PasswordEncoder passwordEncoder) {
+														 PasswordEncoder passwordEncoder) {
 		LOGGER.info("Configuration du fournisseur d'authentification...");
 		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 		provider.setUserDetailsService(userDetailsService);

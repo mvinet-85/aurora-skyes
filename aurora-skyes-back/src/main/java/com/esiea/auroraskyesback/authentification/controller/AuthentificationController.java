@@ -3,7 +3,8 @@ package com.esiea.auroraskyesback.authentification.controller;
 import com.esiea.auroraskyesback.authentification.dto.AuthentificationDTO;
 import com.esiea.auroraskyesback.authentification.dto.ResponseDTO;
 import com.esiea.auroraskyesback.authentification.utils.JwtUtil;
-import com.esiea.auroraskyesback.utilisateur.service.UtilisateurService;
+import com.esiea.auroraskyesback.exception.ExternalApiException;
+import com.esiea.auroraskyesdbaccess.utilisateur.dto.UtilisateurBDDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/authentification")
@@ -20,20 +23,21 @@ public class AuthentificationController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthentificationController.class);
 
+    /** {@link RestTemplate} */
+    private final RestTemplate restTemplate;
+
     /** {@link AuthenticationManager} */
     private final AuthenticationManager authenticationManager;
-
-    /** {@link UtilisateurService} */
-    private final UtilisateurService utilisateurService;
 
     /** {@link JwtUtil} */
     private final JwtUtil jwtUtil;
 
     public AuthentificationController(AuthenticationManager authenticationManager,
-                                      JwtUtil jwtUtil, UtilisateurService utilisateurService) {
+                                      JwtUtil jwtUtil,
+                                      RestTemplate restTemplate) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
-        this.utilisateurService = utilisateurService;
+        this.restTemplate = restTemplate;
     }
 
     /**
@@ -60,7 +64,20 @@ public class AuthentificationController {
             String token = jwtUtil.generateToken(authentication.getName());
             responseDTO.setToken(token);
             LOGGER.info("Token JWT généré avec succès pour l'utilisateur : {}", authentificationDTO.getEmail());
-            Long userId = this.utilisateurService.findUtilisateurByEmail(authentificationDTO.getEmail()).getId();
+
+            String apiUrl = "http://localhost:8081/utilisateurs/email/" + authentificationDTO.getEmail();
+
+            String fullUrl = UriComponentsBuilder.fromUriString(apiUrl)
+                    .build()
+                    .toUriString();
+
+            Long userId;
+            try {
+                userId = restTemplate.getForObject(fullUrl, UtilisateurBDDTO.class).getId();
+            } catch (Exception e) {
+                throw new ExternalApiException("Erreur lors de l'appel à l'API externe", e);
+            }
+
             responseDTO.setId(userId);
 
             return ResponseEntity.ok(responseDTO);
