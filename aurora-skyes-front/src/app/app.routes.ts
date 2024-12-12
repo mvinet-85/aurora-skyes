@@ -5,12 +5,8 @@ import {VerifyEmailComponent} from './pages/authentification/verify-email/verify
 import {ForgotPasswordComponent} from './pages/authentification/forgot-password/forgot-password.component';
 import {HomeComponent} from './pages/home/home.component';
 import {AuthGuard} from './core/guards/auth.guard';
-<<<<<<< HEAD
 import {ReservationComponent} from './pages/reservation/reservation.component';
-import { ReservationStateComponent } from './pages/reservation-state/reservation-state.component';
-=======
 import {ReservationStateComponent} from './pages/reservation-state/reservation-state.component';
->>>>>>> ff0c03c (Ajout de la route)
 
 export const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
