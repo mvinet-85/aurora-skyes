@@ -15,13 +15,6 @@ public interface ReservationService {
     ReservationBDDTO createReservation(ReservationDTO reservationDTO);
 
     /**
-     * Modifie la réservation
-     * @param reservationDTO informations de la réservation a modifier
-     * @return la réservation modifiée
-     */
-    ReservationBDDTO updateReservation(ReservationDTO reservationDTO);
-
-    /**
      * Récupère une réservation
      * @param id de la réservation
      * @return la réservation

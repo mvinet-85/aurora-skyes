@@ -1,7 +1,11 @@
 package com.esiea.auroraskyesapi.aeroport.service;
 
+import com.esiea.auroraskyesapi.aeroport.dto.AeroportGlobaleDTO;
+import com.esiea.auroraskyesapi.aeroport.mapper.AeroportMapper;
+import com.esiea.auroraskyesapi.vol.dto.VolGlobalDTO;
 import com.esiea.auroraskyesback.exception.ExternalApiException;
 import com.esiea.auroraskyesdbaccess.aeroport.dto.AeroportBDDTO;
+import com.esiea.auroraskyesdbaccess.vol.dto.VolBDDTO;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -21,8 +25,12 @@ public class AeroportServiceImpl implements AeroportService {
 
 	private final RestTemplate restTemplate;
 
-	public AeroportServiceImpl(RestTemplate restTemplate) {
+	private final AeroportMapper aeroportMapper;
+
+	public AeroportServiceImpl(RestTemplate restTemplate,
+							   AeroportMapper aeroportMapper) {
 		this.restTemplate = restTemplate;
+		this.aeroportMapper = aeroportMapper;
 	}
 
 	/**
@@ -39,6 +47,21 @@ public class AeroportServiceImpl implements AeroportService {
 			return Arrays.asList(response.getBody());
 		} catch (Exception e) {
 			throw new ExternalApiException("Erreur lors de l'appel à l'API externe", e);
+		}
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public AeroportBDDTO createAeroport(AeroportGlobaleDTO aeroportGlobaleDTO) {
+		return null;//return postVol(this.aeroportMapper.aer(aeroportGlobaleDTO));
+	}
+
+	private AeroportGlobaleDTO postVol(AeroportGlobaleDTO vol) {
+		String fullUrl = buildUrl(API_BASE_URL + "/aeroports/external");
+		try {
+			return makeRequest(fullUrl, HttpMethod.POST, vol, AeroportGlobaleDTO.class).getBody();
+		} catch (Exception e) {
+			throw new com.esiea.auroraskyesapi.exception.ExternalApiException("Erreur lors de la création de la réservation.", e);
 		}
 	}
 

@@ -1,6 +1,8 @@
 package com.esiea.auroraskyesapi.vol.service;
 
 import com.esiea.auroraskyesapi.exception.ExternalApiException;
+import com.esiea.auroraskyesapi.vol.dto.VolGlobalDTO;
+import com.esiea.auroraskyesapi.vol.mapper.VolMapper;
 import com.esiea.auroraskyesdbaccess.vol.dto.VolBDDTO;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,10 +21,14 @@ public class VolServiceImpl implements VolService {
 	private static final String API_BASE_URL = "http://localhost:8081/vols";
 	private static final String API_KEY = "aled_aled_aled_aled_aled";
 
+	private final VolMapper volMapper;
+
 	private final RestTemplate restTemplate;
 
-	public VolServiceImpl(RestTemplate restTemplate) {
+	public VolServiceImpl(RestTemplate restTemplate,
+						  VolMapper volMapper) {
 		this.restTemplate = restTemplate;
+		this.volMapper = volMapper;
 	}
 
 	/** {@inheritDoc} */
@@ -45,6 +51,21 @@ public class VolServiceImpl implements VolService {
 			return makeRequest(fullUrl, HttpMethod.GET, null, VolBDDTO.class).getBody();
 		} catch (Exception e) {
 			throw new ExternalApiException("Erreur lors de l'appel à l'API externe pour le vol avec ID " + id, e);
+		}
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public VolBDDTO createVol(VolGlobalDTO volGlobalDTO) {
+		return postVol(this.volMapper.volGlobalDTOToVolBDDTO(volGlobalDTO));
+	}
+
+	private VolBDDTO postVol(VolBDDTO vol) {
+		String fullUrl = buildUrl(API_BASE_URL + "/reservations/external");
+		try {
+			return makeRequest(fullUrl, HttpMethod.POST, vol, VolBDDTO.class).getBody();
+		} catch (Exception e) {
+			throw new ExternalApiException("Erreur lors de la création de la réservation.", e);
 		}
 	}
 

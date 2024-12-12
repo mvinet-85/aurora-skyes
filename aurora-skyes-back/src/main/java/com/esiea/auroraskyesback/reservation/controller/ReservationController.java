@@ -34,16 +34,6 @@ public class ReservationController {
     }
 
     /**
-     * Endpoint permettant de modifier la reservation
-     * @param reservationDTO informations mise a jour de la réservation
-     * @return la réservation modifiée
-     */
-    @PutMapping()
-    public ReservationDTO updateReservation(@RequestBody ReservationDTO reservationDTO) {
-        return this.reservationMapper.reservationBDDTOToReservationDTO(reservationService.updateReservation(reservationDTO));
-    }
-
-    /**
      * Endpoint permettant de récupérer une réservation
      * @param id de la réservation a récupérer
      * @return la réservation

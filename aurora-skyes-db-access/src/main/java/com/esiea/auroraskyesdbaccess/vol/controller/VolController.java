@@ -1,5 +1,6 @@
 package com.esiea.auroraskyesdbaccess.vol.controller;
 
+import com.esiea.auroraskyesdbaccess.aeroport.dto.AeroportBDDTO;
 import com.esiea.auroraskyesdbaccess.reservation.dto.ReservationBDDTO;
 import com.esiea.auroraskyesdbaccess.vol.dto.VolBDDTO;
 import com.esiea.auroraskyesdbaccess.vol.mapper.VolMapper;
@@ -52,6 +53,17 @@ public class VolController {
     @PutMapping
     public void updateVol(@RequestBody VolBDDTO volBDDTO) {
         this.volService.modifierVol(this.volMapper.volBDDTOToVolVolEntity(volBDDTO));
+    }
+
+    /**
+     * Endpoint permettant de créer un vol
+     *
+     * @param volBDDTO informations du vol
+     * @return vol créé
+     */
+    @PostMapping("/external")
+    public VolBDDTO createVolExternal(@RequestBody VolBDDTO volBDDTO) {
+        return this.volMapper.volExternalEntityToVolBDDTO(this.volService.createVolExternal(volBDDTO));
     }
 
 }

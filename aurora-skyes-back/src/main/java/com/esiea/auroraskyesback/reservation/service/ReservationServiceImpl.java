@@ -72,17 +72,6 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public ReservationBDDTO updateReservation(ReservationDTO reservationDTO) {
-        ReservationBDDTO existingReservation = fetchReservationById(reservationDTO.getId());
-        existingReservation.setSiege(reservationDTO.getSiege());
-        existingReservation.setClasse(reservationDTO.getClasse());
-
-        updateReservation(existingReservation);
-
-        return fetchReservationById(reservationDTO.getId());
-    }
-
-    @Override
     public ReservationBDDTO getReservation(Long id) {
         return fetchReservationById(id);
     }
@@ -139,15 +128,6 @@ public class ReservationServiceImpl implements ReservationService {
             return makeRequest(fullUrl, HttpMethod.POST, reservation, ReservationBDDTO.class).getBody();
         } catch (Exception e) {
             throw new ExternalApiException("Erreur lors de la création de la réservation.", e);
-        }
-    }
-
-    private void updateReservation(ReservationBDDTO reservation) {
-        String fullUrl = buildUrl(API_BASE_URL + "/reservations/" + reservation.getId());
-        try {
-            makeRequest(fullUrl, HttpMethod.PUT, reservation, Void.class);
-        } catch (Exception e) {
-            throw new ExternalApiException("Erreur lors de la mise à jour de la réservation.", e);
         }
     }
 

@@ -3,10 +3,7 @@ package com.esiea.auroraskyesapi.vol.controller;
 import com.esiea.auroraskyesapi.vol.dto.VolGlobalDTO;
 import com.esiea.auroraskyesapi.vol.mapper.VolMapper;
 import com.esiea.auroraskyesapi.vol.service.VolService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -43,6 +40,16 @@ public class VolController {
     @GetMapping("/{id}")
     public VolGlobalDTO getVolById(@PathVariable Long id) {
         return this.volMapper.volBDDTOToVolGlobalDTO(this.volService.findVolById(id));
+    }
+
+    /**
+     * Endpoint permettant de récupérer un vol
+     * @param dto du vol a récupérer
+     * @return le vol
+     */
+    @PostMapping()
+    public VolGlobalDTO createVol(@RequestBody VolGlobalDTO dto) {
+        return this.volMapper.volBDDTOToVolGlobalDTO(this.volService.createVol(dto));
     }
 
 }

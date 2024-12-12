@@ -19,6 +19,19 @@
 		</createTable>
 		<createSequence sequenceName="seq_aeroport" />
 
+		<createTable tableName="aeroportExternal">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" primaryKeyName="pk_aeroportExternal" />
+			</column>
+			<column name="nom" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="ville" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<createSequence sequenceName="seq_aeroportExternal" />
+
 		<!-- Table monnaie -->
 		<createTable tableName="monnaie">
 			<column name="id" type="bigint">
@@ -113,6 +126,28 @@
 			baseTableName="reservation" baseColumnNames="user_id"
 			referencedTableName="utilisateur" referencedColumnNames="id" />
 		<createSequence sequenceName="seq_reservation" />
+
+		<createTable tableName="reservationExternal">
+			<column name="id" type="BIGINT">
+				<constraints primaryKey="true" primaryKeyName="pk_reservationExternal" nullable="false" />
+			</column>
+			<column name="vol_id" type="BIGINT">
+				<constraints nullable="false" />
+			</column>
+			<column name="user_id" type="BIGINT">
+				<constraints nullable="false" />
+			</column>
+			<column name="siege" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="classe" type="VARCHAR(50)">
+				<constraints nullable="false" />
+			</column>
+			<column name="prix" type="DOUBLE">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<createSequence sequenceName="seq_reservationExternal" />
 
 	</changeSet>
 

@@ -49,7 +49,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     private ReservationBDDTO postReservation(ReservationBDDTO reservation) {
-        String fullUrl = buildUrl(API_BASE_URL + "/reservations");
+        String fullUrl = buildUrl(API_BASE_URL + "/reservations/external");
         try {
             return makeRequest(fullUrl, HttpMethod.POST, reservation, ReservationBDDTO.class).getBody();
         } catch (Exception e) {

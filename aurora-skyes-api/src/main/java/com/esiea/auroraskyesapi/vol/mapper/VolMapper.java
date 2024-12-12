@@ -12,6 +12,8 @@ public interface VolMapper {
 
     VolGlobalDTO volBDDTOToVolGlobalDTO(VolBDDTO volBDDTO);
 
+    VolBDDTO volGlobalDTOToVolBDDTO(VolGlobalDTO volGlobalDTO);
+
     List<VolGlobalDTO> volBDDTOSToVolGlobalDTO(List<VolBDDTO> volBDDTOS);
 
 }

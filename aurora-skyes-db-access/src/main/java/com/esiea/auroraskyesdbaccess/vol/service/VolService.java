@@ -1,6 +1,10 @@
 package com.esiea.auroraskyesdbaccess.vol.service;
 
+import com.esiea.auroraskyesdbaccess.aeroport.dto.AeroportBDDTO;
+import com.esiea.auroraskyesdbaccess.aeroport.entity.AeroportExternalEntity;
+import com.esiea.auroraskyesdbaccess.vol.dto.VolBDDTO;
 import com.esiea.auroraskyesdbaccess.vol.entity.VolEntity;
+import com.esiea.auroraskyesdbaccess.vol.entity.VolExternalEntity;
 
 import java.util.List;
 
@@ -25,4 +29,12 @@ public interface VolService {
      * @return le vol modifié
      */
     void modifierVol(VolEntity vol);
+
+    /**
+     * Créer un vol avec les informations via l'api
+     *
+     * @param volBDDTO informations du vol
+     * @return vol créé
+     */
+    VolExternalEntity createVolExternal(VolBDDTO volBDDTO);
 }
