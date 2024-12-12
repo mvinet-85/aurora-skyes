@@ -4,6 +4,7 @@ import com.esiea.auroraskyesdbaccess.reservation.dto.ReservationBDDTO;
 import com.esiea.auroraskyesdbaccess.reservation.entity.ReservationEntity;
 import com.esiea.auroraskyesdbaccess.reservation.entity.ReservationExternalEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 

@@ -1,7 +1,8 @@
 package com.esiea.auroraskyesapi.reservation.dto;
 
-import com.esiea.auroraskyesdbaccess.reservation.model.Classe;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class ReservationGlobaleDTO {
@@ -13,15 +14,15 @@ public class ReservationGlobaleDTO {
     private Long userId;
 
     /** Vol associé */
-    private Long volId;
+    private Long flightId;
 
-    /** CLasse */
-    private Classe classe;
+    /** Liste des options */
+    private List<String> option;
 
-    /** Siege */
-    private String siege;
+    /** Monnaie */
+    private String currency;
 
     /** Prix */
-    private double prix;
+    private double price;
 
 }

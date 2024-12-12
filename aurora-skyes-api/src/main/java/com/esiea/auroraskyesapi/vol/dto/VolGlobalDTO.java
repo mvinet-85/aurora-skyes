@@ -1,6 +1,5 @@
 package com.esiea.auroraskyesapi.vol.dto;
 
-import com.esiea.auroraskyesback.aeroport.dto.AeroportDTO;
 import lombok.Data;
 
 import java.util.Date;
@@ -12,24 +11,24 @@ public class VolGlobalDTO {
     private Long id;
 
     /** Date de départ */
-    private Date dateDepart;
+    private Date departureDate;
 
     /** Date d'arrivée */
-    private Date dateArrive;
+    private Date arrivalDate;
 
-    /** Aéroport de départ */
-    private AeroportDTO aeroportDepart;
+    /** CODE Aéroport de départ */
+    private String departureAirportCodeDTO;
 
-    /** Aéroport d'arrivée */
-    private AeroportDTO aeroportArrivee;
+    /** CODE  Aéroport d'arrivée */
+    private String arrivalAirportCodeDTO;
 
     /** Nombre de place pour le vol */
-    private int placeDisponible;
+    private int capacity;
 
     /** Prix du vol */
-    private int prix;
+    private double price;
 
-    /** Escale */
-    private boolean escale;
+    /** Id du groupe */
+    private long groupId;
 
 }

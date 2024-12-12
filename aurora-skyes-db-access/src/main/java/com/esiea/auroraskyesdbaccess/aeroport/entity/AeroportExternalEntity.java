@@ -14,9 +14,6 @@ public class AeroportExternalEntity {
 	private Long id;
 
 	@Column(nullable = false)
-	private String nom;
-
-	@Column(nullable = false)
-	private String ville;
+	private String airportCode;
 
 }
